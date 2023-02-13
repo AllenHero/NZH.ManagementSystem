@@ -135,7 +135,6 @@ namespace NZH.Common.Extensions
             return b;
         }
 
-
         /// <summary>
         /// 将DataSet转化成JSON数据
         /// </summary>
@@ -207,6 +206,7 @@ namespace NZH.Common.Extensions
             ds.Tables.Add(dt);
             return ds;
         }
+
         /// <summary>
         /// 根据实体类得到表结构
         /// </summary>
@@ -235,7 +235,6 @@ namespace NZH.Common.Extensions
             if (type.BaseType == BaseType) return true;
             return IsInherit(type.BaseType, BaseType);
         }
-
 
         /// <summary>
         /// DATATABLE转化成LIST
@@ -276,8 +275,5 @@ namespace NZH.Common.Extensions
                 throw new Exception(Ex.Message);
             }
         }
-
-
-
     }
 }

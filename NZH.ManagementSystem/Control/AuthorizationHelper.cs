@@ -13,53 +13,55 @@ namespace NZH.ManagementSystem.Control
     /// </summary>
     public sealed class AuthorizationHelper
     {
-        #region Configuration
         const string MACHINE_VALIDATION_KEY = "C50B3C89CB21F4F1422FF158A5B42D0E8DB8CB5CDA1742572A487D9401E3400267682B202B746511891C1BAF47F8D25C07F6C39A104696DB51F17C529AD3CABE";
         const string MACHINE_DECRYPTION_KEY = "8A9BE8FD67AF6979E7D20198CFEA50DD3D3799C77AF2B72F";
 
         private int newPasswordLength = 8;
+
         /// <summary>
         /// 指示成员资格提供程序是否配置为允许用户重置其密码。
         /// </summary>
         public readonly bool EnablePasswordReset = true;
+
         /// <summary>
         /// 指示成员资格提供程序是否配置为允许用户检索其密码。
         /// </summary>
         public readonly bool EnablePasswordRetrieval = true;
+
         /// <summary>
         /// 获取一个值，该值指示成员资格提供程序是否配置为要求用户在进行密码重置和检索时回答密码提示问题。
         /// </summary>
         public readonly bool RequiresQuestionAndAnswer = true;
+
         /// <summary>
         /// 获取一个值，指示成员资格提供程序是否配置为要求每个用户名具有唯一的电子邮件地址。
         /// </summary>
         public readonly bool RequiresUniqueEmail = true;
+
         /// <summary>
         /// 获取锁定成员资格用户前允许的无效密码或无效密码提示问题答案尝试次数。
         /// </summary>
         public readonly int MaxInvalidPasswordAttempts = 5;
+
         /// <summary>
         /// 获取在锁定成员资格用户之前允许的最大无效密码或无效密码提示问题答案尝试次数的分钟数。
         /// </summary>
         public readonly int PasswordAttemptWindow = 10;
-        /// <summary>
-        /// 获取一个值，该值指示在成员资格数据存储区中存储密码的格式。
-        /// </summary>
-        //public readonly MembershipPasswordFormat PasswordFormat = MembershipPasswordFormat.Encrypted;
+
         /// <summary>
         /// 获取有效密码中必须包含的最少特殊字符数。
         /// </summary>
         public readonly int MinRequiredNonAlphanumericCharacters = 1;
+
         /// <summary>
         /// 获取密码所要求的最小长度。
         /// </summary>
         public readonly int MinRequiredPasswordLength = 7;
+
         /// <summary>
         /// 获取用于计算密码的正则表达式。
         /// </summary>
         public readonly string PasswordStrengthRegularExpression = "";
-
-        #endregion
 
         /// <summary>
         /// 用于生成密码的盐度混淆。
@@ -72,11 +74,6 @@ namespace NZH.ManagementSystem.Control
             return Convert.ToBase64String(data);
         }
 
-        //
-        // HexToByte
-        //   Converts a hexadecimal string to a byte array. Used to convert encryption
-        // key values from the configuration.
-        //
         static byte[] HexToByte(string hexString)
         {
             byte[] returnBytes = new byte[hexString.Length / 2];
@@ -85,98 +82,18 @@ namespace NZH.ManagementSystem.Control
             return returnBytes;
         }
 
-        //
-        // EncodePassword
-        //   Encrypts, Hashes, or leaves the password clear based on the PasswordFormat.
-        //
         public static string EncodePassword(string password)
         {
-            //string encodedPassword = password;
             string encodedPassword = password.DESEncryptString(MACHINE_VALIDATION_KEY, MACHINE_DECRYPTION_KEY);
-            //string encodedPassword2 = password.SHA1EncryptString();
-
-
-            //switch (passwordFormat)
-            //{
-            //    case MembershipPasswordFormat.Clear:
-            //        break;
-            //    case MembershipPasswordFormat.Encrypted:
-            //        //encodedPassword = Convert.ToBase64String(EncryptPassword(Encoding.Unicode.GetBytes(password)));
-            //        encodedPassword = password.DESEncryptString(MACHINE_VALIDATION_KEY, MACHINE_DECRYPTION_KEY);
-            //        break;
-            //    case MembershipPasswordFormat.Hashed:
-            //        encodedPassword = password.SHA1EncryptString();
-            //        /*
-            //        HMACSHA1 hash = new HMACSHA1();
-            //        hash.Key = HexToByte(machineKey.ValidationKey);
-            //        encodedPassword =
-            //          Convert.ToBase64String(hash.ComputeHash(Encoding.Unicode.GetBytes(password)));
-            //         */
-            //        break;
-            //    default:
-            //        throw new Exception("Unsupported password format.");
-            //}
-
             return encodedPassword;
         }
 
-        //
-        // UnEncodePassword
-        //   Decrypts or leaves the password clear based on the PasswordFormat.
-        //
         public static string UnEncodePassword(string encodedPassword)
         {
             string password = encodedPassword;
             password = encodedPassword.DESDecryptString(MACHINE_VALIDATION_KEY, MACHINE_DECRYPTION_KEY);
-            //switch (passwordFormat)
-            //{
-            //    case MembershipPasswordFormat.Clear:
-            //        break;
-            //    case MembershipPasswordFormat.Encrypted:
-            //        //password = Encoding.Unicode.GetString(DecryptPassword(Convert.FromBase64String(password)));
-            //        password = encodedPassword.DESDecryptString(MACHINE_VALIDATION_KEY, MACHINE_DECRYPTION_KEY);
-            //        break;
-            //    case MembershipPasswordFormat.Hashed:
-            //        throw new Exception("Cannot unencode a hashed password.");
-            //    default:
-            //        throw new Exception("Unsupported password format.");
-            //}
-
             return password;
-        }
-
-        /// <summary>
-        /// CheckPassword
-        /// Compares password values based on the MembershipPasswordFormat.
-        /// </summary>
-        /// <param name="password"></param>
-        /// <param name="dbpassword"></param>
-        /// <returns></returns>
-        //public static bool CheckPassword(string password, string dbpassword, MembershipPasswordFormat passwordFormat)
-        //{
-        //    string pass1 = password;
-        //    string pass2 = dbpassword;
-
-        //    switch (passwordFormat)
-        //    {
-        //        case MembershipPasswordFormat.Encrypted:
-        //            pass2 = UnEncodePassword(dbpassword, passwordFormat);
-        //            break;
-        //        case MembershipPasswordFormat.Hashed:
-        //            pass1 = EncodePassword(password, passwordFormat);
-        //            break;
-        //        default:
-        //            break;
-        //    }
-
-        //    if (pass1 == pass2)
-        //    {
-        //        return true;
-        //    }
-
-        //    return false;
-        //}
-
+        } 
     }
 
     /// <summary>
@@ -201,13 +118,11 @@ namespace NZH.ManagementSystem.Control
             // 返回一个 int >= lBound and < uBound
             uint urndnum;
             byte[] rndnum = new Byte[4];
-
             if (lBound == uBound - 1)
             {
                 // 只有iBound返回的情况  
                 return lBound;
             }
-
             uint xcludeRndBase = (uint.MaxValue - (uint.MaxValue % (uint)(uBound - lBound)));
             do
             {
@@ -453,13 +368,10 @@ namespace NZH.ManagementSystem.Control
             MemoryStream ms;
             CryptoStream cs;
             byte[] byt;
-
             ct = pCSP.CreateEncryptor(pCSP.Key, pCSP.IV);
-
             //然后需要将原始字符串转换成字节数组。大多数 .NET 加密算法处理的是字
             //节数组而不是字符串。
             byt = Encoding.UTF8.GetBytes(pString);
-
             //现在可以执行实际的加密了。此进程需要创建一个数据流，用于将加密的字
             //节写入到其中。要使用名为 ms 的 MemoryStream 对象、ICryptoTransform 
             //对象（提供给 CryptoStream 类的构造函数）以及说明您希望在何种模式（
@@ -475,7 +387,6 @@ namespace NZH.ManagementSystem.Control
             //过程将关闭 CryptoStream 对象。
             cs.FlushFinalBlock();
             cs.Close();
-
             //最后，该过程将内存数据流从字节数组转换回字符串，这样才可以在窗体上
             //的文本框内显示该字符串。可以使用 MemoryStream ToArray() 方法从数据
             //流中获取字节数组，然后调用 Convert.ToBase64String() 方法，该方法接
@@ -497,15 +408,12 @@ namespace NZH.ManagementSystem.Control
             MemoryStream ms;
             CryptoStream cs;
             byte[] byt;
-
             try
             {
                 ct = pCSP.CreateDecryptor(pCSP.Key, pCSP.IV);
-
                 //然后需要将原始字符串转换成字节数组。大多数 .NET 加密算法处理的是字
                 //节数组而不是字符串。此处与加密方法不同。
                 byt = Convert.FromBase64String(pString);
-
                 //现在可以执行实际的加密了。此进程需要创建一个数据流，用于将加密的字
                 //节写入到其中。要使用名为 ms 的 MemoryStream 对象、ICryptoTransform 
                 //对象（提供给 CryptoStream 类的构造函数）以及说明您希望在何种模式（
@@ -521,7 +429,6 @@ namespace NZH.ManagementSystem.Control
                 //过程将关闭 CryptoStream 对象。
                 cs.FlushFinalBlock();
                 cs.Close();
-
                 //最后，该过程将内存数据流从字节数组转换回字符串，这样才可以在窗体上
                 //的文本框内显示该字符串。可以使用 MemoryStream ToArray() 方法从数据
                 //流中获取字节数组，然后调用 Encoding.UTF8.GetString() 方法，该方法接
@@ -548,7 +455,6 @@ namespace NZH.ManagementSystem.Control
             {
                 byte[] byt = global::System.Text.Encoding.Unicode.GetBytes(pString);
                 byte[] hash = sha1.ComputeHash(byt);
-
                 //对数组进行维数下标的变更
                 Array.Resize(ref hash, pLength);
                 return hash;
@@ -677,11 +583,9 @@ namespace NZH.ManagementSystem.Control
             MD5CryptoServiceProvider md5 = new MD5CryptoServiceProvider();
             byte[] byteValue;
             byte[] byteHash;
-
             byteValue = global::System.Text.Encoding.UTF8.GetBytes(pString);
             byteHash = md5.ComputeHash(byteValue);
             md5.Clear();
-
             return Convert.ToBase64String(byteHash);
         }
     }
@@ -701,11 +605,9 @@ namespace NZH.ManagementSystem.Control
             SHA1CryptoServiceProvider sha1Csp = new SHA1CryptoServiceProvider();
             byte[] byteValue;
             byte[] byteHash;
-
             byteValue = global::System.Text.Encoding.UTF8.GetBytes(pString);
             byteHash = sha1Csp.ComputeHash(byteValue);
             sha1Csp.Clear();
-
             return Convert.ToBase64String(byteHash);
         }
     }

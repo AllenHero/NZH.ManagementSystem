@@ -13,7 +13,6 @@ namespace NZH.Service
 {
     public partial class SQLDatabaseContext : BaseDatabaseContext
     {
-        #region General Define
         /// <summary>
         /// 获取数据源连接字符串。
         /// </summary>
@@ -22,6 +21,7 @@ namespace NZH.Service
         {
             return string.Empty;
         }
+
         /// <summary>
         /// 获取数据源连接字符串。
         /// </summary>
@@ -91,7 +91,5 @@ namespace NZH.Service
             cmd.Connection = (SqlConnection)conn;
             return cmd;
         }
-
-        #endregion
     }
 }

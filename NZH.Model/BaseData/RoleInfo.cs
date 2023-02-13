@@ -8,38 +8,29 @@ namespace NZH.Model.BaseData
 {
     public class RoleInfo
     {
-        #region 角色信息
         /// <summary>
         /// 角色ID
         /// </summary>		
-
         public int RoleID { get; set; }
 
         /// <summary>
         /// 角色名
         /// </summary>		
-
         public string RoleName { get; set; }
 
         /// <summary>
         /// 角色备注
         /// </summary>		
-
         public string RoleNode { get; set; }
 
         /// <summary>
         /// 权限ID
         /// </summary>		
-
         public string AuthorityID { get; set; }
 
         /// <summary>
         /// 是否启用
         /// </summary>		
-
         public int RoleUsable { get; set; }
-
-
-        #endregion
     }
 }

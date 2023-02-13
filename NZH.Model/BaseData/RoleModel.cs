@@ -17,10 +17,12 @@ namespace NZH.Model.BaseData
         /// 角色名
         /// </summary>		
         public string RoleName { get; set; }
+
         /// <summary>
         /// 是否选中
         /// </summary>		
         public bool isCheck { get; set; }
+
         /// <summary>
         /// 权限ID
         /// </summary>		

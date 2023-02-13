@@ -9,6 +9,7 @@ namespace NZH.ManagementSystem.Control
 {
     public class ConvertControl
     {
+
     }
 
     public class GradeConverter : IValueConverter
@@ -53,7 +54,6 @@ namespace NZH.ManagementSystem.Control
             }
             else
                 return "";
-
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
@@ -61,7 +61,6 @@ namespace NZH.ManagementSystem.Control
             return value;
         }
     }
-
 
     public class DateTimeConverter : IValueConverter
     {
@@ -91,7 +90,6 @@ namespace NZH.ManagementSystem.Control
             {
                 return "生产中";
             }
-
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
@@ -112,7 +110,6 @@ namespace NZH.ManagementSystem.Control
             {
                 return "否";
             }
-
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)

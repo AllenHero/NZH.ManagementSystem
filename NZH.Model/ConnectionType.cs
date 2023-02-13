@@ -9,6 +9,7 @@ namespace NZH.Model
     public enum ConnectionType
     {
         LeanSqlServer = 1,
+
         LeanAccess = 2
     }
 }

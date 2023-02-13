@@ -31,7 +31,6 @@ namespace NZH.ManagementSystem.Base
         [System.Runtime.InteropServices.DllImport("user32.dll", CharSet = System.Runtime.InteropServices.CharSet.Auto, ExactSpelling = true)]
         public static extern IntPtr GetActiveWindow();  //获得父窗体句柄  
 
-
         static BaseWindow()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(BaseWindow), new FrameworkPropertyMetadata(typeof(BaseWindow)));
@@ -54,8 +53,8 @@ namespace NZH.ManagementSystem.Base
 
         #endregion
 
-
         #region Dependency Properties
+
         public static readonly DependencyProperty ShowDefaultHeaderProperty = DependencyProperty.Register("ShowDefaultHeader", typeof(bool), typeof(BaseWindow), new FrameworkPropertyMetadata(true));
         public static readonly DependencyProperty ShowResizeGripProperty = DependencyProperty.Register("ShowResizeGrip", typeof(bool), typeof(BaseWindow), new FrameworkPropertyMetadata(false));
         public static readonly DependencyProperty CanResizeProperty = DependencyProperty.Register("CanResize", typeof(bool), typeof(BaseWindow), new FrameworkPropertyMetadata(true));
@@ -118,7 +117,6 @@ namespace NZH.ManagementSystem.Base
 
         #endregion
 
-
         #region Private Fields
 
         private FrameworkElement headerContainer;
@@ -143,16 +141,19 @@ namespace NZH.ManagementSystem.Base
                 this.WindowStartupLocation = WindowStartupLocation.CenterOwner;
             return base.ShowDialog();
         }
+
         public new void Show()
         {
             SetStartLocation();
             base.Show();
         }
+
         public new bool? ShowDialog()
         {
             SetStartLocation();
             return base.ShowDialog();
         }
+
         /// <summary>
         /// 设置程序的起始位置
         /// 使子窗体居于父窗体中间
@@ -257,7 +258,9 @@ namespace NZH.ManagementSystem.Base
         {
             return Left < SystemParameters.PrimaryScreenWidth && Top < SystemParameters.PrimaryScreenHeight;
         }
+
         #region 最大化、最小化、关闭按钮
+
         private void WindowButton_MouseEnter(object sender, MouseEventArgs e)
         {
             try
@@ -321,6 +324,7 @@ namespace NZH.ManagementSystem.Base
             {
             }
         }
+
         #endregion
 
         #region Resize

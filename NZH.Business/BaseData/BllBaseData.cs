@@ -41,7 +41,6 @@ namespace NZH.Business.BaseData
             return result;
         }
 
-        #region user
         public int AddUser(UserInfo user)
         {
             int result = 0;
@@ -89,7 +88,7 @@ namespace NZH.Business.BaseData
             }
             return result;
         }
-        #endregion
+
         public UserInfo GetUserInfo(UserInfo role)
         {
             UserInfo retInfo = new UserInfo();
@@ -144,7 +143,6 @@ namespace NZH.Business.BaseData
             return retInfo;
         }
 
-        #region role
         public int AddRole(RoleInfo role)
         {
             int result = 0;
@@ -189,7 +187,6 @@ namespace NZH.Business.BaseData
             }
             return result;
         }
-        #endregion
 
         public UserInfo GetAuthorityInfo(AuthorityInfo role)
         {
@@ -207,7 +204,6 @@ namespace NZH.Business.BaseData
             return retInfo;
         }
 
-        #region authority
         public int AddAuthority(AuthorityInfo authority)
         {
             int result = 0;
@@ -252,9 +248,7 @@ namespace NZH.Business.BaseData
             }
             return result;
         }
-        #endregion
 
-        #region MESUserManage
         public List<MESUser> GetMESUser(MESUser user)
         {
             List<MESUser> reslut = new List<MESUser>();
@@ -350,10 +344,6 @@ namespace NZH.Business.BaseData
             }
             return result;
         }
-        #endregion
-
-
-
 
     }
 }

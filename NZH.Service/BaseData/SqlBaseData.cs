@@ -17,9 +17,6 @@ namespace NZH.Service.BaseData
     {
         public SQLBaseData(BaseDatabaseContext context) : base(context) { }
 
-
-        #region 用户
-
         public UserInfo Login(string UserName, string UserPassword)
         {
             UserInfo result = new UserInfo();
@@ -123,7 +120,6 @@ namespace NZH.Service.BaseData
             return ri;
         }
 
-
         /// <summary>
         /// 修改密码
         /// </summary>
@@ -163,7 +159,6 @@ namespace NZH.Service.BaseData
             }
 
         }
-
 
         /// <summary>
         /// 添加用户
@@ -390,8 +385,6 @@ namespace NZH.Service.BaseData
 
         }
 
-
-
         /// <summary>
         /// 通过角色ID获取角色名
         /// </summary>
@@ -424,9 +417,7 @@ namespace NZH.Service.BaseData
             }
             return rolenamelist;
         }
-        #endregion
 
-        #region 角色
         /// <summary>
         /// 获取角色信息
         /// </summary>
@@ -544,7 +535,6 @@ namespace NZH.Service.BaseData
             }
         }
 
-
         /// <summary>
         /// 添加角色
         /// </summary>
@@ -661,7 +651,6 @@ namespace NZH.Service.BaseData
             }
         }
 
-
         /// <summary>
         /// 删除角色
         /// </summary>
@@ -692,9 +681,7 @@ namespace NZH.Service.BaseData
                 throw new Exception(ex.Message);
             }
         }
-        #endregion
 
-        #region 权限
         /// <summary>
         /// 获取权限信息
         /// </summary>
@@ -770,7 +757,6 @@ namespace NZH.Service.BaseData
 
         }
 
-
         /// <summary>
         /// 通过某一角色获取权限信息
         /// </summary>
@@ -818,7 +804,6 @@ namespace NZH.Service.BaseData
             }
 
         }
-
 
         /// <summary>
         /// 添加权限
@@ -948,7 +933,6 @@ namespace NZH.Service.BaseData
             }
         }
 
-
         /// <summary>
         /// 删除权限
         /// </summary>
@@ -979,131 +963,7 @@ namespace NZH.Service.BaseData
                 throw new Exception(ex.Message);
             }
         }
-        #endregion
 
-
-        #region usergrade
-        public List<UserInfo> GetUserGrade(UserInfo UserInfo)
-        {
-            List<UserInfo> list = new List<UserInfo>();
-            #region
-            string sql = @" select t2.*,t3.GradeName,t4.GradeName as CurGradeName  from 
-(select t1.*,(select max(MinScore) Score from T_GradeFactory where MinScore<= t1.Score) as MinScore from (select TU.*,(select cast(ISNULL(sum(Score*TMS.ScoreRate),0) as decimal(10,2)) from (select * from T_User_Score where IsCurrent=1) TUS 
-inner join T_Skill TMS on TUS.SkillCode=TMS.SkillCode where UserName=TU.UserName) Score from T_User TU) t1) t2
-left join T_GradeFactory t3 on t2.MinScore=t3.MinScore 
-left join T_GradeFactory t4 on t2.GradeNo=t4.GradeNo ";
-            StringBuilder strWhere = new StringBuilder("");
-            if (!string.IsNullOrEmpty(UserInfo.UserName))
-            {
-                strWhere.Append(string.IsNullOrEmpty(strWhere.ToString()) ? "Where " : " And ");
-                strWhere.Append(" t2.UserName like'%" + UserInfo.UserName + "%'  ");
-            }
-            if (!string.IsNullOrEmpty(UserInfo.TrueName))
-            {
-                strWhere.Append(string.IsNullOrEmpty(strWhere.ToString()) ? "Where " : " And ");
-                strWhere.Append(" t2.TrueName like'%" + UserInfo.TrueName + "%'  ");
-            }
-            if (!string.IsNullOrEmpty(UserInfo.GradeName))
-            {
-                strWhere.Append(string.IsNullOrEmpty(strWhere.ToString()) ? "Where " : " And ");
-                strWhere.Append(" t3.GradeName ='" + UserInfo.GradeName + "'  ");
-            }
-            if (UserInfo.UserUsable > 0)
-            {
-                strWhere.Append(string.IsNullOrEmpty(strWhere.ToString()) ? "Where " : " And ");
-                strWhere.Append(" t2.UserUsable='" + UserInfo.UserUsable + "'  ");
-            }
-            sql += strWhere + "order by t2.Score desc";
-
-            #endregion
-            try
-            {
-                DataSet ds = new DataSet();
-                using (DbConnection dbConnection = base.Context.CreateConnection())
-                {
-                    SqlCommand sqlCommand = (SqlCommand)base.Context.CreateCommand(sql, dbConnection);
-                    sqlCommand.CommandText = sql;
-                    SqlDataAdapter da = new SqlDataAdapter(sqlCommand);
-                    da.Fill(ds);
-                    sqlCommand.Dispose();
-                    dbConnection.Close();
-                }
-                if (ds != null && ds.Tables[0].Rows.Count > 0)
-                    list = Util.DataTableConvertList<UserInfo>(ds.Tables[0]);
-                return list;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-
-        }
-
-        public List<UserInfo> GetUserGradeReport(UserInfo UserInfo, DateTime dt)
-        {
-            List<UserInfo> list = new List<UserInfo>();
-            string strDT = dt.ToString("yyyy-MM-dd");
-            #region
-            string sql = string.Format(@"select t2.*,t3.GradeName from 
-(select t1.*,(select max(MinScore) Score from T_GradeFactory where MinScore<= t1.Score) as MinScore from (select TU.*,(select cast(ISNULL(sum(Score*TMS.ScoreRate),0) as decimal(10,2)) from (select * from T_User_Score where IsCurrent=1) TUS 
-inner join T_Skill TMS on TUS.SkillCode=TMS.SkillCode where UserName=TU.UserName) Score,
-(select cast(ISNULL(sum(Score*TMS.ScoreRate),0) as decimal(10,2)) from (select TUS2.* from T_User_Score TUS2,
-(select TUS1.UserName,TUS1.SkillCode,max(CreateDate) CreateDate  from T_User_Score TUS1 where  TUS1.CreateDate<'{0}' group by TUS1.SkillCode,TUS1.UserName) tt
-where TUS2.UserName=tt.UserName and TUS2.SkillCode=tt.SkillCode and TUS2.CreateDate=tt.CreateDate) TUS 
-inner join T_Skill TMS on TUS.SkillCode=TMS.SkillCode where UserName=TU.UserName) ScoreOld
-from T_User TU) t1) t2
-left join T_GradeFactory t3 on t2.MinScore=t3.MinScore ", strDT);
-            StringBuilder strWhere = new StringBuilder("");
-            if (!string.IsNullOrEmpty(UserInfo.UserName))
-            {
-                strWhere.Append(string.IsNullOrEmpty(strWhere.ToString()) ? "Where " : " And ");
-                strWhere.Append(" t2.UserName like'%" + UserInfo.UserName + "%'  ");
-            }
-            if (!string.IsNullOrEmpty(UserInfo.TrueName))
-            {
-                strWhere.Append(string.IsNullOrEmpty(strWhere.ToString()) ? "Where " : " And ");
-                strWhere.Append(" t2.TrueName like'%" + UserInfo.TrueName + "%'  ");
-            }
-            if (!string.IsNullOrEmpty(UserInfo.GradeName))
-            {
-                strWhere.Append(string.IsNullOrEmpty(strWhere.ToString()) ? "Where " : " And ");
-                strWhere.Append(" t3.GradeName ='" + UserInfo.GradeName + "'  ");
-            }
-            if (UserInfo.UserUsable > 0)
-            {
-                strWhere.Append(string.IsNullOrEmpty(strWhere.ToString()) ? "Where " : " And ");
-                strWhere.Append(" t2.UserUsable='" + UserInfo.UserUsable + "'  ");
-            }
-            sql += strWhere + "order by t2.Score desc";
-
-            #endregion
-            try
-            {
-                DataSet ds = new DataSet();
-                using (DbConnection dbConnection = base.Context.CreateConnection())
-                {
-                    SqlCommand sqlCommand = (SqlCommand)base.Context.CreateCommand(sql, dbConnection);
-                    sqlCommand.CommandText = sql;
-                    SqlDataAdapter da = new SqlDataAdapter(sqlCommand);
-                    da.Fill(ds);
-                    sqlCommand.Dispose();
-                    dbConnection.Close();
-                }
-                if (ds != null && ds.Tables[0].Rows.Count > 0)
-                    list = Util.DataTableConvertList<UserInfo>(ds.Tables[0]);
-                return list;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-
-        }
-
-        #endregion
-
-
-        #region UserInfoManage
         public List<MESUser> GetMESUser(MESUser user)
         {
             List<MESUser> list = new List<MESUser>();
@@ -1275,59 +1135,6 @@ GETDATE(),GETDATE(),GETDATE(),GETDATE(),GETDATE(),
             result = ExecuteNonQuery(sqllist);
             return result;
         }
-        #endregion
-
-
-        #region sql
-        public int ExecuteNonQuery(string sql)
-        {
-            int result = 0;
-            try
-            {
-                using (DbConnection dbConnection = base.Context.CreateConnection())
-                {
-                    if (dbConnection == null) return result;
-                    SqlCommand sqlCommand = (SqlCommand)base.Context.CreateCommand(sql, dbConnection);
-                    sqlCommand.CommandText = sql;
-                    sqlCommand.CommandTimeout = 5;
-                    result = sqlCommand.ExecuteNonQuery();
-                    sqlCommand.Dispose();
-                    dbConnection.Close();
-                    return result;
-                }
-
-            }
-            catch (Exception ex)
-            {
-                return result;
-            }
-        }
-
-        public int ExecuteNonQuery(string sql, SqlParameter[] parameter)
-        {
-            int result = 0;
-            try
-            {
-                using (DbConnection dbConnection = base.Context.CreateConnection())
-                {
-                    if (dbConnection == null) return result;
-                    SqlCommand sqlCommand = (SqlCommand)base.Context.CreateCommand(sql, dbConnection);
-                    sqlCommand.CommandText = sql;
-                    foreach (SqlParameter parm in parameter)
-                        sqlCommand.Parameters.Add(parm);
-                    sqlCommand.CommandTimeout = 5;
-                    result = sqlCommand.ExecuteNonQuery();
-                    sqlCommand.Dispose();
-                    dbConnection.Close();
-                    return result;
-                }
-
-            }
-            catch (Exception ex)
-            {
-                return result;
-            }
-        }
 
         /// <summary>
         /// 执行多条SQL语句，实现数据库事务。最多1000
@@ -1362,6 +1169,5 @@ GETDATE(),GETDATE(),GETDATE(),GETDATE(),GETDATE(),
             }
 
         }
-        #endregion
     }
 }

@@ -12,14 +12,18 @@ namespace NZH.Model.BaseData
         /// ID
         /// </summary>
         public string ID { get; set; }
+
         /// <summary>
         /// 代码（打开页面）
         /// </summary>
         public string CODE { get; set; }
+
+
         /// <summary>
         /// 父ID
         /// </summary>
         public string FATHER_ID { get; set; }
+
         /// <summary>
         /// 名称（界面名称）
         /// </summary>

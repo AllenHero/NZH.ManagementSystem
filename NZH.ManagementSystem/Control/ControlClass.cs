@@ -76,6 +76,5 @@ namespace NZH.ManagementSystem.Control
             }
             return false;
         }
-
     }
 }

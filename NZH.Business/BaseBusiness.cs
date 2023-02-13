@@ -28,11 +28,6 @@ namespace NZH.Business
             return true;
         }
 
-        public bool ExceptionLog(string methodName, string level, Exception ex)
-        {
-            return true;
-        }
-
         public static bool IsObjEquals(object oldObjValue, object newObjValue)
         {
             if (oldObjValue == null || string.IsNullOrEmpty(oldObjValue.ToString()))

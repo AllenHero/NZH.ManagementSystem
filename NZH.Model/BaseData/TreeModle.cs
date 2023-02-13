@@ -18,7 +18,6 @@ namespace NZH.Model.BaseData
         /// </summary>
         public string CODE { get; set; }
 
-
         /// <summary>
         /// 父ID
         /// </summary>

@@ -10,8 +10,6 @@ namespace NZH.Common.Extensions
 {
     public static class ExtendByte
     {
-        #region 计算hash
-
         /// <summary>
         /// 计算hash
         /// </summary>
@@ -41,8 +39,6 @@ namespace NZH.Common.Extensions
         {
             return Hash(value, null);
         }
-
-        #endregion
 
         /// <summary>
         /// 转换为十六进制字符串

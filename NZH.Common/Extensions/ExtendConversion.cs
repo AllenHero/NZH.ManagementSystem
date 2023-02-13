@@ -11,8 +11,6 @@ namespace NZH.Common.Extensions
     /// </summary>
     public static class ExtendConversion
     {
-        #region 转换Int16,Int32,Int64
-
         /// <summary>
         /// 转换int16
         /// 出错返回默认值
@@ -121,10 +119,6 @@ namespace NZH.Common.Extensions
             return revalue;
         }
 
-        #endregion
-
-        #region 转换Double
-
         /// <summary>
         /// 转换Double
         /// 出错返回默认值
@@ -150,10 +144,6 @@ namespace NZH.Common.Extensions
             return revalue;
         }
 
-        #endregion
-
-        #region 转换Decimal
-
         /// <summary>
         /// 转换Decimal
         /// 出错返回默认值
@@ -178,10 +168,6 @@ namespace NZH.Common.Extensions
             }
             return revalue;
         }
-
-        #endregion
-
-        #region 转换Boolean
 
         /// <summary>
         /// 转换Boolean
@@ -218,10 +204,6 @@ namespace NZH.Common.Extensions
             return revalue;
         }
 
-        #endregion
-
-        #region 转换Base64数字编码
-
         /// <summary>
         /// 转换Base64数字编码
         /// </summary>
@@ -238,7 +220,5 @@ namespace NZH.Common.Extensions
                 return string.Empty;
             }
         }
-
-        #endregion
     }
 }

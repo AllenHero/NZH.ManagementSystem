@@ -1,0 +1,171 @@
+﻿<Page x:Class="NZH.ManagementSystem.BasePage.ManageAuthority"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:NZH.ManagementSystem.BasePage"
+      mc:Ignorable="d" 
+      d:DesignHeight="600" d:DesignWidth="800"
+	Title="ManageAuthority" >
+    <Page.Resources>
+        <LinearGradientBrush x:Key="TreeViewItemSelectedBrush" StartPoint="0,0.5" EndPoint="1,0.5">
+            <GradientStop Color="#0035A7FD" Offset="0.0" />
+            <GradientStop Color="#FF35A7FD" Offset="0.25" />
+            <GradientStop Color="#FF35A7FD" Offset="0.75" />
+            <GradientStop Color="#0035A7FD" Offset="1.0" />
+        </LinearGradientBrush>
+        <SolidColorBrush x:Key="TreeViewItemMouseOverBrush">#FFFCF0C1</SolidColorBrush>
+        <Style x:Key="TimiTreeViewStyle" TargetType="{x:Type TreeView}">
+            <Setter Property="OverridesDefaultStyle" Value="True" />
+            <Setter Property="SnapsToDevicePixels" Value="True" />
+            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
+            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TreeView}">
+                        <Border Name="Border" CornerRadius="1" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{DynamicResource MouseLeaveBorderBrush}">
+                            <ScrollViewer Focusable="False" CanContentScroll="False" Padding="4">
+                                <ItemsPresenter />
+                            </ScrollViewer>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="ExpandCollapseToggleStyle" TargetType="ToggleButton">
+            <Setter Property="Focusable" Value="False" />
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ToggleButton">
+                        <Grid  Background="Transparent">
+                            <Image Name="Image" Width="15" Height="15" HorizontalAlignment="Center" VerticalAlignment="Center" Source="/NZH.ManagementSystem;component/Image/TreeView_+.png"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="true">
+                                <Setter TargetName="Image" Property="Source" Value="/NZH.ManagementSystem;component/Image/TreeView_-.png"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="TreeViewItemFocusVisual">
+            <Setter Property="Control.Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Border>
+                            <Rectangle Margin="0,0,0,0" StrokeThickness="5" Stroke="Black" StrokeDashArray="1 2" Opacity="0" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="{x:Type TreeViewItem}" TargetType="{x:Type TreeViewItem}">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="HorizontalContentAlignment" Value="{Binding Path=HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
+            <Setter Property="VerticalContentAlignment" Value="{Binding Path=VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
+            <Setter Property="Padding" Value="1,0,0,0" />
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
+            <Setter Property="FocusVisualStyle" Value="{StaticResource TreeViewItemFocusVisual}" />
+            <Setter Property="IsExpanded" Value="{Binding IsExpanded,Mode=TwoWay}"></Setter>
+            <Setter Property="IsSelected" Value="{Binding Path=IsSelectedItem,Mode=TwoWay}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TreeViewItem}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition MinWidth="20" Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <Border Name="HeaderBorder" Grid.Row="0" Margin="0" Grid.Column="1"  CornerRadius="0" BorderThickness="0"></Border>
+                            <ToggleButton x:Name="Expander" Style="{StaticResource ExpandCollapseToggleStyle}" ClickMode="Press" IsChecked="{Binding IsExpanded, RelativeSource={RelativeSource TemplatedParent}}"/>
+                            <Border x:Name="Bd" Margin="6,2,10,2" Grid.Column="1" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}">
+                                <ContentPresenter x:Name="PART_Header" ContentTemplate="{TemplateBinding HeaderTemplate}" Content="{TemplateBinding Header}" ContentStringFormat="{TemplateBinding HeaderStringFormat}" ContentSource="Header" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                            </Border>
+                            <ItemsPresenter x:Name="ItemsHost" Grid.ColumnSpan="2" Grid.Column="1" Grid.Row="1" Visibility="Collapsed" />
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="HasItems" Value="false">
+                                <Setter TargetName="Expander" Property="Visibility" Value="Hidden" />
+                            </Trigger>
+                            <Trigger Property="IsExpanded" Value="true">
+                                <Setter TargetName="ItemsHost" Property="Visibility" Value="Visible"/>
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="true">
+                                <Setter Property="Foreground" Value="#FF0E77C8"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Page.Resources>
+    <Border Margin="6" BorderThickness="1" BorderBrush="#FF9FD2F5" >
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="240"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Row="0" Grid.ColumnSpan="2" Background="#FFDEF3FD">
+                <StackPanel Orientation="Horizontal"  HorizontalAlignment="Left"  Margin="6,0,0,0"  VerticalAlignment="Top" Width="299">
+                    <Button Style="{StaticResource ButtonStlye}" Name="btnNode" Height="22" Margin="0,8,0,8" MinWidth="50" Content="新增节点" Width="64" />
+                    <Button Style="{StaticResource ButtonStlye}" Name="btnChlidNode" Height="22" Margin="6,8,0,8" MinWidth="50" Content="新增子节点" Width="80" />
+                    <Button Style="{StaticResource ButtonStlye}" Name="btnEdit" Height="22" Margin="6,8,0,8" MinWidth="50" Content="编辑节点" Width="65" />
+                    <Button Style="{StaticResource ButtonStlye}" Name="btnDel" Height="22" Margin="6,8,0,8" MinWidth="50" Content="删除节点" Width="67" />
+                </StackPanel>
+            </Grid>
+            <TreeView  Name="treeview" Grid.Row="1" BorderThickness="0,0,1,0" Background="#daf3f8"  IsTabStop="False" Style="{StaticResource TimiTreeViewStyle}" FontSize="13">
+                <TreeView.ItemTemplate>
+                    <HierarchicalDataTemplate  ItemsSource="{Binding Path=Children}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock VerticalAlignment="Center" Name="nodeName" Text="{Binding DisplayName}"></TextBlock>
+                            <Image VerticalAlignment="Center" Source="{Binding EditIcon}" Margin="2,0,0,0"></Image>
+                            <StackPanel.ToolTip>
+                                <TextBlock VerticalAlignment="Center" Text="{Binding Name}" TextWrapping="Wrap" MaxWidth="200" ></TextBlock>
+                            </StackPanel.ToolTip>
+                        </StackPanel>
+                    </HierarchicalDataTemplate>
+                </TreeView.ItemTemplate>
+            </TreeView>
+            <Grid Grid.Row="1" Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="110" />
+                    <RowDefinition Height="110" />
+                    <RowDefinition Height="110" />
+                    <RowDefinition Height="2*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="10"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock  VerticalAlignment="Center" HorizontalAlignment="Right" Text="名称" Margin="6,10,0,0"/>
+                <TextBox  Name="textName" IsEnabled="False" Grid.Column="1" VerticalAlignment="Center" Text="" Margin="6,10,0,6"/>
+
+                <TextBlock Grid.Row="1" HorizontalAlignment="Right"  VerticalAlignment="Center" Text="参数" Margin="6,0,0,0"/>
+                <TextBox  Grid.Row="1" IsEnabled="False" Height="100" Name="textCode" Grid.Column="1" VerticalAlignment="Center" Text="" Margin="6,0,0,0"/>
+
+                <TextBlock Grid.Row="2" HorizontalAlignment="Right"  VerticalAlignment="Center" Text="标识码" Margin="6,0,0,0"/>
+                <TextBox  Grid.Row="2" IsEnabled="False" Height="100" Name="textMark" Grid.Column="1" VerticalAlignment="Center" Text="" Margin="6,0,0,0" />
+
+                <TextBlock Grid.Row="3" HorizontalAlignment="Right"  VerticalAlignment="Center" Text="排序码" Margin="6,0,0,0"/>
+                <TextBox  Grid.Row="3" IsEnabled="False" Height="100" Name="textSortCode" Grid.Column="1" VerticalAlignment="Center" Text="" Margin="6,0,0,0" />
+
+            </Grid>
+        </Grid>
+    </Border>
+</Page>

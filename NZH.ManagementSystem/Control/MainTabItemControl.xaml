@@ -1,0 +1,27 @@
+﻿<UserControl x:Class="NZH.ManagementSystem.Control.MainTabItemControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:NZH.ManagementSystem.Control"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="580">
+    <Grid Background="#FF0E77C8">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25" />
+            <RowDefinition Height="277*" />
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid Name="gridHeader" HorizontalAlignment="Right" Width="222">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="20" />
+                    <ColumnDefinition Width="151*" />
+                </Grid.ColumnDefinitions>
+                <Image HorizontalAlignment="Left" Width="14" Height="14" Source="/NZH.ManagementSystem;component/Image/arrow.png" Margin="0,7,0,4" />
+                <TextBlock Grid.Column="1" Height="23" HorizontalAlignment="Stretch" Margin="0,5,0,-3" Name="txtHeader" Text="" Foreground="White" VerticalAlignment="Center" />
+            </Grid>
+        </Grid>
+        <Frame Name="frame"   Background="White" Margin="5,0,5,5" Grid.Row="1" FocusVisualStyle="{x:Null}"/>
+
+    </Grid>
+</UserControl>

@@ -36,6 +36,8 @@ namespace NZH.ManagementSystem
         public static string TemperatureCom;
         public static string TotalPass;
 
+        //测试
+
         public MainWindow()
         {
             InitializeComponent();

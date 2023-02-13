@@ -36,6 +36,8 @@ namespace NZH.ManagementSystem
         public static string TemperatureCom;
         public static string TotalPass;
 
+        //测试
+
         public MainWindow()
         {
             InitializeComponent();
@@ -348,7 +350,7 @@ namespace NZH.ManagementSystem
             {
                 grid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(2) });
                 Border border = new Border() { Width = 150, HorizontalAlignment = System.Windows.HorizontalAlignment.Center, Background = new SolidColorBrush(Color.FromArgb(255, 255, 255, 255)) };
-                border.Child = new Image { Source = new BitmapImage(new Uri("/EmployeeSkillManagement;component/Image/Line.jpg", UriKind.Relative)) };
+                border.Child = new Image { Source = new BitmapImage(new Uri("/NZH.ManagementSystem;component/Image/Line.jpg", UriKind.Relative)) };
                 grid.Children.Add(border);
                 border.SetValue(Grid.RowProperty, grid.RowDefinitions.Count - 1);
             }
@@ -361,11 +363,11 @@ namespace NZH.ManagementSystem
             item.HeaderForeground = new SolidColorBrush(Color.FromArgb(255, 255, 255, 255));
             if (IsExistResource("Image/Icon/" + NodeItem.DisplayName + ".ico"))
             {
-                item.ImageSource = new BitmapImage(new Uri("/EmployeeSkillManagement;component/Image/" + NodeItem.DisplayName + ".ico", UriKind.Relative));
+                item.ImageSource = new BitmapImage(new Uri("/NZH.ManagementSystem;component/Image/" + NodeItem.DisplayName + ".ico", UriKind.Relative));
             }
             else
             {
-                item.ImageSource = new BitmapImage(new Uri("/EmployeeSkillManagement;component/Image/DefaultIcon.ico", UriKind.Relative));
+                item.ImageSource = new BitmapImage(new Uri("/NZH.ManagementSystem;component/Image/DefaultIcon.ico", UriKind.Relative));
             }
             grid.Children.Add(item);
             item.SetValue(Grid.RowProperty, grid.RowDefinitions.Count - 1);
@@ -512,7 +514,7 @@ namespace NZH.ManagementSystem
                 if (expItem != null)
                 {
                     expItem.HeaderForeground = new SolidColorBrush(Color.FromArgb(255, 1, 62, 127));
-                    expItem.BackgroundImage = new BitmapImage(new Uri("/EmployeeSkillManagement;component/Image/ExpanderMouse.jpg", UriKind.Relative));
+                    expItem.BackgroundImage = new BitmapImage(new Uri("/NZH.ManagementSystem;component/Image/ExpanderMouse.jpg", UriKind.Relative));
                 }
             }
             catch
@@ -532,7 +534,7 @@ namespace NZH.ManagementSystem
                 Image button = sender as Image;
                 if (button != null)
                 {
-                    button.Source = new BitmapImage(new Uri(string.Format("/EmployeeSkillManagement;component/Image/{0}_2.png", button.Tag), UriKind.Relative));
+                    button.Source = new BitmapImage(new Uri(string.Format("/NZH.ManagementSystem;component/Image/{0}_2.png", button.Tag), UriKind.Relative));
                 }
             }
             catch
@@ -546,7 +548,7 @@ namespace NZH.ManagementSystem
                 Image button = sender as Image;
                 if (button != null)
                 {
-                    button.Source = new BitmapImage(new Uri(string.Format("/EmployeeSkillManagement;component/Image/{0}_1.png", button.Tag), UriKind.Relative));
+                    button.Source = new BitmapImage(new Uri(string.Format("/NZH.ManagementSystem;component/Image/{0}_1.png", button.Tag), UriKind.Relative));
                 }
             }
             catch
@@ -602,12 +604,12 @@ namespace NZH.ManagementSystem
             if (this.WindowState == System.Windows.WindowState.Maximized)
             {
                 imageMax.Tag = "Recovery";
-                imageMax.Source = new BitmapImage(new Uri(string.Format("/EmployeeSkillManagement;component/Image/{0}_1.png", imageMax.Tag), UriKind.Relative));
+                imageMax.Source = new BitmapImage(new Uri(string.Format("/NZH.ManagementSystem;component/Image/{0}_1.png", imageMax.Tag), UriKind.Relative));
             }
             else if (this.WindowState == System.Windows.WindowState.Normal)
             {
                 imageMax.Tag = "Maximized";
-                imageMax.Source = new BitmapImage(new Uri(string.Format("/EmployeeSkillManagement;component/Image/{0}_1.png", imageMax.Tag), UriKind.Relative));
+                imageMax.Source = new BitmapImage(new Uri(string.Format("/NZH.ManagementSystem;component/Image/{0}_1.png", imageMax.Tag), UriKind.Relative));
             }
         }
 

@@ -119,6 +119,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Control\ScanPart.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="ErrorPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -160,6 +164,7 @@
       <DependentUpon>MESManageUser.xaml</DependentUpon>
     </Compile>
     <Compile Include="Base\BaseWindow.cs" />
+    <Compile Include="Base\BoolToVisibilityConverter.cs" />
     <Compile Include="ChangePassword.xaml.cs">
       <DependentUpon>ChangePassword.xaml</DependentUpon>
     </Compile>
@@ -187,6 +192,10 @@
       <DependentUpon>MessageWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Control\ReMessageBox.cs" />
+    <Compile Include="Control\ScanPart.xaml.cs">
+      <DependentUpon>ScanPart.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Control\TextBoxQuery.cs" />
     <Compile Include="Control\Ulitity\FormUltility.cs" />
     <Compile Include="Control\Ulitity\RegexUtility.cs" />
     <Compile Include="Control\Ulitity\StringsUlitity.cs" />
@@ -200,6 +209,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

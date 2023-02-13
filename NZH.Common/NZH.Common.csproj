@@ -51,7 +51,6 @@
     <Compile Include="Extensions\ExtendOther.cs" />
     <Compile Include="Extensions\ExtendString.cs" />
     <Compile Include="Extensions\ExtendXML.cs" />
-    <Compile Include="Extensions\FieldValueHelper.cs" />
     <Compile Include="Extensions\Util.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

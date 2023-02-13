@@ -2,8 +2,15 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:NZH.ManagementSystem"
+             xmlns:dc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;assembly=System.Windows.Controls.DataVisualization.Toolkit"
              StartupUri="Login.xaml">
     <Application.Resources>
+        <Style x:Key="WTDateTimeAxisLabelStyle" TargetType="{x:Type dc:DateTimeAxisLabel}">
+            <Setter Property="MinutesIntervalStringFormat" Value="{}{0:M/d} {0:H:m} "/>
+            <Setter Property="HoursIntervalStringFormat" Value="{}{0:M/d} {0:H:m} "/>
+            <Setter Property="SecondsIntervalStringFormat" Value="{}{0:M/d} {0:H:m:s} "/>
+            <Setter Property="DaysIntervalStringFormat" Value="{}{0:M/d} "/>
+        </Style>
         <!--<LinearGradientBrush x:Key="fadeBrush">
             <GradientStop Color="Red" Offset="0"/>
             <GradientStop Color="Gray" Offset="1"/>

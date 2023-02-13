@@ -17,6 +17,12 @@ namespace NZH.Service.BaseData
     {
         public SQLBaseData(BaseDatabaseContext context) : base(context) { }
 
+        /// <summary>
+        /// 登录
+        /// </summary>
+        /// <param name="UserName"></param>
+        /// <param name="UserPassword"></param>
+        /// <returns></returns>
         public UserInfo Login(string UserName, string UserPassword)
         {
             UserInfo result = new UserInfo();
@@ -964,6 +970,11 @@ namespace NZH.Service.BaseData
             }
         }
 
+        /// <summary>
+        /// 获取mes用户
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
         public List<MESUser> GetMESUser(MESUser user)
         {
             List<MESUser> list = new List<MESUser>();
@@ -1009,6 +1020,11 @@ namespace NZH.Service.BaseData
             }
         }
 
+        /// <summary>
+        /// 获取mes角色
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
         public List<MESRole> GetMESRole(MESUser user)
         {
             List<MESRole> list = new List<MESRole>();
@@ -1054,6 +1070,11 @@ where USER_ID='{0}') t2 on t1.ID=t2.ROLE_ID ", user.USER_ID);
             }
         }
 
+        /// <summary>
+        /// 添加mes用户
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
         public int MESAddUser(MESUser user)
         {
             int result = 0;
@@ -1078,6 +1099,11 @@ GETDATE(),GETDATE(),GETDATE(),GETDATE(),GETDATE(),
             return result;
         }
 
+        /// <summary>
+        /// 判断是否添加mes用户
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
         public int CheckMESAddUser(MESUser user)
         {
             int result = 0;
@@ -1105,6 +1131,11 @@ GETDATE(),GETDATE(),GETDATE(),GETDATE(),GETDATE(),
             }
         }
 
+        /// <summary>
+        /// 更新mes用户
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
         public int MESUpdateUser(MESUser user)
         {
             int result = 0;
@@ -1125,6 +1156,11 @@ GETDATE(),GETDATE(),GETDATE(),GETDATE(),GETDATE(),
             return result;
         }
 
+        /// <summary>
+        /// 删除mes用户
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
         public int MESDeleteUser(MESUser user)
         {
             int result = 0;

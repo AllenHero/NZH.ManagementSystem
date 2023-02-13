@@ -51,23 +51,4 @@ namespace NZH.IService.BaseData
 
         int MESDeleteUser(MESUser user);
     }
-
-    /// <summary>
-    /// 关于美的设备信息的接口定义
-    /// </summary>
-
-    public interface IBase<T>
-    {
-        bool AddEntity(T entity);
-
-        bool DelEntity(T entity);
-
-        bool UpdateEntity(T entity);
-
-        ICollection<T> FindEntity(T entity);
-
-        ICollection<T> FindEntity(T entity, out int totalPage, out int totalRecord, int pageSize, int pageIndex, out string message);
-
-        T GetByID(string ID);
-    }
 }

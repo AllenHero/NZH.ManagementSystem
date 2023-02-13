@@ -105,12 +105,6 @@ namespace NZH.Business.BaseData
             return retInfo;
         }
 
-
-        /// <summary>
-        /// 获取角色信息
-        /// </summary>
-        /// <param name="role">角色实体</param>
-        /// <returns>角色信息的集合</returns>
         public UserInfo GetRoleInfo(RoleInfo role)
         {
             UserInfo retInfo = new UserInfo();

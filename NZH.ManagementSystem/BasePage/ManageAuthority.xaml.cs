@@ -56,7 +56,7 @@ namespace NZH.ManagementSystem.BasePage
             Info = new ObservableCollection<AuthorityInfo>();
             try
             {
-                UserInfo ui = bllBaseData.GetAuthorityInfo(AuthorityInfo);
+                UserInfo ui = bllBaseData.GetAuthorityInfo(AuthorityInfo,true);
                 if (ui.Authoritys != null)
                 {
                     foreach (var row in ui.Authoritys)

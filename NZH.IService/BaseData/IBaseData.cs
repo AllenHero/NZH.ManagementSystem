@@ -31,7 +31,7 @@ namespace NZH.IService.BaseData
 
         int DeleteRole(int RoleID);
 
-        List<AuthorityInfo> GetAuthorityInfo(AuthorityInfo Authority);
+        List<AuthorityInfo> GetAuthorityInfo(AuthorityInfo Authority, bool Type);
 
         int AddAuthority(AuthorityInfo Authority);
 

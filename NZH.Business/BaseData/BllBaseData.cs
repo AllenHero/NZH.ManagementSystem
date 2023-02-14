@@ -182,13 +182,13 @@ namespace NZH.Business.BaseData
             return result;
         }
 
-        public UserInfo GetAuthorityInfo(AuthorityInfo Authority)
+        public UserInfo GetAuthorityInfo(AuthorityInfo Authority, bool Type)
         {
             UserInfo retInfo = new UserInfo();
             string message = "";
             try
             {
-                List<AuthorityInfo> roleinfo = Context.BaseData.GetAuthorityInfo(Authority);
+                List<AuthorityInfo> roleinfo = Context.BaseData.GetAuthorityInfo(Authority, Type);
                 retInfo.Authoritys = roleinfo;
             }
             catch (Exception ex)

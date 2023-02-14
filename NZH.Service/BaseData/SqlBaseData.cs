@@ -76,7 +76,7 @@ namespace NZH.Service.BaseData
                         }
                         else
                         {
-                            Authoritys = GetAuthorityInfo(new AuthorityInfo());
+                            Authoritys = GetAuthorityInfo(new AuthorityInfo(), false);
                         }
                         User.Roles = Roles;
                         User.Authoritys = Authoritys;
@@ -561,8 +561,9 @@ namespace NZH.Service.BaseData
         /// 获取权限信息
         /// </summary>
         /// <param name="Authority">权限实体</param>
+        /// <param name="Type">权限类型</param>
         /// <returns>权限信息的集合</returns>
-        public List<AuthorityInfo> GetAuthorityInfo(AuthorityInfo Authority)
+        public List<AuthorityInfo> GetAuthorityInfo(AuthorityInfo Authority, bool Type)
         {
             List<AuthorityInfo> AuthorityList = new List<AuthorityInfo>();
             if (Authority == null)
@@ -607,9 +608,12 @@ namespace NZH.Service.BaseData
                 strWhere.Append(string.IsNullOrEmpty(strWhere.ToString()) ? "Where " : " And ");
                 strWhere.Append(" SortCode='" + Authority.SortCode + "' ");
             }
-            //启用
-            strWhere.Append(string.IsNullOrEmpty(strWhere.ToString()) ? "Where " : " And ");
-            strWhere.Append(" Enable='1' ");
+            if (!Type)//true-查所有权限;false-查启用权限
+            {
+                //启用
+                strWhere.Append(string.IsNullOrEmpty(strWhere.ToString()) ? "Where " : " And ");
+                strWhere.Append(" Enable='1' ");
+            }
             strWhere.Append(" order by SortCode asc ");
             sql += strWhere;
             try

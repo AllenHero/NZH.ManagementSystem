@@ -102,7 +102,7 @@ namespace NZH.ManagementSystem.BasePage
             try
             {
                 this.Loaded -= new RoutedEventHandler(ManageRole_Loaded);
-                UserInfo userinfo = bllBaseData.GetAuthorityInfo(new AuthorityInfo());
+                UserInfo userinfo = bllBaseData.GetAuthorityInfo(new AuthorityInfo(), true);
                 if (userinfo != null && userinfo.Authoritys != null)
                 {
                     listAuthority = userinfo.Authoritys.ToArray();

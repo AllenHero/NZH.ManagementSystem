@@ -107,10 +107,13 @@ namespace NZH.ManagementSystem.BasePage
             AuthorityInfo.AuNode = textMark.Text;
             AuthorityInfo.Menu = textCode.Text;
             AuthorityInfo.SortCode = Convert.ToInt32(textSortCode.Text);
-            AuthorityInfo.Enable = 0;
             if (ckbEnable.IsChecked == true)
             {
-                AuthorityInfo.Enable = 1;
+                AuthorityInfo.Enable = 1;//启用
+            }
+            else
+            {
+                AuthorityInfo.Enable = 0;
             }
             if (type == "Add" || type == "AddSon")
             {

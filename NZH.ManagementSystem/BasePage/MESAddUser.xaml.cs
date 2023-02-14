@@ -145,14 +145,14 @@ namespace NZH.ManagementSystem.BasePage
             {
                 MESUser.ChangePassword = false;
             }
-            MESUser.MESRole = MESRole.ToList();
+            MESUser.MESRoles = MESRole.ToList();
             try
             {
                 if (IsAdd)
                 {
-                    if (bllBaseData.CheckMESAddUser(MESUser) < 1)
+                    if (bllBaseData.CheckAddMESUser(MESUser) < 1)
                     {
-                        bllBaseData.MESAddUser(MESUser);
+                        bllBaseData.AddMESUser(MESUser);
                         if (AddUserEvent != null)
                             AddUserEvent(this, new EventArgs());
                     }
@@ -164,7 +164,7 @@ namespace NZH.ManagementSystem.BasePage
                 }
                 else
                 {
-                    bllBaseData.MESUpdateUser(MESUser);
+                    bllBaseData.UpdateMESUser(MESUser);
                     if (UpdateUserEvent != null)
                         UpdateUserEvent(this, new EventArgs());
                 }

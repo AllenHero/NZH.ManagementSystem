@@ -20,6 +20,6 @@ namespace NZH.Model.BaseData
 
         public bool ChangePassword { get; set; }
 
-        public List<MESRole> MESRole { get; set; }
+        public List<MESRole> MESRoles { get; set; }
     }
 }

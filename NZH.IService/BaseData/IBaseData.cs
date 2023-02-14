@@ -39,16 +39,16 @@ namespace NZH.IService.BaseData
 
         int DeleteAuthority(string FunCode);
 
-        List<MESUser> GetMESUser(MESUser User);
+        List<MESUser> GetMESUser(MESUser MesUser);
 
-        List<MESRole> GetMESRole(MESUser usUserer);
+        List<MESRole> GetMESRole(MESUser MesUser);
 
-        int MESAddUser(MESUser User);
+        int AddMESUser(MESUser MesUser);
 
-        int CheckMESAddUser(MESUser User);
+        int CheckAddMESUser(MESUser MesUser);
 
-        int MESUpdateUser(MESUser User);
+        int UpdateMESUser(MESUser MesUser);
 
-        int MESDeleteUser(MESUser User);
+        int DeleteMESUser(MESUser MesUser);
     }
 }

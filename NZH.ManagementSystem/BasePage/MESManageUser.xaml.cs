@@ -122,7 +122,7 @@ namespace NZH.ManagementSystem.BasePage
 
                 if (item == null)
                     return;
-                bllBaseData.MESDeleteUser(item);
+                bllBaseData.DeleteMESUser(item);
                 AllMESUser.Remove(item);
             }
         }

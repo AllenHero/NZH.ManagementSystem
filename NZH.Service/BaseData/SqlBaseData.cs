@@ -112,16 +112,16 @@ namespace NZH.Service.BaseData
         /// <summary>
         /// 获取某一个角色信息
         /// </summary>
-        /// <param name="dt">某一角色的集合DataTable</param>
+        /// <param name="Roles">某一角色的集合DataTable</param>
         /// <returns>角色实体</returns>
-        public RoleInfo GetOneRoleInfo(List<RoleInfo> role)
+        public RoleInfo GetOneRoleInfo(List<RoleInfo> Roles)
         {
             RoleInfo ri = new RoleInfo();
-            if (role != null && role.Count > 0)
+            if (Roles != null && Roles.Count > 0)
             {
-                ri.RoleName = role[0].RoleName;
-                ri.RoleNode = role[0].RoleNode;
-                ri.AuthorityID = role[0].AuthorityID;
+                ri.RoleName = Roles[0].RoleName;
+                ri.RoleNode = Roles[0].RoleNode;
+                ri.AuthorityID = Roles[0].AuthorityID;
             }
             return ri;
         }
@@ -130,9 +130,9 @@ namespace NZH.Service.BaseData
         /// 修改密码
         /// </summary>
         /// <param name="UserName">用户名</param>
-        /// <param name="userpassword">用户密码</param>
+        /// <param name="UserPassword">用户密码</param>
         /// <returns>执行数</returns>
-        public int UpdatePassWord(string UserName, string userpassword)
+        public int UpdatePassWord(string UserName, string UserPassword)
         {
             int result = 0;
             string sql = " Update T_User Set UserPassword=@UserPassword where UserName=@UserName ";
@@ -141,7 +141,7 @@ namespace NZH.Service.BaseData
                                 new SqlParameter("@UserPassword",SqlDbType.VarChar)
                                        };
             parameter[0].Value = UserName;
-            parameter[1].Value = Util.GetMd5Str(userpassword);
+            parameter[1].Value = Util.GetMd5Str(UserPassword);
             try
             {
                 using (DbConnection dbConnection = base.Context.CreateConnection())
@@ -169,12 +169,12 @@ namespace NZH.Service.BaseData
         /// <summary>
         /// 添加用户
         /// </summary>
-        /// <param name="user">用户实体</param>
+        /// <param name="User">用户实体</param>
         /// <returns>返回添加返回数</returns>
-        public int AddUser(UserInfo user)
+        public int AddUser(UserInfo User)
         {
             int result = 0;
-            if (user == null)
+            if (User == null)
             {
                 return result;
             }
@@ -191,13 +191,13 @@ namespace NZH.Service.BaseData
                                 new SqlParameter("@UserNote",SqlDbType.VarChar),
                                 new SqlParameter("@RoleID",SqlDbType.VarChar)
                                            };
-            parameter[0].Value = user.UserName;
-            parameter[1].Value = user.TrueName;
-            parameter[2].Value = Util.GetMd5Str(user.UserPassword);
-            parameter[3].Value = user.UserUsable;
-            parameter[4].Value = user.CreateDate + "" == "" ? DateTime.Now : user.CreateDate;
-            parameter[5].Value = user.UserNote + "";
-            parameter[6].Value = user.RoleID;
+            parameter[0].Value = User.UserName;
+            parameter[1].Value = User.TrueName;
+            parameter[2].Value = Util.GetMd5Str(User.UserPassword);
+            parameter[3].Value = User.UserUsable;
+            parameter[4].Value = User.CreateDate + "" == "" ? DateTime.Now : User.CreateDate;
+            parameter[5].Value = User.UserNote + "";
+            parameter[6].Value = User.RoleID;
             #endregion
             try
             {
@@ -225,37 +225,37 @@ namespace NZH.Service.BaseData
         /// <summary>
         /// 修改用户
         /// </summary>
-        /// <param name="user">用户实体</param>
+        /// <param name="User">用户实体</param>
         /// <returns>返回添加返回数</returns>
-        public int UpdateUser(UserInfo user)
+        public int UpdateUser(UserInfo User)
         {
             int result = 0;
             #region sql
             string sql = " UPDATE T_User SET ";
             StringBuilder strWhere = new StringBuilder("");
             //判断用户真实姓名是否为空
-            if (!string.IsNullOrEmpty(user.TrueName))
+            if (!string.IsNullOrEmpty(User.TrueName))
             {
                 strWhere.Append(string.IsNullOrEmpty(strWhere.ToString()) ? " " : ", ");
-                strWhere.Append(" TrueName='" + user.TrueName + "' ");
+                strWhere.Append(" TrueName='" + User.TrueName + "' ");
             }
             //判断用户标志位是否为空
-            if (!string.IsNullOrEmpty(user.UserUsable.ToString()))
+            if (!string.IsNullOrEmpty(User.UserUsable.ToString()))
             {
                 strWhere.Append(string.IsNullOrEmpty(strWhere.ToString()) ? " " : ", ");
-                strWhere.Append(" UserUsable='" + user.UserUsable + "' ");
+                strWhere.Append(" UserUsable='" + User.UserUsable + "' ");
             }
             //判断用户密码是否为空
-            if (!string.IsNullOrEmpty(user.UserPassword))
+            if (!string.IsNullOrEmpty(User.UserPassword))
             {
                 strWhere.Append(string.IsNullOrEmpty(strWhere.ToString()) ? " " : ", ");
-                strWhere.Append(" UserPassword='" + Util.GetMd5Str(user.UserPassword) + "' ");
+                strWhere.Append(" UserPassword='" + Util.GetMd5Str(User.UserPassword) + "' ");
             }
             //判断用户角色是否为空
-            if (user.RoleID != null)
+            if (User.RoleID != null)
             {
                 strWhere.Append(string.IsNullOrEmpty(strWhere.ToString()) ? " " : ", ");
-                strWhere.Append(" RoleID='" + user.RoleID + "' ");
+                strWhere.Append(" RoleID='" + User.RoleID + "' ");
             }
             //判断用户名是否为空
             if (string.IsNullOrEmpty(strWhere.ToString()))
@@ -264,7 +264,7 @@ namespace NZH.Service.BaseData
             }
             else
             {
-                strWhere.Append(" Where UserName='" + user.UserName + "' ");
+                strWhere.Append(" Where UserName='" + User.UserName + "' ");
             }
             sql += strWhere;
 
@@ -293,7 +293,7 @@ namespace NZH.Service.BaseData
         /// <summary>
         /// 删除用户
         /// </summary>
-        /// <param name="ID_UserID">用户实体</param>
+        /// <param name="UserID">用户实体</param>
         /// <returns>返回添加返回数</returns>
         public int DeleteUser(int UserID)
         {
@@ -326,9 +326,9 @@ namespace NZH.Service.BaseData
         /// <summary>
         /// 查询用户信息(包含角色名)
         /// </summary>
-        /// <param name="user">用户实体</param>
+        /// <param name="User">用户实体</param>
         /// <returns>用户信息集合</returns>
-        public List<UserInfo> GetUserInfo(UserInfo user)
+        public List<UserInfo> GetUserInfo(UserInfo User)
         {
             List<UserInfo> list = new List<UserInfo>();
             #region sql
@@ -336,22 +336,22 @@ namespace NZH.Service.BaseData
             #region  查询条件
             StringBuilder strWhere = new StringBuilder("");
             //判断用户真实姓名是否为空
-            if (!string.IsNullOrEmpty(user.TrueName))
+            if (!string.IsNullOrEmpty(User.TrueName))
             {
                 strWhere.Append(string.IsNullOrEmpty(strWhere.ToString()) ? "Where " : " And ");
-                strWhere.Append(" TrueName like '%" + user.TrueName + "%' ");
+                strWhere.Append(" TrueName like '%" + User.TrueName + "%' ");
             }
             //判断用户名是否为空
-            if (!string.IsNullOrEmpty(user.UserName))
+            if (!string.IsNullOrEmpty(User.UserName))
             {
                 strWhere.Append(string.IsNullOrEmpty(strWhere.ToString()) ? "Where " : " And ");
-                strWhere.Append(" UserName like '%" + user.UserName + "%'  ");
+                strWhere.Append(" UserName like '%" + User.UserName + "%'  ");
             }
             //判断用户标志位是否为空
-            if (user.UserUsable > 1)
+            if (User.UserUsable > 1)
             {
                 strWhere.Append(string.IsNullOrEmpty(strWhere.ToString()) ? "Where " : " And ");
-                strWhere.Append(" UserUsable='" + user.UserUsable + "' ");
+                strWhere.Append(" UserUsable='" + User.UserUsable + "' ");
             }
 
             #endregion
@@ -394,27 +394,27 @@ namespace NZH.Service.BaseData
         /// <summary>
         /// 通过角色ID获取角色名
         /// </summary>
-        /// <param name="roleid"></param>
-        /// <param name="roleinfo"></param>
+        /// <param name="RoleID"></param>
+        /// <param name="Roles"></param>
         /// <returns></returns>
-        public List<RoleInfo> GetRoleNameByRoleId(string roleid, List<RoleInfo> roleinfo)
+        public List<RoleInfo> GetRoleNameByRoleId(string RoleID, List<RoleInfo> Roles)
         {
             List<RoleInfo> rolenamelist = new List<RoleInfo>();
-            if (string.IsNullOrEmpty(roleid))
+            if (string.IsNullOrEmpty(RoleID))
             {
                 return rolenamelist;
             }
-            if (!string.IsNullOrEmpty(roleid))
+            if (!string.IsNullOrEmpty(RoleID))
             {
-                string[] rolesid = roleid.Split('|');
+                string[] rolesid = RoleID.Split('|');
                 for (int j = 0; j < rolesid.Count(); j++)
                 {
                     RoleInfo role = new RoleInfo();
-                    for (int k = 0; k < roleinfo.Count; k++)
+                    for (int k = 0; k < Roles.Count; k++)
                     {
-                        if (Convert.ToInt32(rolesid[j]) == roleinfo[k].RoleID)
+                        if (Convert.ToInt32(rolesid[j]) == Roles[k].RoleID)
                         {
-                            role.RoleName = roleinfo[k].RoleName;
+                            role.RoleName = Roles[k].RoleName;
                             rolenamelist.Add(role);
                         }
                     }
@@ -427,43 +427,43 @@ namespace NZH.Service.BaseData
         /// <summary>
         /// 获取角色信息
         /// </summary>
-        /// <param name="role">角色实体</param>
+        /// <param name="Role">角色实体</param>
         /// <returns>角色信息的集合</returns>
-        public List<RoleInfo> GetRoleInfo(RoleInfo role)
+        public List<RoleInfo> GetRoleInfo(RoleInfo Role)
         {
             List<RoleInfo> list = new List<RoleInfo>();
             #region
             string sql = " Select * from T_Role ";
             StringBuilder strWhere = new StringBuilder("");
             //判断角色ID是否为空
-            if (role.RoleID != 0)
+            if (Role.RoleID != 0)
             {
                 strWhere.Append(string.IsNullOrEmpty(strWhere.ToString()) ? "Where " : " And ");
-                strWhere.Append(" RoleID='" + role.RoleID + "'  ");
+                strWhere.Append(" RoleID='" + Role.RoleID + "'  ");
             }
             //判断角色名是否为空
-            if (!string.IsNullOrEmpty(role.RoleName))
+            if (!string.IsNullOrEmpty(Role.RoleName))
             {
                 strWhere.Append(string.IsNullOrEmpty(strWhere.ToString()) ? "Where " : " And ");
-                strWhere.Append(" RoleName='" + role.RoleName + "'  ");
+                strWhere.Append(" RoleName='" + Role.RoleName + "'  ");
             }
             //判断角色备注是否为空
-            if (!string.IsNullOrEmpty(role.RoleNode))
+            if (!string.IsNullOrEmpty(Role.RoleNode))
             {
                 strWhere.Append(string.IsNullOrEmpty(strWhere.ToString()) ? "Where " : " And ");
-                strWhere.Append(" RoleNode like '%" + role.RoleNode + "%'  ");
+                strWhere.Append(" RoleNode like '%" + Role.RoleNode + "%'  ");
             }
             //判断角色权限是否为空
-            if (!string.IsNullOrEmpty(role.AuthorityID))
+            if (!string.IsNullOrEmpty(Role.AuthorityID))
             {
                 strWhere.Append(string.IsNullOrEmpty(strWhere.ToString()) ? "Where " : " And ");
-                strWhere.Append(" AuthorityID like '%" + role.AuthorityID + "%'  ");
+                strWhere.Append(" AuthorityID like '%" + Role.AuthorityID + "%'  ");
             }
             //判断角色是否有效
-            if (role.RoleUsable > 1)
+            if (Role.RoleUsable > 1)
             {
                 strWhere.Append(string.IsNullOrEmpty(strWhere.ToString()) ? "Where " : " And ");
-                strWhere.Append(" RoleUsable='" + role.RoleUsable + "'  ");
+                strWhere.Append(" RoleUsable='" + Role.RoleUsable + "'  ");
             }
             sql += strWhere;
 
@@ -494,26 +494,26 @@ namespace NZH.Service.BaseData
         /// <summary>
         /// 通过某一角色获取权限信息
         /// </summary>
-        /// <param name="authorityid">权限id</param>
+        /// <param name="RoleID">权限id</param>
         /// <returns>权限信息的集合</returns>
-        public List<RoleInfo> GetRoleInfoByUser(string roleid)
+        public List<RoleInfo> GetRoleInfoByUser(string RoleID)
         {
             List<RoleInfo> list = new List<RoleInfo>();
             #region
-            if (string.IsNullOrEmpty(roleid))
+            if (string.IsNullOrEmpty(RoleID))
             {
                 return list;
             }
             else
             {
-                string role = roleid;
-                if (roleid.IndexOf('|', 0) == 0)
+                string role = RoleID;
+                if (RoleID.IndexOf('|', 0) == 0)
                 {
-                    role = roleid.Substring(1, roleid.Length - 1).Replace('|', ',');
+                    role = RoleID.Substring(1, RoleID.Length - 1).Replace('|', ',');
                 }
                 else
                 {
-                    role = roleid.Replace('|', ',');
+                    role = RoleID.Replace('|', ',');
                 }
                 string sql = " Select * from T_Role Where RoleID in (" + role + ")";
 
@@ -544,11 +544,11 @@ namespace NZH.Service.BaseData
         /// <summary>
         /// 添加角色
         /// </summary>
-        /// <param name="role">角色实体</param>
+        /// <param name="Role">角色实体</param>
         /// <returns>返回添加返回数</returns>
-        public int AddRole(RoleInfo role)
+        public int AddRole(RoleInfo Role)
         {
-            if (role == null)
+            if (Role == null)
             {
                 return 0;
             }
@@ -562,10 +562,10 @@ namespace NZH.Service.BaseData
                                 new SqlParameter("@AuthorityID",SqlDbType.VarChar),
                                 new SqlParameter("@RoleUsable",SqlDbType.Int)
                                            };
-            parameter[0].Value = role.RoleName;
-            parameter[1].Value = role.RoleNode + "";
-            parameter[2].Value = role.AuthorityID;
-            parameter[3].Value = role.RoleUsable;
+            parameter[0].Value = Role.RoleName;
+            parameter[1].Value = Role.RoleNode + "";
+            parameter[2].Value = Role.AuthorityID;
+            parameter[3].Value = Role.RoleUsable;
             #endregion
 
             try
@@ -594,35 +594,35 @@ namespace NZH.Service.BaseData
         /// <summary>
         /// 修改角色
         /// </summary>
-        /// <param name="role">角色实体</param>
+        /// <param name="Role">角色实体</param>
         /// <returns>返回添加返回数</returns>
-        public int UpdateRole(RoleInfo role)
+        public int UpdateRole(RoleInfo Role)
         {
             #region sql
             string sql = " UPDATE T_Role SET ";
             StringBuilder strWhere = new StringBuilder("");
             //判断角色名是否为空
-            if (!string.IsNullOrEmpty(role.RoleName))
+            if (!string.IsNullOrEmpty(Role.RoleName))
             {
-                strWhere.Append(" RoleName='" + role.RoleName + "'  ");
+                strWhere.Append(" RoleName='" + Role.RoleName + "'  ");
             }
             //判断角色备注是否为空
-            if (!string.IsNullOrEmpty(role.RoleNode))
+            if (!string.IsNullOrEmpty(Role.RoleNode))
             {
                 strWhere.Append(string.IsNullOrEmpty(strWhere.ToString()) ? " " : ", ");
-                strWhere.Append(" RoleNode='" + role.RoleNode + "' ");
+                strWhere.Append(" RoleNode='" + Role.RoleNode + "' ");
             }
             //判断角色权限是否为空
-            if (!string.IsNullOrEmpty(role.AuthorityID))
+            if (!string.IsNullOrEmpty(Role.AuthorityID))
             {
                 strWhere.Append(string.IsNullOrEmpty(strWhere.ToString()) ? " " : ", ");
-                strWhere.Append(" AuthorityID='" + role.AuthorityID + "' ");
+                strWhere.Append(" AuthorityID='" + Role.AuthorityID + "' ");
             }
             //判断角色是否有效是否为空
-            if (role.RoleUsable > 1)
+            if (Role.RoleUsable > 1)
             {
                 strWhere.Append(string.IsNullOrEmpty(strWhere.ToString()) ? " " : ", ");
-                strWhere.Append(" RoleUsable='" + role.RoleUsable + "' ");
+                strWhere.Append(" RoleUsable='" + Role.RoleUsable + "' ");
             }
             //判断修改条件是否为空
             if (string.IsNullOrEmpty(strWhere.ToString()))
@@ -631,7 +631,7 @@ namespace NZH.Service.BaseData
             }
             else
             {
-                strWhere.Append(" Where RoleID=" + role.RoleID + " ");
+                strWhere.Append(" Where RoleID=" + Role.RoleID + " ");
             }
             sql += strWhere;
 
@@ -691,9 +691,9 @@ namespace NZH.Service.BaseData
         /// <summary>
         /// 获取权限信息
         /// </summary>
-        /// <param name="authority">权限实体</param>
+        /// <param name="Authority">权限实体</param>
         /// <returns>权限信息的集合</returns>
-        public List<AuthorityInfo> GetAuthorityInfo(AuthorityInfo authority)
+        public List<AuthorityInfo> GetAuthorityInfo(AuthorityInfo Authority)
         {
             List<AuthorityInfo> list = new List<AuthorityInfo>();
             DataSet ds = new DataSet();
@@ -702,40 +702,40 @@ namespace NZH.Service.BaseData
             string sql = " Select * from T_Authority ";
             StringBuilder strWhere = new StringBuilder("");
             //判断权限ID是否为空
-            if (authority.AuthorityID != 0)
+            if (Authority.AuthorityID != 0)
             {
                 strWhere.Append(string.IsNullOrEmpty(strWhere.ToString()) ? "Where " : " And ");
-                strWhere.Append(" AuthorityID='" + authority.AuthorityID + "'  ");
+                strWhere.Append(" AuthorityID='" + Authority.AuthorityID + "'  ");
             }
             //判断功能码是否为空
-            if (!string.IsNullOrEmpty(authority.FunCode))
+            if (!string.IsNullOrEmpty(Authority.FunCode))
             {
                 strWhere.Append(string.IsNullOrEmpty(strWhere.ToString()) ? "Where " : " And ");
-                strWhere.Append(" FunCode='" + authority.FunCode + "' ");
+                strWhere.Append(" FunCode='" + Authority.FunCode + "' ");
             }
             //判断功能名称是否为空
-            if (!string.IsNullOrEmpty(authority.FunName))
+            if (!string.IsNullOrEmpty(Authority.FunName))
             {
                 strWhere.Append(string.IsNullOrEmpty(strWhere.ToString()) ? "Where " : " And ");
-                strWhere.Append(" FunName='" + authority.FunName + "' ");
+                strWhere.Append(" FunName='" + Authority.FunName + "' ");
             }
             //判断父节点是否为空
-            if (!string.IsNullOrEmpty(authority.ParentID))
+            if (!string.IsNullOrEmpty(Authority.ParentID))
             {
                 strWhere.Append(string.IsNullOrEmpty(strWhere.ToString()) ? "Where " : " And ");
-                strWhere.Append(" ParentID='" + authority.ParentID + "' ");
+                strWhere.Append(" ParentID='" + Authority.ParentID + "' ");
             }
             //判断权限路径是否为空
-            if (!string.IsNullOrEmpty(authority.Menu))
+            if (!string.IsNullOrEmpty(Authority.Menu))
             {
                 strWhere.Append(string.IsNullOrEmpty(strWhere.ToString()) ? "Where " : " And ");
-                strWhere.Append(" Menu='" + authority.Menu + "' ");
+                strWhere.Append(" Menu='" + Authority.Menu + "' ");
             }
             //判断权限备注是否为空
-            if (authority.SortCode > 0)
+            if (Authority.SortCode > 0)
             {
                 strWhere.Append(string.IsNullOrEmpty(strWhere.ToString()) ? "Where " : " And ");
-                strWhere.Append(" SortCode='" + authority.SortCode + "' ");
+                strWhere.Append(" SortCode='" + Authority.SortCode + "' ");
             }
             strWhere.Append(" order by SortCode asc ");
             sql += strWhere;
@@ -766,25 +766,25 @@ namespace NZH.Service.BaseData
         /// <summary>
         /// 通过某一角色获取权限信息
         /// </summary>
-        /// <param name="authorityid">权限id</param>
+        /// <param name="AuthorityID">权限id</param>
         /// <returns>权限信息的集合</returns>
-        public List<AuthorityInfo> GetAuthorityInfoByRole(string authorityid)
+        public List<AuthorityInfo> GetAuthorityInfoByRole(string AuthorityID)
         {
             List<AuthorityInfo> list = new List<AuthorityInfo>();
             DataSet ds = new DataSet();
-            if (string.IsNullOrEmpty(authorityid))
+            if (string.IsNullOrEmpty(AuthorityID))
             {
                 return list;
             }
             #region
-            string authority = authorityid;
-            if (authorityid.IndexOf('|', 0) == 0)
+            string authority = AuthorityID;
+            if (AuthorityID.IndexOf('|', 0) == 0)
             {
-                authority = authorityid.Substring(1, authorityid.Length - 1).Replace('|', ',');
+                authority = AuthorityID.Substring(1, AuthorityID.Length - 1).Replace('|', ',');
             }
             else
             {
-                authority = authorityid.Replace('|', ',');
+                authority = AuthorityID.Replace('|', ',');
             }
             string sql = " Select * from T_Authority Where AuthorityID in (" + authority + ")  order by sortcode asc ";
 
@@ -814,11 +814,11 @@ namespace NZH.Service.BaseData
         /// <summary>
         /// 添加权限
         /// </summary>
-        /// <param name="role">权限实体</param>
+        /// <param name="Authority">权限实体</param>
         /// <returns>返回添加返回数</returns>
-        public int AddAuthority(AuthorityInfo authority)
+        public int AddAuthority(AuthorityInfo Authority)
         {
-            if (authority == null)
+            if (Authority == null)
             {
                 return 0;
             }
@@ -835,12 +835,12 @@ namespace NZH.Service.BaseData
                                 new SqlParameter("@SortCode",SqlDbType.Int)
 
                                            };
-            parameter[0].Value = authority.ParentID;
-            parameter[1].Value = authority.FunName;
-            parameter[2].Value = authority.AuNode;
-            parameter[3].Value = authority.Menu;
-            parameter[4].Value = authority.FunCode;
-            parameter[5].Value = authority.SortCode;
+            parameter[0].Value = Authority.ParentID;
+            parameter[1].Value = Authority.FunName;
+            parameter[2].Value = Authority.AuNode;
+            parameter[3].Value = Authority.Menu;
+            parameter[4].Value = Authority.FunCode;
+            parameter[5].Value = Authority.SortCode;
 
             #endregion
             try
@@ -869,42 +869,42 @@ namespace NZH.Service.BaseData
         /// <summary>
         /// 修改权限
         /// </summary>
-        /// <param name="role">权限实体</param>
+        /// <param name="Authority">权限实体</param>
         /// <returns>返回添加返回数</returns>
-        public int UpdateAuthority(AuthorityInfo authority)
+        public int UpdateAuthority(AuthorityInfo Authority)
         {
             #region sql
             string sql = " UPDATE T_Authority SET ";
             StringBuilder strWhere = new StringBuilder("");
             //判断权限功能名是否为空
-            if (!string.IsNullOrEmpty(authority.FunName))
+            if (!string.IsNullOrEmpty(Authority.FunName))
             {
                 strWhere.Append(string.IsNullOrEmpty(strWhere.ToString()) ? " " : ", ");
-                strWhere.Append(" FunName='" + authority.FunName + "' ");
+                strWhere.Append(" FunName='" + Authority.FunName + "' ");
             }
             //判断权限父节点是否为空
-            if (!string.IsNullOrEmpty(authority.ParentID))
+            if (!string.IsNullOrEmpty(Authority.ParentID))
             {
                 strWhere.Append(string.IsNullOrEmpty(strWhere.ToString()) ? " " : ", ");
-                strWhere.Append(" ParentID='" + authority.ParentID + "' ");
+                strWhere.Append(" ParentID='" + Authority.ParentID + "' ");
             }
             //判断权限目录是否为空
-            if (!string.IsNullOrEmpty(authority.Menu))
+            if (!string.IsNullOrEmpty(Authority.Menu))
             {
                 strWhere.Append(string.IsNullOrEmpty(strWhere.ToString()) ? " " : ", ");
-                strWhere.Append(" Menu='" + authority.Menu + "' ");
+                strWhere.Append(" Menu='" + Authority.Menu + "' ");
             }
             //判断标识码是否为空
-            if (!string.IsNullOrEmpty(authority.AuNode))
+            if (!string.IsNullOrEmpty(Authority.AuNode))
             {
                 strWhere.Append(string.IsNullOrEmpty(strWhere.ToString()) ? " " : ", ");
-                strWhere.Append(" AuNode='" + authority.AuNode + "' ");
+                strWhere.Append(" AuNode='" + Authority.AuNode + "' ");
             }
             //判断权限备注是否为空
-            if (authority.SortCode > 0)
+            if (Authority.SortCode > 0)
             {
                 strWhere.Append(string.IsNullOrEmpty(strWhere.ToString()) ? " " : ", ");
-                strWhere.Append(" SortCode='" + authority.SortCode + "' ");
+                strWhere.Append(" SortCode='" + Authority.SortCode + "' ");
             }
             //判断修改条件是否为空
             if (string.IsNullOrEmpty(strWhere.ToString()))
@@ -913,7 +913,7 @@ namespace NZH.Service.BaseData
             }
             else
             {
-                strWhere.Append(" Where FunCode='" + authority.FunCode + "' ");
+                strWhere.Append(" Where FunCode='" + Authority.FunCode + "' ");
             }
             sql += strWhere;
 
@@ -942,7 +942,7 @@ namespace NZH.Service.BaseData
         /// <summary>
         /// 删除权限
         /// </summary>
-        /// <param name="ID_RoleID">权限实体</param>
+        /// <param name="FunCode">权限实体</param>
         /// <returns>返回添加返回数</returns>
         public int DeleteAuthority(string FunCode)
         {
@@ -973,9 +973,9 @@ namespace NZH.Service.BaseData
         /// <summary>
         /// 获取mes用户
         /// </summary>
-        /// <param name="user"></param>
+        /// <param name="MesUser"></param>
         /// <returns></returns>
-        public List<MESUser> GetMESUser(MESUser user)
+        public List<MESUser> GetMESUser(MESUser MesUser)
         {
             List<MESUser> list = new List<MESUser>();
             #region sql
@@ -983,16 +983,16 @@ namespace NZH.Service.BaseData
             #region  查询条件
             StringBuilder strWhere = new StringBuilder("");
             //判断用户真实姓名是否为空
-            if (!string.IsNullOrEmpty(user.PersonName))
+            if (!string.IsNullOrEmpty(MesUser.PersonName))
             {
                 strWhere.Append(string.IsNullOrEmpty(strWhere.ToString()) ? "Where " : " And ");
-                strWhere.Append(" t2.PERSON_NAME like '%" + user.PersonName + "%' ");
+                strWhere.Append(" t2.PERSON_NAME like '%" + MesUser.PersonName + "%' ");
             }
             //判断用户名是否为空
-            if (!string.IsNullOrEmpty(user.UserName))
+            if (!string.IsNullOrEmpty(MesUser.UserName))
             {
                 strWhere.Append(string.IsNullOrEmpty(strWhere.ToString()) ? "Where " : " And ");
-                strWhere.Append(" t1.USER_NAME like '%" + user.UserName + "%'  ");
+                strWhere.Append(" t1.USER_NAME like '%" + MesUser.UserName + "%'  ");
             }
 
             #endregion
@@ -1023,17 +1023,17 @@ namespace NZH.Service.BaseData
         /// <summary>
         /// 获取mes角色
         /// </summary>
-        /// <param name="user"></param>
+        /// <param name="MesUser"></param>
         /// <returns></returns>
-        public List<MESRole> GetMESRole(MESUser user)
+        public List<MESRole> GetMESRole(MESUser MesUser)
         {
             List<MESRole> list = new List<MESRole>();
             #region sql
             string sql = "";
-            if (user.UserID != null)
+            if (MesUser.UserID != null)
             {
                 sql = string.Format(@" select t1.ID as RoleID,t1.ROLE_NAME as RoleName,(case when t2.ROLE_ID is null then '0' else '1' end)  RoleIdCheck from SYS_ROLE t1 left join (select * from SYS_USER_IN_ROLES 
-where USER_ID='{0}') t2 on t1.ID=t2.ROLE_ID ", user.UserID);
+where USER_ID='{0}') t2 on t1.ID=t2.ROLE_ID ", MesUser.UserID);
             }
             else
             {
@@ -1073,9 +1073,9 @@ where USER_ID='{0}') t2 on t1.ID=t2.ROLE_ID ", user.UserID);
         /// <summary>
         /// 添加mes用户
         /// </summary>
-        /// <param name="user"></param>
+        /// <param name="MesUser"></param>
         /// <returns></returns>
-        public int MESAddUser(MESUser user)
+        public int AddMESUser(MESUser MesUser)
         {
             int result = 0;
             List<string> sqllist = new List<string>();
@@ -1086,13 +1086,13 @@ FAILED_PASSWORD_ATTEMPT_COUNT,FAILED_PASSWORD_ATTEMPT_WINDOW_START,FAILED_PASSWO
 FAILED_PASSWORD_ANSWER_ATTEMPT_WINDOW_START) 
 VALUES('{0}','{1}','{2}','51Tg5W5K9IIrKmfISaGB4Q==','{3}','','my office name','D6YL8ChxSPHtEF0hsZrvAQ==',1,
 GETDATE(),GETDATE(),GETDATE(),GETDATE(),GETDATE(),
-0,GETDATE(),0,GETDATE())", user.UserID, user.UserName, user.Password, user.PersonID));
-            sqllist.Add(string.Format(@" INSERT INTO SYS_PERSON (ID, PERSON_NAME) VALUES ('{0}', '{1}')", user.PersonID, user.PersonName));
-            sqllist.Add(" Delete from SYS_USER_IN_ROLES Where USER_ID='" + user.UserID + "' ");
-            foreach (var row in user.MESRole)
+0,GETDATE(),0,GETDATE())", MesUser.UserID, MesUser.UserName, MesUser.Password, MesUser.PersonID));
+            sqllist.Add(string.Format(@" INSERT INTO SYS_PERSON (ID, PERSON_NAME) VALUES ('{0}', '{1}')", MesUser.PersonID, MesUser.PersonName));
+            sqllist.Add(" Delete from SYS_USER_IN_ROLES Where USER_ID='" + MesUser.UserID + "' ");
+            foreach (var row in MesUser.MESRoles)
             {
                 if (row.IsCheck)
-                    sqllist.Add(string.Format(@" INSERT INTO SYS_USER_IN_ROLES (USER_ID, ROLE_ID) VALUES ('{0}', '{1}')", user.UserID, row.RoleID));
+                    sqllist.Add(string.Format(@" INSERT INTO SYS_USER_IN_ROLES (USER_ID, ROLE_ID) VALUES ('{0}', '{1}')", MesUser.UserID, row.RoleID));
             }
 
             result = ExecuteNonQuery(sqllist);
@@ -1102,12 +1102,12 @@ GETDATE(),GETDATE(),GETDATE(),GETDATE(),GETDATE(),
         /// <summary>
         /// 判断是否添加mes用户
         /// </summary>
-        /// <param name="user"></param>
+        /// <param name="MesUser"></param>
         /// <returns></returns>
-        public int CheckMESAddUser(MESUser user)
+        public int CheckAddMESUser(MESUser MesUser)
         {
             int result = 0;
-            string sql = string.Format(@"select * from SYS_USER_PROFILE where user_name='{0}' ", user.UserName);
+            string sql = string.Format(@"select * from SYS_USER_PROFILE where user_name='{0}' ", MesUser.UserName);
 
             try
             {
@@ -1134,22 +1134,22 @@ GETDATE(),GETDATE(),GETDATE(),GETDATE(),GETDATE(),
         /// <summary>
         /// 更新mes用户
         /// </summary>
-        /// <param name="user"></param>
+        /// <param name="MesUser"></param>
         /// <returns></returns>
-        public int MESUpdateUser(MESUser user)
+        public int UpdateMESUser(MESUser MesUser)
         {
             int result = 0;
             List<string> sqllist = new List<string>();
-            if (user.ChangePassword)
+            if (MesUser.ChangePassword)
             {
-                sqllist.Add(string.Format(@" UPDATE SYS_USER_PROFILE SET PASSWORD='{0}' WHERE ID='{1}'", user.Password, user.UserID));
+                sqllist.Add(string.Format(@" UPDATE SYS_USER_PROFILE SET PASSWORD='{0}' WHERE ID='{1}'", MesUser.Password, MesUser.UserID));
             }
-            sqllist.Add(string.Format(@" UPDATE SYS_PERSON SET PERSON_NAME='{0}' WHERE ID='{1}'", user.PersonName, user.PersonID));
-            sqllist.Add(" Delete from SYS_USER_IN_ROLES Where USER_ID='" + user.UserID + "' ");
-            foreach (var row in user.MESRole)
+            sqllist.Add(string.Format(@" UPDATE SYS_PERSON SET PERSON_NAME='{0}' WHERE ID='{1}'", MesUser.PersonName, MesUser.PersonID));
+            sqllist.Add(" Delete from SYS_USER_IN_ROLES Where USER_ID='" + MesUser.UserID + "' ");
+            foreach (var row in MesUser.MESRoles)
             {
                 if (row.IsCheck)
-                    sqllist.Add(string.Format(@" INSERT INTO SYS_USER_IN_ROLES (USER_ID, ROLE_ID) VALUES ('{0}', '{1}')", user.UserID, row.RoleID));
+                    sqllist.Add(string.Format(@" INSERT INTO SYS_USER_IN_ROLES (USER_ID, ROLE_ID) VALUES ('{0}', '{1}')", MesUser.UserID, row.RoleID));
             }
 
             result = ExecuteNonQuery(sqllist);
@@ -1159,15 +1159,15 @@ GETDATE(),GETDATE(),GETDATE(),GETDATE(),GETDATE(),
         /// <summary>
         /// 删除mes用户
         /// </summary>
-        /// <param name="user"></param>
+        /// <param name="MesUser"></param>
         /// <returns></returns>
-        public int MESDeleteUser(MESUser user)
+        public int DeleteMESUser(MESUser MesUser)
         {
             int result = 0;
             List<string> sqllist = new List<string>();
-            sqllist.Add(" Delete from SYS_USER_PROFILE Where ID='" + user.UserID + "' ");
-            sqllist.Add(" Delete from SYS_PERSON Where ID='" + user.PersonID + "' ");
-            sqllist.Add(" Delete from SYS_USER_IN_ROLES Where USER_ID='" + user.UserID + "' ");
+            sqllist.Add(" Delete from SYS_USER_PROFILE Where ID='" + MesUser.UserID + "' ");
+            sqllist.Add(" Delete from SYS_PERSON Where ID='" + MesUser.PersonID + "' ");
+            sqllist.Add(" Delete from SYS_USER_IN_ROLES Where USER_ID='" + MesUser.UserID + "' ");
             result = ExecuteNonQuery(sqllist);
             return result;
         }

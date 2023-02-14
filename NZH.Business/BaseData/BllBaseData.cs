@@ -182,13 +182,13 @@ namespace NZH.Business.BaseData
             return result;
         }
 
-        public UserInfo GetAuthorityInfo(AuthorityInfo Role)
+        public UserInfo GetAuthorityInfo(AuthorityInfo Authority)
         {
             UserInfo retInfo = new UserInfo();
             string message = "";
             try
             {
-                List<AuthorityInfo> roleinfo = Context.BaseData.GetAuthorityInfo(Role);
+                List<AuthorityInfo> roleinfo = Context.BaseData.GetAuthorityInfo(Authority);
                 retInfo.Authoritys = roleinfo;
             }
             catch (Exception ex)
@@ -243,13 +243,13 @@ namespace NZH.Business.BaseData
             return result;
         }
 
-        public List<MESUser> GetMESUser(MESUser User)
+        public List<MESUser> GetMESUser(MESUser MesUser)
         {
             List<MESUser> reslut = new List<MESUser>();
             string message = "";
             try
             {
-                reslut = Context.BaseData.GetMESUser(User);
+                reslut = Context.BaseData.GetMESUser(MesUser);
 
             }
             catch (Exception ex)
@@ -259,13 +259,13 @@ namespace NZH.Business.BaseData
             return reslut;
         }
 
-        public List<MESRole> GetMESRole(MESUser User)
+        public List<MESRole> GetMESRole(MESUser MesUser)
         {
             List<MESRole> reslut = new List<MESRole>();
             string message = "";
             try
             {
-                reslut = Context.BaseData.GetMESRole(User);
+                reslut = Context.BaseData.GetMESRole(MesUser);
 
             }
             catch (Exception ex)
@@ -275,13 +275,13 @@ namespace NZH.Business.BaseData
             return reslut;
         }
 
-        public int MESAddUser(MESUser User)
+        public int AddMESUser(MESUser MesUser)
         {
             int result = 0;
             string message = "";
             try
             {
-                result = Context.BaseData.MESAddUser(User);
+                result = Context.BaseData.AddMESUser(MesUser);
 
             }
             catch (System.Exception ex)
@@ -291,13 +291,13 @@ namespace NZH.Business.BaseData
             return result;
         }
 
-        public int CheckMESAddUser(MESUser User)
+        public int CheckAddMESUser(MESUser MesUser)
         {
             int result = 0;
             string message = "";
             try
             {
-                result = Context.BaseData.CheckMESAddUser(User);
+                result = Context.BaseData.CheckAddMESUser(MesUser);
 
             }
             catch (System.Exception ex)
@@ -307,13 +307,13 @@ namespace NZH.Business.BaseData
             return result;
         }
 
-        public int MESUpdateUser(MESUser User)
+        public int UpdateMESUser(MESUser MesUser)
         {
             int result = 0;
             string message = "";
             try
             {
-                result = Context.BaseData.MESUpdateUser(User);
+                result = Context.BaseData.UpdateMESUser(MesUser);
 
             }
             catch (System.Exception ex)
@@ -323,13 +323,13 @@ namespace NZH.Business.BaseData
             return result;
         }
 
-        public int MESDeleteUser(MESUser User)
+        public int DeleteMESUser(MESUser MesUser)
         {
             int result = 0;
             string message = "";
             try
             {
-                result = Context.BaseData.MESDeleteUser(User);
+                result = Context.BaseData.DeleteMESUser(MesUser);
 
             }
             catch (System.Exception ex)

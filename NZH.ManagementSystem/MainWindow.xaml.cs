@@ -36,8 +36,6 @@ namespace NZH.ManagementSystem
         public static string TemperatureCom;
         public static string TotalPass;
 
-        //测试
-
         public MainWindow()
         {
             InitializeComponent();
@@ -57,7 +55,6 @@ namespace NZH.ManagementSystem
             PROCESS_NO = ConfigurationManager.AppSettings["PROCESS_NO"] + "";
             WeightCom = ConfigurationManager.AppSettings["WeightCom"] + "";
             TemperatureCom = ConfigurationManager.AppSettings["TemperatureCom"] + "";
-
             TabItemControl.Add(0, "首页");
             TreeModle = new ObservableCollection<TreeModle>();
             if (UserInfo != null && UserInfo.Authoritys != null)
@@ -85,11 +82,10 @@ namespace NZH.ManagementSystem
             {
                 ReMessageBox.Show(ex.Message);
             }
-
         }
 
-
         #region 主菜单无法显示完全时，滚动按钮
+
         private void ImageDown_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             try
@@ -98,8 +94,10 @@ namespace NZH.ManagementSystem
             }
             catch
             {
+
             }
         }
+
         private void ImageUp_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             try
@@ -108,8 +106,10 @@ namespace NZH.ManagementSystem
             }
             catch
             {
+
             }
         }
+
         private void ImageButton_MouseLeave(object sender, MouseEventArgs e)
         {
             Image image = sender as Image;
@@ -118,6 +118,7 @@ namespace NZH.ManagementSystem
                 image.Opacity = 1;
             }
         }
+
         private void ImageButton_MouseEnter(object sender, MouseEventArgs e)
         {
             Image image = sender as Image;
@@ -126,10 +127,12 @@ namespace NZH.ManagementSystem
                 image.Opacity = 0.5;
             }
         }
+
         private void Expander_Collapsed(object sender, RoutedEventArgs e)
         {
             CheckShowUpDownButton();
         }
+
         private void Expander_Expanded(object sender, RoutedEventArgs e)
         {
             CheckShowUpDownButton();
@@ -169,6 +172,7 @@ namespace NZH.ManagementSystem
                 gridUpDownButton.Visibility = System.Windows.Visibility.Collapsed;
             }
         }
+
         #endregion
 
         public void Dispose()
@@ -183,7 +187,6 @@ namespace NZH.ManagementSystem
             GC.WaitForPendingFinalizers();
             System.GC.Collect();
         }
-
 
         //关闭窗体
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -219,10 +222,8 @@ namespace NZH.ManagementSystem
             }
         }
 
-
         private void mainHeader_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-
             try
             {
                 this.DragMove();
@@ -235,6 +236,7 @@ namespace NZH.ManagementSystem
             }
             catch
             {
+
             }
         }
 
@@ -261,23 +263,25 @@ namespace NZH.ManagementSystem
             }
             catch
             {
+
             }
         }
+
         private void dockShowMenu_MouseEnter(object sender, MouseEventArgs e)
         {
             dockShowMenu.Opacity = 0.7;
         }
+
         private void dockShowMenu_MouseLeave(object sender, MouseEventArgs e)
         {
             dockShowMenu.Opacity = 1;
         }
 
-
         #region 生成菜单
+
         private void LoadMenu()
         {
             List<PropertyNodeItem> itemList = new List<PropertyNodeItem>();
-
             foreach (var row in TreeModle)
             {
                 if (row.FatherID == "0")
@@ -309,9 +313,9 @@ namespace NZH.ManagementSystem
                 {
                     CreateExpanderItem(grid, sub);
                 }
-                //exp.IsExpanded = true;
             }
         }
+
         private void ForeachPropertyNode(PropertyNodeItem node, string pid)
         {
             foreach (var row in TreeModle)
@@ -336,6 +340,7 @@ namespace NZH.ManagementSystem
                 }
             }
         }
+
         private Expander CreateExpander(PropertyNodeItem NodeItem)
         {
             Expander exp = new Expander();
@@ -344,6 +349,7 @@ namespace NZH.ManagementSystem
             exp.Header = new TextBlock() { VerticalAlignment = System.Windows.VerticalAlignment.Center, Text = NodeItem.DisplayName, FontSize = 14, Foreground = new SolidColorBrush(Color.FromArgb(255, 255, 255, 255)) };
             return exp;
         }
+
         private void CreateExpanderItem(Grid grid, PropertyNodeItem NodeItem)
         {
             if (grid.RowDefinitions.Count != 0)
@@ -354,7 +360,6 @@ namespace NZH.ManagementSystem
                 grid.Children.Add(border);
                 border.SetValue(Grid.RowProperty, grid.RowDefinitions.Count - 1);
             }
-
             grid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(30) });
             ExpanderItem item = new ExpanderItem();
             item.HeaderText = NodeItem.DisplayName;
@@ -375,6 +380,7 @@ namespace NZH.ManagementSystem
             item.MouseLeave += new MouseEventHandler(ExpanderItem_MouseLeave);
             item.MouseLeftButtonDown += new MouseButtonEventHandler(ExpanderItem_MouseLeftButtonDown);
         }
+
         /// <summary>
         /// 判断指定key的资源是否存在
         /// </summary>
@@ -415,6 +421,7 @@ namespace NZH.ManagementSystem
         #endregion
 
         #region 菜单的鼠标效果和点击事件
+
         private void ExpanderItem_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             try
@@ -429,7 +436,6 @@ namespace NZH.ManagementSystem
                             return;
                         if (item.Icon + "" == "")
                             return;
-
                         foreach (var row in TabItemControl)
                         {
                             if (row.Value + "" == item.DisplayName + "")
@@ -437,7 +443,6 @@ namespace NZH.ManagementSystem
                                 MainTab.SelectedIndex = Convert.ToInt32(row.Key);
                                 return;
                             }
-
                         }
                         if (TabItemControl.Count >= 8)
                         {
@@ -454,23 +459,22 @@ namespace NZH.ManagementSystem
                         MainTabItemControl.Margin = new Thickness(-5, -5, -3, -3);
                         TabItem.Content = MainTabItemControl;
                         MainTab.Items.Add(TabItem);
-
                         TabItemControl.Add(TabItemControl.Count, item.DisplayName);
                         MainTab.SelectedIndex = TabItemControl.Count - 1;
                     }
                     else if (expItem.Tag != null && expItem.Tag.ToString() == "ExitSystem")
-                    { // 关闭主窗体，打开登陆界面
+                    {
+                        // 关闭主窗体，打开登陆界面
                         if (ReMessageBox.Show("是否注销系统？", "提示", MessageWindowButtons.YesNo, MessageWindowIcons.Question) == MessageWindowResult.Yes)
                         {
                             Dispose();
-                            #region 重启系统
                             //目的是关闭所有线程，主要是控件内的线程
                             RestartSystem();
-                            #endregion
                         }
                     }
                     else if (expItem.Tag != null && expItem.Tag.ToString() == "ChangePassword")
-                    {//打开子窗体 
+                    {
+                        //打开子窗体 
                         ChangePassword aChild = new ChangePassword();
                         aChild.WindowStartupLocation = WindowStartupLocation.CenterScreen;
                         aChild.UserInfo = UserInfo;
@@ -480,13 +484,14 @@ namespace NZH.ManagementSystem
             }
             catch
             {
+
             }
         }
 
         private void RestartSystem()
         {
             ProcessStartInfo psi = new ProcessStartInfo();
-            psi.FileName = Process.GetCurrentProcess().MainModule.FileName; //Assembly.GetExecutingAssembly().Location;
+            psi.FileName = Process.GetCurrentProcess().MainModule.FileName; 
             Process.Start(psi);
             Application.Current.Shutdown();
         }
@@ -504,8 +509,10 @@ namespace NZH.ManagementSystem
             }
             catch
             {
+
             }
         }
+
         private void ExpanderItem_MouseEnter(object sender, MouseEventArgs e)
         {
             try
@@ -527,6 +534,7 @@ namespace NZH.ManagementSystem
         #endregion
 
         #region 最大化、最小化、关闭按钮、主菜单按钮
+
         private void WindowButton_MouseEnter(object sender, MouseEventArgs e)
         {
             try
@@ -539,8 +547,10 @@ namespace NZH.ManagementSystem
             }
             catch
             {
+
             }
         }
+
         private void WindowButton_MouseLeave(object sender, MouseEventArgs e)
         {
             try
@@ -553,8 +563,10 @@ namespace NZH.ManagementSystem
             }
             catch
             {
+
             }
         }
+
         private void WindowButton_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             try
@@ -587,20 +599,18 @@ namespace NZH.ManagementSystem
                         {
                             this.WindowState = System.Windows.WindowState.Minimized;
                         }
-
                     }
                 }
             }
             catch
             {
+
             }
         }
+
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            #region 判断是否显示按钮
             CheckShowUpDownButton();
-            #endregion
-
             if (this.WindowState == System.Windows.WindowState.Maximized)
             {
                 imageMax.Tag = "Recovery";

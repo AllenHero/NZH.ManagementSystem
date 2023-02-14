@@ -13,5 +13,6 @@ namespace NZH.ManagementSystem
     /// </summary>
     public partial class App : Application
     {
+
     }
 }

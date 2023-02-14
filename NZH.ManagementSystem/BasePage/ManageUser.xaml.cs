@@ -35,13 +35,11 @@ namespace NZH.ManagementSystem.BasePage
             btnQuery.Click += BtnQuery_Click;
         }
 
-
         public void Dispose()
         {
             btnAddUser.Click -= new RoutedEventHandler(btnAddUser_Click);
             btnQuery.Click -= BtnQuery_Click;
             System.GC.Collect();
-
         }
 
         void ManageUser_Loaded(object sender, RoutedEventArgs e)
@@ -49,7 +47,6 @@ namespace NZH.ManagementSystem.BasePage
             this.Loaded -= new RoutedEventHandler(ManageUser_Loaded);
             Query();
         }
-
 
         private void Query()
         {
@@ -59,10 +56,8 @@ namespace NZH.ManagementSystem.BasePage
                 UserInfo.TrueName = textTrueName.Text + "";
                 UserInfo.UserName = textUserName.Text + "";
                 UserInfo ui = bllBaseData.GetUserInfo(UserInfo);
-
                 foreach (var row in ui.Users)
                 {
-
                     string RoleName = "";
                     foreach (var item in row.Roles)
                     {
@@ -79,7 +74,6 @@ namespace NZH.ManagementSystem.BasePage
                 ReMessageBox.Show("获取数据异常，请检查网络后重试");
                 return;
             }
-
             dgManageUser.ItemsSource = AllUserInfo;
             if (AllUserInfo.Count > 0)
                 dgManageUser.SelectedIndex = 0;
@@ -87,6 +81,7 @@ namespace NZH.ManagementSystem.BasePage
 
 
         #region 按钮点击事件
+
         private void BtnQuery_Click(object sender, RoutedEventArgs e)
         {
             Query();
@@ -109,21 +104,18 @@ namespace NZH.ManagementSystem.BasePage
             dgManageUser.SelectedIndex = 0;
         }
 
-
         //修改按钮点击事件
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             var item = dgManageUser.SelectedItem as UserInfo;
             if (item == null)
                 return;
-
             AddUser page = new AddUser();
             page.IsAdd = false;
             page.UserInfo = item;
             page.AllUserInfo = AllUserInfo;
             page.UpdateUserEvent += new EventHandler(page_UpdateUserEvent);
             page.Show();
-
         }
 
         void page_UpdateUserEvent(object sender, EventArgs e)
@@ -131,7 +123,6 @@ namespace NZH.ManagementSystem.BasePage
             dgManageUser.ItemsSource = null;
             dgManageUser.ItemsSource = AllUserInfo;
         }
-
 
         //删除按钮点击事件
         private void Button_Click_1(object sender, RoutedEventArgs e)
@@ -142,10 +133,8 @@ namespace NZH.ManagementSystem.BasePage
                 ReMessageBox.Show("管理员无法删除");
                 return;
             }
-
             if (ReMessageBox.Show("是否删除用户？", "提示", MessageWindowButtons.OKCancel) == MessageWindowResult.OK)
             {
-
                 if (item == null)
                     return;
                 bllBaseData.DeleteUser(item.UserID);
@@ -165,8 +154,5 @@ namespace NZH.ManagementSystem.BasePage
                 item.UserUsable = 0;
             bllBaseData.UpdateUser(item);
         }
-
-
-
     }
 }

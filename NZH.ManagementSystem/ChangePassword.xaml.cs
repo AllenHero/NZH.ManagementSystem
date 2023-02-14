@@ -21,7 +21,6 @@ namespace NZH.ManagementSystem
     /// </summary>
     public partial class ChangePassword : Base.BaseWindow, IDisposable
     {
-
         public UserInfo UserInfo;
         private BllBaseData bllBaseData = new BllBaseData();
 
@@ -51,7 +50,6 @@ namespace NZH.ManagementSystem
             System.GC.Collect();
         }
 
-
         void btnOk_Click(object sender, RoutedEventArgs e)
         {
             if (textPersonID.Text + "" == "")
@@ -59,7 +57,6 @@ namespace NZH.ManagementSystem
                 ReMessageBox.Show("登陆名不能为空");
                 return;
             }
-
             if (textPassword.Password + "" == "")
             {
                 ReMessageBox.Show("新密码不能为空");
@@ -80,7 +77,6 @@ namespace NZH.ManagementSystem
                 ReMessageBox.Show("原密码错误");
                 return;
             }
-
             try
             {
                 int result = bllBaseData.UpdatePassWord(textPersonID.Text + "", textPassword.Password + "");
@@ -104,6 +100,5 @@ namespace NZH.ManagementSystem
         {
             this.Close();
         }
-
     }
 }

@@ -49,7 +49,6 @@ namespace NZH.ManagementSystem.BasePage
             System.GC.Collect();
         }
 
-
         void AddUser_Loaded(object sender, RoutedEventArgs e)
         {
             this.Loaded -= new RoutedEventHandler(AddUser_Loaded);
@@ -62,7 +61,6 @@ namespace NZH.ManagementSystem.BasePage
                 ReMessageBox.Show("获取数据异常，请检查网络后重试");
                 return;
             }
-
             if (IsAdd)
             {
                 ckbOldPassword.IsChecked = false;
@@ -77,10 +75,8 @@ namespace NZH.ManagementSystem.BasePage
                 textName.Text = MESUser.PersonName;
                 textPassword.Text = MESUser.Password;
             }
-
             dataGrid.ItemsSource = MESRole;
         }
-
 
         void ckbOldPassword_Click(object sender, RoutedEventArgs e)
         {
@@ -92,7 +88,6 @@ namespace NZH.ManagementSystem.BasePage
             else
                 textPassword.IsEnabled = true;
         }
-
 
         void btnOk_Click(object sender, RoutedEventArgs e)
         {
@@ -125,15 +120,11 @@ namespace NZH.ManagementSystem.BasePage
                 ReMessageBox.Show("密码不能为空");
                 return;
             }
-
-
-
             if(IsAdd)
             {
                 MESUser.UserID = Guid.NewGuid();
                 MESUser.PersonID = Guid.NewGuid();
             }
-
             MESUser.UserName = textUserName.Text + "";
             MESUser.PersonName = textName.Text + "";
             if (ckbOldPassword.IsChecked == false)
@@ -174,7 +165,6 @@ namespace NZH.ManagementSystem.BasePage
                 ReMessageBox.Show("获取数据异常，请检查网络后重试");
                 return;
             }
-
             this.Close();
         }
 
@@ -185,7 +175,6 @@ namespace NZH.ManagementSystem.BasePage
 
         private void CheckBox_Click(object sender, RoutedEventArgs e)
         {
-
             var item = dataGrid.SelectedItem as MESRole;
             CheckBox ckb = sender as CheckBox;
             if (ckb.IsChecked == true)

@@ -39,7 +39,6 @@ namespace NZH.ManagementSystem.BasePage
             treeview.SelectedItemChanged += new RoutedPropertyChangedEventHandler<object>(treeview_SelectedItemChanged);
         }
 
-
         public void Dispose()
         {
             btnNode.Click -= new RoutedEventHandler(btnNode_Click);
@@ -53,10 +52,8 @@ namespace NZH.ManagementSystem.BasePage
         void ManageAuthority_Loaded(object sender, RoutedEventArgs e)
         {
             this.Loaded -= new RoutedEventHandler(ManageAuthority_Loaded);
-
             AuthorityInfo AuthorityInfo = new AuthorityInfo();
             Info = new ObservableCollection<AuthorityInfo>();
-
             try
             {
                 UserInfo ui = bllBaseData.GetAuthorityInfo(AuthorityInfo);
@@ -73,18 +70,15 @@ namespace NZH.ManagementSystem.BasePage
                 ReMessageBox.Show("加载数据异常，请检查网络后重试");
                 return;
             }
-
             loadTree("0");
         }
-
 
         #region 绑定树结构
 
         public void loadTree(string FatherID)
         {
-
-            treeview.ItemsSource = null;//加载根节点前先清除Treeview控件项
-
+            //加载根节点前先清除Treeview控件项
+            treeview.ItemsSource = null;
             foreach (var row in Info)
             {
                 if (row.ParentID == FatherID + "")
@@ -134,17 +128,16 @@ namespace NZH.ManagementSystem.BasePage
                     node.Children.Add(childNodeItem);
                 }
             }
-
-
         }
+
         #endregion
 
         #region 树结构增删改
+
         //添加节点
         void btnNode_Click(object sender, RoutedEventArgs e)
         {
             var item = treeview.SelectedItem as PropertyNodeItem;
-
             AddAndUpdateAuthority page = new AddAndUpdateAuthority();
             if (item == null)
             {
@@ -164,7 +157,6 @@ namespace NZH.ManagementSystem.BasePage
         void page_AddAuthorityEvent(object sender, EventArgs e)
         {
             var obj = ((AddAndUpdateAuthority)sender).AuthorityInfo;
-
             PropertyNodeItem item = new PropertyNodeItem();
             item.id = obj.FunCode;
             item.parentId = obj.ParentID;
@@ -172,7 +164,6 @@ namespace NZH.ManagementSystem.BasePage
             item.DisplayName = obj.FunName;
             item.AuNode = obj.AuNode + "";
             item.SortCode = obj.SortCode;
-
             var row = treeview.SelectedItem as PropertyNodeItem;
             if (row == null)
             {
@@ -201,40 +192,34 @@ namespace NZH.ManagementSystem.BasePage
                     item.IsExpanded = true;
                 }
             }
-
             this.treeview.ItemsSource = null;
             this.treeview.ItemsSource = itemList;
             item.IsSelectedItem = true;
             treeview.Focus();
         }
 
-
         //添加子节点
         void btnChlidNode_Click(object sender, RoutedEventArgs e)
         {
             //获取当前选中的节点    
             var item = treeview.SelectedItem as PropertyNodeItem;
-
             if (item == null)
             {
                 ReMessageBox.Show("请在添加子节点之前选中一个节点", "提示");
                 return;
             }
-
             AddAndUpdateAuthority page = new AddAndUpdateAuthority();
             page.FatherID = item.id;
             page.type = "AddSon";
             page.Info = Info;
             page.AddSonAuthorityEvent += new EventHandler(page_AddSonAuthorityEvent);
             page.Show();
-
         }
 
         //添加子节点操作
         void page_AddSonAuthorityEvent(object sender, EventArgs e)
         {
             var obj = ((AddAndUpdateAuthority)sender).AuthorityInfo;
-
             PropertyNodeItem item = new PropertyNodeItem();
             item.id = obj.FunCode;
             item.parentId = obj.ParentID;
@@ -243,7 +228,6 @@ namespace NZH.ManagementSystem.BasePage
             item.AuNode = obj.AuNode + "";
             item.SortCode = obj.SortCode;
             var row = treeview.SelectedItem as PropertyNodeItem;
-
             if (row != null)
             {
                 row.IsExpanded = true;
@@ -255,7 +239,6 @@ namespace NZH.ManagementSystem.BasePage
                 {
                     row.Children.Add(children);
                 }
-                //row.Children.Add(item);
                 item.Parent = row;
                 item.IsExpanded = true;
             }
@@ -265,14 +248,11 @@ namespace NZH.ManagementSystem.BasePage
                 itemList.Add(item);
                 itemList = new ObservableCollection<PropertyNodeItem>(itemList.OrderBy(v => v.SortCode));
             }
-
-
             this.treeview.ItemsSource = null;
             this.treeview.ItemsSource = itemList;
             item.IsSelectedItem = true;
             treeview.Focus();
         }
-
 
         //编辑节点
         void btnEdit_Click(object sender, RoutedEventArgs e)
@@ -284,8 +264,6 @@ namespace NZH.ManagementSystem.BasePage
                 ReMessageBox.Show("请在编辑之前选中一个节点", "提示");
                 return;
             }
-
-
             AuthorityInfo item = new AuthorityInfo();
             item.FunCode = row.id;
             item.ParentID = row.parentId;
@@ -309,7 +287,6 @@ namespace NZH.ManagementSystem.BasePage
             row.Menu = obj.Menu;
             row.AuNode = obj.AuNode;
             row.SortCode = obj.SortCode;
-
             if (row.Parent == null)
             {
                 itemList = new ObservableCollection<PropertyNodeItem>(itemList.OrderBy(v => v.SortCode));
@@ -326,7 +303,6 @@ namespace NZH.ManagementSystem.BasePage
                 }
                 row.IsExpanded = true;
             }
-
             this.treeview.ItemsSource = null;
             this.treeview.ItemsSource = itemList;
             row.IsSelectedItem = true;
@@ -336,7 +312,6 @@ namespace NZH.ManagementSystem.BasePage
         //删除节点
         void btnDel_Click(object sender, RoutedEventArgs e)
         {
-
             //获取当前选中的节点    
             var item = treeview.SelectedItem as PropertyNodeItem;
             if (item == null)
@@ -344,7 +319,6 @@ namespace NZH.ManagementSystem.BasePage
                 ReMessageBox.Show("请在删除之前选中一个节点", "提示");
                 return;
             }
-
             if (ReMessageBox.Show("是否删除该节点？", "提示", MessageWindowButtons.OKCancel) == MessageWindowResult.OK)
             {
                 try
@@ -356,13 +330,11 @@ namespace NZH.ManagementSystem.BasePage
                     ReMessageBox.Show("删除数据异常，请检查网络后重试");
                     return;
                 }
-
                 DelTreeViewChildren(item);
                 this.treeview.ItemsSource = itemList;
                 treeview.Focus();
             }
         }
-
 
         private void DelTreeViewChildren(PropertyNodeItem node)
         {
@@ -379,6 +351,7 @@ namespace NZH.ManagementSystem.BasePage
             else
                 itemList.Remove(node);
         }
+
         #endregion
 
         //树节点改变
@@ -400,8 +373,5 @@ namespace NZH.ManagementSystem.BasePage
                 textSortCode.Text = item.SortCode + "";
             }
         }
-
-
-
     }
 }

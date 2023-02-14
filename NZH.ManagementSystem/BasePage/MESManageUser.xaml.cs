@@ -35,14 +35,11 @@ namespace NZH.ManagementSystem.BasePage
             btnQuery.Click += BtnQuery_Click;
         }
 
-
-
         public void Dispose()
         {
             btnAddUser.Click -= new RoutedEventHandler(btnAddUser_Click);
             btnQuery.Click -= BtnQuery_Click;
             System.GC.Collect();
-
         }
 
         void ManageUser_Loaded(object sender, RoutedEventArgs e)
@@ -68,6 +65,7 @@ namespace NZH.ManagementSystem.BasePage
         }
 
         #region 按钮点击事件
+
         private void BtnQuery_Click(object sender, RoutedEventArgs e)
         {
             Query();
@@ -89,20 +87,17 @@ namespace NZH.ManagementSystem.BasePage
             dataGrid.SelectedIndex = 0;
         }
 
-
         //修改按钮点击事件
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             var item = dataGrid.SelectedItem as MESUser;
             if (item == null)
                 return;
-
             MESAddUser page = new MESAddUser();
             page.IsAdd = false;
             page.MESUser = item;
             page.UpdateUserEvent += new EventHandler(page_UpdateUserEvent);
             page.Show();
-
         }
 
         void page_UpdateUserEvent(object sender, EventArgs e)
@@ -111,15 +106,12 @@ namespace NZH.ManagementSystem.BasePage
             dataGrid.ItemsSource = AllMESUser;
         }
 
-
         //删除按钮点击事件
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             var item = dataGrid.SelectedItem as MESUser;
-
             if (ReMessageBox.Show("是否删除用户？", "提示", MessageWindowButtons.OKCancel) == MessageWindowResult.OK)
             {
-
                 if (item == null)
                     return;
                 bllBaseData.DeleteMESUser(item);
@@ -128,8 +120,5 @@ namespace NZH.ManagementSystem.BasePage
         }
 
         #endregion
-
-
-
     }
 }

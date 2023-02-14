@@ -22,6 +22,7 @@ namespace NZH.ManagementSystem.BasePage
     public partial class AddRole : NZH.ManagementSystem.Base.BaseWindow
     {
         private BllBaseData bllBaseData = new BllBaseData();
+
         public AddRole()
         {
             InitializeComponent();
@@ -64,13 +65,14 @@ namespace NZH.ManagementSystem.BasePage
             }
             catch (Exception ex)
             {
+
             }
         }
 
         #region 生成权限树
+
         private void LoadAuthorityTree()
         {
-            //
             List<AuthorityInfo> listAuth = listAuthority.ToList<AuthorityInfo>();
             List<AuthorityInfo> listRoot = new List<AuthorityInfo>();
             for (int i = listAuth.Count - 1; i >= 0; i--)
@@ -99,6 +101,7 @@ namespace NZH.ManagementSystem.BasePage
             }
             tvFunction.ItemsSource = listNode;
         }
+
         private void LoadAuthorityTree(Model.PropertyNodeItem parent, List<AuthorityInfo> listAuth)
         {
             List<AuthorityInfo> listRoot = new List<AuthorityInfo>();
@@ -127,6 +130,7 @@ namespace NZH.ManagementSystem.BasePage
                     LoadAuthorityTree(item, listAuth);
             }
         }
+
         #endregion
 
         private void btnOK_Click(object sender, RoutedEventArgs e)
@@ -134,7 +138,8 @@ namespace NZH.ManagementSystem.BasePage
             try
             {
                 if (isUpdate)
-                {//更新角色
+                { 
+                    //更新角色
                     if (txtRoleName.Text.Trim() == "")
                     {
                         ReMessageBox.Show("请输入角色名称");
@@ -149,14 +154,12 @@ namespace NZH.ManagementSystem.BasePage
                             return;
                         }
                     }
-
                     List<Model.PropertyNodeItem> listChecked = GetCheckedNode();
                     if (listChecked.Count == 0)
                     {
                         ReMessageBox.Show("请选择角色权限");
                         return;
                     }
-
                     string AuID = "";
                     foreach (Model.PropertyNodeItem item in listChecked)
                     {
@@ -176,7 +179,6 @@ namespace NZH.ManagementSystem.BasePage
                             _role.AuthorityID = AuID;
                             _role.RoleName = txtRoleName.Text.Trim();
                             _role.RoleNode = txtDescription.Text.Trim();
-                            //
                             ReMessageBox.Show("修改完成");
                         }
                         else
@@ -192,7 +194,8 @@ namespace NZH.ManagementSystem.BasePage
                     }
                 }
                 else
-                {//添加角色
+                { 
+                    //添加角色
                     _role = new RoleInfo();
                     if (txtRoleName.Text.Trim() == "")
                     {
@@ -208,14 +211,12 @@ namespace NZH.ManagementSystem.BasePage
                             return;
                         }
                     }
-
                     List<Model.PropertyNodeItem> listChecked = GetCheckedNode();
                     if (listChecked.Count == 0)
                     {
                         ReMessageBox.Show("请选择角色权限");
                         return;
                     }
-
                     string AuID = "";
                     foreach (Model.PropertyNodeItem item in listChecked)
                     {
@@ -241,7 +242,6 @@ namespace NZH.ManagementSystem.BasePage
                         return;
                     }
                 }
-
                 this.DialogResult = true;
                 this.Close();
             }
@@ -275,6 +275,7 @@ namespace NZH.ManagementSystem.BasePage
             }
             catch (Exception ex)
             {
+
             }
         }
 
@@ -289,7 +290,6 @@ namespace NZH.ManagementSystem.BasePage
                 }
                 else
                 {
-
                     foreach (Model.PropertyNodeItem child in listNode)
                     {
                         node = GetNodeItem(child.Children.ToList<Model.PropertyNodeItem>(), name);
@@ -302,6 +302,7 @@ namespace NZH.ManagementSystem.BasePage
         }
 
         #region （三态树）选中一个树节点后，自动勾选这个节点的子节点和父节点
+
         private void CheckTreeUp(Model.PropertyNodeItem item)
         {
             if (item.IsChecked != false)
@@ -349,6 +350,7 @@ namespace NZH.ManagementSystem.BasePage
                 }
             }
         }
+
         private void CheckTreeDown(Model.PropertyNodeItem item)
         {
             if (item.Children != null && item.Children.Count > 0)
@@ -360,6 +362,7 @@ namespace NZH.ManagementSystem.BasePage
                 }
             }
         }
+
         #endregion
 
         public RoleInfo GetRoleInfo()
@@ -380,6 +383,7 @@ namespace NZH.ManagementSystem.BasePage
         }
 
         #region 选中指定树节点
+
         private void SetChecked(List<string> listID)
         {
             ClearChecked();
@@ -391,10 +395,12 @@ namespace NZH.ManagementSystem.BasePage
             tvFunction.ItemsSource = null;
             tvFunction.ItemsSource = listNode;
         }
+
         private void SetChecked(List<string> listID, Model.PropertyNodeItem item)
         {
             if (item.Children.Count == 0 && listID.Contains(item.id))
-            {//只选中叶子
+            { 
+                //只选中叶子
                 item.IsChecked = true;
                 CheckTreeUp(item);
                 CheckTreeDown(item);
@@ -407,9 +413,11 @@ namespace NZH.ManagementSystem.BasePage
                 }
             }
         }
+
         #endregion
 
         #region 获取选中树节点
+
         private List<Model.PropertyNodeItem> GetCheckedNode()
         {
             List<Model.PropertyNodeItem> list = new List<Model.PropertyNodeItem>();
@@ -420,10 +428,12 @@ namespace NZH.ManagementSystem.BasePage
             }
             return list;
         }
+
         private void GetCheckedNode(List<Model.PropertyNodeItem> list, Model.PropertyNodeItem item)
         {
             if (item.IsChecked != false) //&& item.Children.Count == 0)
-            {//获取所有选中节点（包括非叶子节点）
+            {
+                //获取所有选中节点（包括非叶子节点）
                 list.Add(item);
             }
             foreach (Model.PropertyNodeItem child in item.Children)
@@ -431,6 +441,7 @@ namespace NZH.ManagementSystem.BasePage
                 GetCheckedNode(list, child);
             }
         }
+
         #endregion
     }
 }

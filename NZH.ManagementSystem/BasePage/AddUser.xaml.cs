@@ -52,7 +52,6 @@ namespace NZH.ManagementSystem.BasePage
             System.GC.Collect();
         }
 
-
         void AddUser_Loaded(object sender, RoutedEventArgs e)
         {
             this.Loaded -= new RoutedEventHandler(AddUser_Loaded);
@@ -76,7 +75,6 @@ namespace NZH.ManagementSystem.BasePage
                 ReMessageBox.Show("获取数据异常，请检查网络后重试");
                 return;
             }
-
             if (IsAdd)
             {
                 ckbOldPassword.IsChecked = false;
@@ -99,7 +97,6 @@ namespace NZH.ManagementSystem.BasePage
                     ReMessageBox.Show("获取数据异常，请检查网络后重试");
                     return;
                 }
-
                 if (UserInfoByUser.Roles != null)
                 {
                     foreach (var row in UserInfoByUser.Roles)
@@ -112,10 +109,8 @@ namespace NZH.ManagementSystem.BasePage
                     }
                 }
             }
-
             dgAddUser.ItemsSource = RoleModel;
         }
-
 
         void ckbOldPassword_Click(object sender, RoutedEventArgs e)
         {
@@ -127,7 +122,6 @@ namespace NZH.ManagementSystem.BasePage
             else
                 textPassword.IsEnabled = true;
         }
-
 
         void btnOk_Click(object sender, RoutedEventArgs e)
         {
@@ -160,7 +154,6 @@ namespace NZH.ManagementSystem.BasePage
                 ReMessageBox.Show("密码不能为空");
                 return;
             }
-
             if (IsAdd)
             {
                 foreach (var row in AllUserInfo)
@@ -172,10 +165,8 @@ namespace NZH.ManagementSystem.BasePage
                     }
                 }
             }
-
             string RoleID = "";
             string RoleName = "";
-            //string ro
             foreach (var row in RoleModel)
             {
                 if (row.IsCheck)
@@ -206,7 +197,6 @@ namespace NZH.ManagementSystem.BasePage
                 ReMessageBox.Show("获取数据异常，请检查网络后重试");
                 return;
             }
-
             if (IsAdd)
             {
                 if (AddUserEvent != null)
@@ -227,7 +217,6 @@ namespace NZH.ManagementSystem.BasePage
 
         private void CheckBox_Click(object sender, RoutedEventArgs e)
         {
-
             var item = dgAddUser.SelectedItem as RoleModel;
             CheckBox ckb = sender as CheckBox;
             if (ckb.IsChecked == true)

@@ -36,14 +36,12 @@ namespace NZH.ManagementSystem.BasePage
 
         public AddAndUpdateAuthority()
         {
-
             this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             InitializeComponent();
             this.Loaded += new RoutedEventHandler(AddAndUpdateAuthority_Loaded);
             btnOk.Click += new RoutedEventHandler(btnOk_Click);
             btnCel.Click += new RoutedEventHandler(btnCel_Click);
         }
-
 
         public void Dispose()
         {
@@ -65,8 +63,6 @@ namespace NZH.ManagementSystem.BasePage
             }
         }
 
-
-
         void btnOk_Click(object sender, RoutedEventArgs e)
         {
             if (textName.Text + "" == "")
@@ -79,13 +75,10 @@ namespace NZH.ManagementSystem.BasePage
                 ReMessageBox.Show("标识码不能为空");
                 return;
             }
-
             if (!ControlClass.CheckTextInt(textSortCode))
             {
                 return;
             }
-            
-
             foreach (var row in Info)
             {
                 if (type == "Edit")
@@ -105,7 +98,6 @@ namespace NZH.ManagementSystem.BasePage
                     }
                 }
             }
-
             AuthorityInfo.FunName = textName.Text;
             AuthorityInfo.AuNode = textMark.Text;
             AuthorityInfo.Menu = textCode.Text;
@@ -115,22 +107,18 @@ namespace NZH.ManagementSystem.BasePage
                 AuthorityInfo.FunCode = Guid.NewGuid().ToString();
                 AuthorityInfo.ParentID = FatherID;
             }
-
             try
             {
                 if (type == "Add" || type == "AddSon")
                     bllBaseData.AddAuthority(AuthorityInfo);
                 else
                     bllBaseData.UpdateAuthority(AuthorityInfo);
-
             }
             catch
             {
                 ReMessageBox.Show("服务调用异常，请检查网络后重试");
                 return;
             }
-
-
             if (type == "Add")
             {
                 if (AddAuthorityEvent != null)
@@ -153,6 +141,5 @@ namespace NZH.ManagementSystem.BasePage
         {
             this.Close();
         }
-
     }
 }

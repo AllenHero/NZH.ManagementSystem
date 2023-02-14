@@ -31,7 +31,6 @@ namespace NZH.ManagementSystem
         {
             InitializeComponent();
             this.Loaded += Login_Loaded;
-
         }
 
         private void Login_Loaded(object sender, RoutedEventArgs e)
@@ -41,12 +40,10 @@ namespace NZH.ManagementSystem
             LoginWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(LoginWorker_RunWorkerCompleted);
         }
 
-
         //登录
         private void imageLogin_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             if (loading.Visibility == System.Windows.Visibility.Visible) return;
-
             if (textPersonID.Text + "" == "")
             {
                 ReMessageBox.Show("登陆名不能为空");
@@ -59,7 +56,6 @@ namespace NZH.ManagementSystem
                 textPassword.Focus();
                 return;
             }
-
             UserInfo userInfo = new UserInfo()
             {
                 UserName = textPersonID.Text,
@@ -95,10 +91,8 @@ namespace NZH.ManagementSystem
             {
                 throw new Exception("获取数据异常，请检查网络后重试");
             }
-
             UserInfo = ui;
         }
-
 
         void LoginWorker_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
         {
@@ -133,7 +127,6 @@ namespace NZH.ManagementSystem
             }
             catch
             {
-               
                 ReMessageBox.Show("登录失败");
                 imageLogin.Source = new BitmapImage(new Uri("/NZH.ManagementSystem;component/Image/LandWindow_2.png", UriKind.Relative));
             }
@@ -143,9 +136,6 @@ namespace NZH.ManagementSystem
                 loading.Visibility = System.Windows.Visibility.Collapsed;
             }
         }
-
-
-
 
         private void imageLogin_MouseEnter(object sender, MouseEventArgs e)
         {
@@ -159,8 +149,8 @@ namespace NZH.ManagementSystem
             imageLogin.Source = new BitmapImage(new Uri("/NZH.ManagementSystem;component/Image/LandWindow_2.png", UriKind.Relative));
         }
 
-
         #region imageClose
+
         private void imageClose_MouseEnter(object sender, MouseEventArgs e)
         {
             if (loading.Visibility == System.Windows.Visibility.Visible) return;
@@ -178,9 +168,11 @@ namespace NZH.ManagementSystem
             if (loading.Visibility == System.Windows.Visibility.Visible) return;
             this.Close();
         }
+
         #endregion
 
         #region imageCancel
+
         private void imageCancel_MouseEnter(object sender, MouseEventArgs e)
         {
             if (loading.Visibility == System.Windows.Visibility.Visible) return;
@@ -198,6 +190,7 @@ namespace NZH.ManagementSystem
             if (loading.Visibility == System.Windows.Visibility.Visible) return;
             this.Close();
         }
+
         #endregion
 
         private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -231,8 +224,5 @@ namespace NZH.ManagementSystem
             textPersonID.IsEnabled = IsEnable;
             textPassword.IsEnabled = IsEnable;
         }
-
-
-
     }
 }

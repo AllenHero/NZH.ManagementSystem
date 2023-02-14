@@ -23,21 +23,20 @@ namespace NZH.ManagementSystem.BasePage
     public partial class ManageRole : Page, IDisposable
     {
         private BllBaseData bllBaseData = new BllBaseData();
+        private List<RoleInfo> listRole = null;//存放所有角色
+        private AuthorityInfo[] listAuthority = null;//存放所有功能模块
+
         public ManageRole()
         {
             InitializeComponent();
             this.Loaded += ManageRole_Loaded;
-
         }
-
-
 
         public void Dispose()
         {
             GC.Collect();
         }
-        private List<RoleInfo> listRole = null;//存放所有角色
-        private AuthorityInfo[] listAuthority = null;//存放所有功能模块
+        
         private void BtnUpdate_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -57,6 +56,7 @@ namespace NZH.ManagementSystem.BasePage
             }
             catch (Exception ex)
             {
+
             }
         }
 
@@ -93,6 +93,7 @@ namespace NZH.ManagementSystem.BasePage
             }
             catch (Exception ex)
             {
+
             }
         }
 
@@ -147,6 +148,7 @@ namespace NZH.ManagementSystem.BasePage
             }
             catch (Exception ex)
             {
+
             }
         }
     }

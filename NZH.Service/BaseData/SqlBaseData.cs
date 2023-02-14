@@ -1205,5 +1205,254 @@ GETDATE(),GETDATE(),GETDATE(),GETDATE(),GETDATE(),
             }
 
         }
+
+
+        #region SqlHelper辅助类
+
+        /// <summary>
+        /// 返回DataTable
+        /// </summary>
+        /// <param name="sql"></param>
+        /// <returns></returns>
+        public DataTable GetDataTable(string sql)
+        {
+            try
+            {
+                DataTable dt = new DataTable();
+                using (DbConnection dbConnection = base.Context.CreateConnection())
+                {
+                    SqlCommand sqlCommand = (SqlCommand)base.Context.CreateCommand(sql, dbConnection);
+                    sqlCommand.CommandText = sql;
+                    SqlDataAdapter da = new SqlDataAdapter(sqlCommand);
+                    da.Fill(dt);
+                    sqlCommand.Dispose();
+                    dbConnection.Close();
+                }
+                return dt;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// 返回DataTable
+        /// </summary>
+        /// <param name="sql"></param>
+        /// <param name="pms"></param>
+        /// <returns></returns>
+        public DataTable GetDataTable(string sql,params SqlParameter[] pms)
+        {
+            try
+            {
+                DataTable dt = new DataTable();
+                using (DbConnection dbConnection = base.Context.CreateConnection())
+                {
+                    SqlCommand sqlCommand = (SqlCommand)base.Context.CreateCommand(sql, dbConnection);
+                    sqlCommand.CommandText = sql;
+                    if (pms != null)
+                    {
+                        foreach (SqlParameter item in pms)
+                        {
+                            if (item != null)
+                            {
+                                sqlCommand.Parameters.Add(item);
+                            }
+                        }
+                    }
+                    SqlDataAdapter da = new SqlDataAdapter(sqlCommand);
+                    da.Fill(dt);
+                    sqlCommand.Dispose();
+                    dbConnection.Close();
+                }
+                return dt;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// 执行sql
+        /// </summary>
+        /// <param name="sql"></param>
+        /// <returns></returns>
+        public int ExecuteNonQuery(string sql)
+        {
+            try
+            {
+                using (DbConnection dbConnection = base.Context.CreateConnection())
+                {
+                    SqlCommand sqlCommand = (SqlCommand)base.Context.CreateCommand(sql, dbConnection);
+                    int i = sqlCommand.ExecuteNonQuery();
+                    sqlCommand.Dispose();
+                    dbConnection.Close();
+                    return i;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// 执行sql
+        /// </summary>
+        /// <param name="sql"></param>
+        /// <param name="pms"></param>
+        /// <returns></returns>
+        public int ExecuteNonQuery(string sql,params SqlParameter[] pms)
+        {
+            try
+            {
+                using (DbConnection dbConnection = base.Context.CreateConnection())
+                {
+                    SqlCommand sqlCommand = (SqlCommand)base.Context.CreateCommand(sql, dbConnection);
+                    if (pms != null)
+                    {
+                        foreach (SqlParameter item in pms)
+                        {
+                            if (item != null)
+                            {
+                                sqlCommand.Parameters.Add(item);
+                            }
+                        }
+                    }
+                    int i = sqlCommand.ExecuteNonQuery();
+                    sqlCommand.Dispose();
+                    dbConnection.Close();
+                    return i;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// 返回首行首列
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public object ExecuteScalar(string sql)
+        {
+            try
+            {
+                using (DbConnection dbConnection = base.Context.CreateConnection())
+                {
+                    SqlCommand sqlCommand = (SqlCommand)base.Context.CreateCommand(sql, dbConnection);
+                    object i = sqlCommand.ExecuteScalar();
+                    sqlCommand.Dispose();
+                    dbConnection.Close();
+                    return i;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// 返回首行首列
+        /// </summary>
+        /// <param name="sql"></param>
+        /// <param name="pms"></param>
+        /// <returns></returns>
+        public object ExecuteScalar(string sql,params SqlParameter[] pms)
+        {
+            try
+            {
+                using (DbConnection dbConnection = base.Context.CreateConnection())
+                {
+                    SqlCommand sqlCommand = (SqlCommand)base.Context.CreateCommand(sql, dbConnection);
+                    if (pms != null)
+                    {
+                        foreach (SqlParameter item in pms)
+                        {
+                            if (item != null)
+                            {
+                                sqlCommand.Parameters.Add(item);
+                            }
+                        }
+                    }
+                    object i = sqlCommand.ExecuteScalar();
+                    sqlCommand.Dispose();
+                    dbConnection.Close();
+                    return i;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// 返回游标对象
+        /// </summary>
+        /// <param name="sql"></param>
+        /// <returns></returns>
+        public SqlDataReader ExecuteReader(string sql)
+        {
+            try
+            {
+                using (DbConnection dbConnection = base.Context.CreateConnection())
+                {
+                    SqlCommand sqlCommand = (SqlCommand)base.Context.CreateCommand(sql, dbConnection);
+                    SqlDataReader sdr = sqlCommand.ExecuteReader(CommandBehavior.CloseConnection);
+                    sdr.Close();
+                    sqlCommand.Dispose();
+                    dbConnection.Close();
+                    return sdr;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// 返回游标对象
+        /// </summary>
+        /// <param name="sql"></param>
+        /// <param name="pms"></param>
+        /// <returns></returns>
+        public SqlDataReader ExecuteReader(string sql,params SqlParameter[] pms)
+        {
+            try
+            {
+                using (DbConnection dbConnection = base.Context.CreateConnection())
+                {
+                    SqlCommand sqlCommand = (SqlCommand)base.Context.CreateCommand(sql, dbConnection);
+                    if (pms != null)
+                    {
+                        foreach (SqlParameter item in pms)
+                        {
+                            if (item != null)
+                            {
+                                sqlCommand.Parameters.Add(item);
+                            }
+                        }
+                    }
+                    SqlDataReader sdr = sqlCommand.ExecuteReader(CommandBehavior.CloseConnection);
+                    sdr.Close();
+                    sqlCommand.Dispose();
+                    dbConnection.Close();
+                    return sdr;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        #endregion
     }
 }

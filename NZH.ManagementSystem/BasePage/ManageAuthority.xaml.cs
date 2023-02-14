@@ -92,7 +92,8 @@ namespace NZH.ManagementSystem.BasePage
                         parentId = row.ParentID,
                         IsExpanded = true,
                         AuNode = row.AuNode + "",
-                        SortCode = row.SortCode
+                        SortCode = row.SortCode,
+                        Enable = row.Enable
                     };
                     string id = row.FunCode;
                     string pid = row.ParentID;
@@ -122,6 +123,7 @@ namespace NZH.ManagementSystem.BasePage
                         IsExpanded = false,
                         AuNode = row.AuNode + "",
                         SortCode = row.SortCode,
+                        Enable = row.Enable,
                         Parent = node
                     };
                     ForeachPropertyNode(childNodeItem, id);
@@ -164,6 +166,7 @@ namespace NZH.ManagementSystem.BasePage
             item.DisplayName = obj.FunName;
             item.AuNode = obj.AuNode + "";
             item.SortCode = obj.SortCode;
+            item.Enable = obj.Enable;
             var row = treeview.SelectedItem as PropertyNodeItem;
             if (row == null)
             {
@@ -227,6 +230,7 @@ namespace NZH.ManagementSystem.BasePage
             item.DisplayName = obj.FunName;
             item.AuNode = obj.AuNode + "";
             item.SortCode = obj.SortCode;
+            item.Enable = obj.Enable;
             var row = treeview.SelectedItem as PropertyNodeItem;
             if (row != null)
             {
@@ -271,6 +275,7 @@ namespace NZH.ManagementSystem.BasePage
             item.FunName = row.DisplayName;
             item.AuNode = row.AuNode + "";
             item.SortCode = row.SortCode;
+            item.Enable = row.Enable;
             AddAndUpdateAuthority page = new AddAndUpdateAuthority();
             page.AuthorityInfo = item;
             page.type = "Edit";
@@ -287,6 +292,7 @@ namespace NZH.ManagementSystem.BasePage
             row.Menu = obj.Menu;
             row.AuNode = obj.AuNode;
             row.SortCode = obj.SortCode;
+            row.Enable = obj.Enable;
             if (row.Parent == null)
             {
                 itemList = new ObservableCollection<PropertyNodeItem>(itemList.OrderBy(v => v.SortCode));
@@ -364,6 +370,7 @@ namespace NZH.ManagementSystem.BasePage
                 textMark.Text = "";
                 textCode.Text = "";
                 textSortCode.Text = "";
+                textEnable.Text = "";
             }
             else
             {
@@ -371,6 +378,14 @@ namespace NZH.ManagementSystem.BasePage
                 textMark.Text = item.AuNode;
                 textCode.Text = item.Menu + "";
                 textSortCode.Text = item.SortCode + "";
+                if (item.Enable == 1)
+                {
+                    textEnable.Text = "是";
+                }
+                else
+                {
+                    textEnable.Text = "否";
+                }
             }
         }
     }

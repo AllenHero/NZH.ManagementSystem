@@ -60,6 +60,11 @@ namespace NZH.ManagementSystem.BasePage
                 textCode.Text = AuthorityInfo.Menu + "";
                 textSortCode.Text = AuthorityInfo.SortCode + "";
                 mark = AuthorityInfo.AuNode;
+                //是否启用
+                if (AuthorityInfo.Enable == 1)
+                    ckbEnable.IsChecked = true;
+                else
+                    ckbEnable.IsChecked = false;
             }
         }
 
@@ -102,6 +107,11 @@ namespace NZH.ManagementSystem.BasePage
             AuthorityInfo.AuNode = textMark.Text;
             AuthorityInfo.Menu = textCode.Text;
             AuthorityInfo.SortCode = Convert.ToInt32(textSortCode.Text);
+            AuthorityInfo.Enable = 0;
+            if (ckbEnable.IsChecked == true)
+            {
+                AuthorityInfo.Enable = 1;
+            }
             if (type == "Add" || type == "AddSon")
             {
                 AuthorityInfo.FunCode = Guid.NewGuid().ToString();

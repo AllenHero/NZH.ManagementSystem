@@ -607,6 +607,9 @@ namespace NZH.Service.BaseData
                 strWhere.Append(string.IsNullOrEmpty(strWhere.ToString()) ? "Where " : " And ");
                 strWhere.Append(" SortCode='" + Authority.SortCode + "' ");
             }
+            //启用
+            strWhere.Append(string.IsNullOrEmpty(strWhere.ToString()) ? "Where " : " And ");
+            strWhere.Append(" Enable='1' ");
             strWhere.Append(" order by SortCode asc ");
             sql += strWhere;
             try
@@ -671,14 +674,15 @@ namespace NZH.Service.BaseData
             }
             string sql = @"INSERT INTO T_Authority
            (ParentID, FunName, AuNode, Menu, FunCode,SortCode)
-     VALUES(@ParentID, @FunName, @AuNode, @Menu, @FunCode,@SortCode)";
+     VALUES(@ParentID, @FunName, @AuNode, @Menu, @FunCode,@SortCode,@Enable)";
             SqlParameter[] parameter = {
                                 new SqlParameter("@ParentID",SqlDbType.VarChar),
                                 new SqlParameter("@FunName",SqlDbType.VarChar),
                                 new SqlParameter("@AuNode",SqlDbType.VarChar),
                                 new SqlParameter("@Menu",SqlDbType.VarChar),
                                 new SqlParameter("@FunCode",SqlDbType.VarChar),
-                                new SqlParameter("@SortCode",SqlDbType.Int)
+                                new SqlParameter("@SortCode",SqlDbType.Int),
+                                new SqlParameter("@Enable",SqlDbType.Int)
                                            };
             parameter[0].Value = Authority.ParentID;
             parameter[1].Value = Authority.FunName;
@@ -686,6 +690,7 @@ namespace NZH.Service.BaseData
             parameter[3].Value = Authority.Menu;
             parameter[4].Value = Authority.FunCode;
             parameter[5].Value = Authority.SortCode;
+            parameter[6].Value = Authority.Enable;
             try
             {
                 Result = ExecuteNonQuery(sql, parameter);
@@ -741,6 +746,8 @@ namespace NZH.Service.BaseData
                 strWhere.Append(string.IsNullOrEmpty(strWhere.ToString()) ? " " : ", ");
                 strWhere.Append(" SortCode='" + Authority.SortCode + "' ");
             }
+            strWhere.Append(string.IsNullOrEmpty(strWhere.ToString()) ? " " : ", ");
+            strWhere.Append(" Enable='" + Authority.Enable + "' ");//是否启用
             //判断修改条件是否为空
             if (string.IsNullOrEmpty(strWhere.ToString()))
             {

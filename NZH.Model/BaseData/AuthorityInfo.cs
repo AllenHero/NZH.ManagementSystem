@@ -42,5 +42,10 @@ namespace NZH.Model.BaseData
         /// 排序码
         /// </summary>		
         public int SortCode { get; set; }
+
+        /// <summary>
+        /// 是否启用
+        /// </summary>
+        public int Enable { get; set; }
     }
 }

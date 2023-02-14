@@ -43,5 +43,7 @@ namespace NZH.Model
         public PropertyNodeItem Parent { get; set; }
 
         public int SortCode { get; set; }
+
+        public int Enable { get; set; }
     }
 }

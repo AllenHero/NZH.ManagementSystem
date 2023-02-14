@@ -150,7 +150,6 @@ namespace NZH.Service.BaseData
             {
                 return Result;
             }
-            #region sql
             string sql = @"INSERT INTO T_User
            (UserName,TrueName, UserPassword, UserUsable, CreateDate, UserNote,RoleID)
      VALUES(@UserName,@TrueName, @UserPassword, @UserUsable, @CreateDate, @UserNote,@RoleID)";
@@ -170,7 +169,6 @@ namespace NZH.Service.BaseData
             parameter[4].Value = User.CreateDate + "" == "" ? DateTime.Now : User.CreateDate;
             parameter[5].Value = User.UserNote + "";
             parameter[6].Value = User.RoleID;
-            #endregion
             try
             {
                 Result = ExecuteNonQuery(sql, parameter);
@@ -194,7 +192,6 @@ namespace NZH.Service.BaseData
             {
                 return Result;
             }
-            #region sql
             string sql = " UPDATE T_User SET ";
             StringBuilder strWhere = new StringBuilder("");
             //判断用户真实姓名是否为空
@@ -231,7 +228,6 @@ namespace NZH.Service.BaseData
                 strWhere.Append(" Where UserName='" + User.UserName + "' ");
             }
             sql += strWhere;
-            #endregion
             try
             {
                 Result = ExecuteNonQuery(sql);
@@ -251,9 +247,7 @@ namespace NZH.Service.BaseData
         public int DeleteUser(int UserID)
         {
             int Result = 0;
-            #region sql
             string sql = " Delete from T_User Where UserID=" + UserID + " ";
-            #endregion
             try
             {
                 Result = ExecuteNonQuery(sql);
@@ -277,9 +271,7 @@ namespace NZH.Service.BaseData
             {
                 return UserList;
             }
-            #region sql
             string sql = @" select * from T_User ";
-            #region  查询条件
             StringBuilder strWhere = new StringBuilder("");
             //判断用户真实姓名是否为空
             if (!string.IsNullOrEmpty(User.TrueName))
@@ -299,9 +291,7 @@ namespace NZH.Service.BaseData
                 strWhere.Append(string.IsNullOrEmpty(strWhere.ToString()) ? "Where " : " And ");
                 strWhere.Append(" UserUsable='" + User.UserUsable + "' ");
             }
-            #endregion
             sql += strWhere;
-            #endregion
             try
             {
                 DataTable dt = GetDataTable(sql);
@@ -369,7 +359,6 @@ namespace NZH.Service.BaseData
             {
                 return RoleList;
             }
-            #region
             string sql = " Select * from T_Role ";
             StringBuilder strWhere = new StringBuilder("");
             //判断角色ID是否为空
@@ -403,7 +392,6 @@ namespace NZH.Service.BaseData
                 strWhere.Append(" RoleUsable='" + Role.RoleUsable + "'  ");
             }
             sql += strWhere;
-            #endregion
             try
             {
                 DataTable dt = GetDataTable(sql);
@@ -429,7 +417,6 @@ namespace NZH.Service.BaseData
             {
                 return RoleList;
             }
-            #region
             else
             {
                 string roleId = RoleID;
@@ -442,7 +429,6 @@ namespace NZH.Service.BaseData
                     roleId = RoleID.Replace('|', ',');
                 }
                 string sql = " Select * from T_Role Where RoleID in (" + roleId + ")";
-                #endregion
                 try
                 {
                     DataTable dt = GetDataTable(sql);
@@ -469,7 +455,6 @@ namespace NZH.Service.BaseData
             {
                 return Result;
             }
-            #region sql
             string sql = @"INSERT INTO T_Role
            (RoleName, RoleNode, AuthorityID,RoleUsable)
      VALUES(@RoleName, @RoleNode, @AuthorityID,@RoleUsable)";
@@ -483,7 +468,6 @@ namespace NZH.Service.BaseData
             parameter[1].Value = Role.RoleNode + "";
             parameter[2].Value = Role.AuthorityID;
             parameter[3].Value = Role.RoleUsable;
-            #endregion
             try
             {
                 Result = ExecuteNonQuery(sql, parameter);
@@ -507,7 +491,6 @@ namespace NZH.Service.BaseData
             {
                 return Result;
             }
-            #region sql
             string sql = " UPDATE T_Role SET ";
             StringBuilder strWhere = new StringBuilder("");
             //判断角色名是否为空
@@ -543,7 +526,6 @@ namespace NZH.Service.BaseData
                 strWhere.Append(" Where RoleID=" + Role.RoleID + " ");
             }
             sql += strWhere;
-            #endregion
             try
             {
                 Result = ExecuteNonQuery(sql);
@@ -563,9 +545,7 @@ namespace NZH.Service.BaseData
         public int DeleteRole(int RoleID)
         {
             int Result = 0;
-            #region sql
             string sql = " Delete from T_Role Where RoleID=" + RoleID + " ";
-            #endregion
             try
             {
                 Result = ExecuteNonQuery(sql);
@@ -589,7 +569,6 @@ namespace NZH.Service.BaseData
             {
                 return AuthorityList;
             }
-            #region
             string sql = " Select * from T_Authority ";
             StringBuilder strWhere = new StringBuilder("");
             //判断权限ID是否为空
@@ -630,7 +609,6 @@ namespace NZH.Service.BaseData
             }
             strWhere.Append(" order by SortCode asc ");
             sql += strWhere;
-            #endregion
             try
             {
                 DataTable dt = GetDataTable(sql);
@@ -656,7 +634,6 @@ namespace NZH.Service.BaseData
             {
                 return AuthorityList;
             }
-            #region
             string authorityId = AuthorityID;
             if (AuthorityID.IndexOf('|', 0) == 0)
             {
@@ -667,7 +644,6 @@ namespace NZH.Service.BaseData
                 authorityId = AuthorityID.Replace('|', ',');
             }
             string sql = " Select * from T_Authority Where AuthorityID in (" + authorityId + ")  order by sortcode asc ";
-            #endregion
             try
             {
                 DataTable dt = GetDataTable(sql);
@@ -693,7 +669,6 @@ namespace NZH.Service.BaseData
             {
                 return Result;
             }
-            #region sql
             string sql = @"INSERT INTO T_Authority
            (ParentID, FunName, AuNode, Menu, FunCode,SortCode)
      VALUES(@ParentID, @FunName, @AuNode, @Menu, @FunCode,@SortCode)";
@@ -711,7 +686,6 @@ namespace NZH.Service.BaseData
             parameter[3].Value = Authority.Menu;
             parameter[4].Value = Authority.FunCode;
             parameter[5].Value = Authority.SortCode;
-            #endregion
             try
             {
                 Result = ExecuteNonQuery(sql, parameter);
@@ -735,7 +709,6 @@ namespace NZH.Service.BaseData
             {
                 return Result;
             }
-            #region sql
             string sql = " UPDATE T_Authority SET ";
             StringBuilder strWhere = new StringBuilder("");
             //判断权限功能名是否为空
@@ -778,7 +751,6 @@ namespace NZH.Service.BaseData
                 strWhere.Append(" Where FunCode='" + Authority.FunCode + "' ");
             }
             sql += strWhere;
-            #endregion
             try
             {
                 Result = ExecuteNonQuery(sql);
@@ -802,9 +774,7 @@ namespace NZH.Service.BaseData
             {
                 return Result;
             }
-            #region sql
             string sql = @" Delete from T_Authority Where FunCode='" + FunCode + "' or ParentID='" + FunCode + "'";
-            #endregion
             try
             {
                 Result = ExecuteNonQuery(sql);
@@ -828,9 +798,7 @@ namespace NZH.Service.BaseData
             {
                 return MesUsrList;
             }
-            #region sql
             string sql = @" select t1.USER_NAME as UserName,t2.PERSON_NAME as PersonName,t1.ID as UserID,t1.PERSON_ID as PersonID,t1.PASSWORD as UserPassword from SYS_USER_PROFILE t1 left join SYS_PERSON t2 on t1.PERSON_ID=t2.ID ";
-            #region  查询条件
             StringBuilder strWhere = new StringBuilder("");
             //判断用户真实姓名是否为空
             if (!string.IsNullOrEmpty(MesUser.PersonName))
@@ -844,9 +812,7 @@ namespace NZH.Service.BaseData
                 strWhere.Append(string.IsNullOrEmpty(strWhere.ToString()) ? "Where " : " And ");
                 strWhere.Append(" t1.USER_NAME like '%" + MesUser.UserName + "%'  ");
             }
-            #endregion
             sql += strWhere;
-            #endregion
             try
             {
                 DataTable dt = GetDataTable(sql);
@@ -872,7 +838,6 @@ namespace NZH.Service.BaseData
             {
                 return MesRoleList;
             }
-            #region sql
             string sql = "";
             if (MesUser.UserID != null)
             {
@@ -883,7 +848,6 @@ where USER_ID='{0}') t2 on t1.ID=t2.ROLE_ID ", MesUser.UserID);
             {
                 sql = string.Format(@" select t1.ID as ROLE_ID,t1.ROLE_NAME,0 as ROLE_ID_Check from SYS_ROLE t1 ");
             }
-            #endregion
             try
             {
                 DataTable dt = GetDataTable(sql);

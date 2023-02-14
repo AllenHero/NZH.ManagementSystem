@@ -138,7 +138,7 @@ namespace NZH.ManagementSystem.BasePage
             try
             {
                 if (isUpdate)
-                { 
+                {
                     //更新角色
                     if (txtRoleName.Text.Trim() == "")
                     {
@@ -194,7 +194,7 @@ namespace NZH.ManagementSystem.BasePage
                     }
                 }
                 else
-                { 
+                {
                     //添加角色
                     _role = new RoleInfo();
                     if (txtRoleName.Text.Trim() == "")
@@ -228,7 +228,7 @@ namespace NZH.ManagementSystem.BasePage
                     _role.AuthorityID = AuID;
                     try
                     {
-                        if (bllBaseData.AddRole(_role)>0)
+                        if (bllBaseData.AddRole(_role) > 0)
                             ReMessageBox.Show("添加完成");
                         else
                         {
@@ -399,7 +399,7 @@ namespace NZH.ManagementSystem.BasePage
         private void SetChecked(List<string> listID, Model.PropertyNodeItem item)
         {
             if (item.Children.Count == 0 && listID.Contains(item.id))
-            { 
+            {
                 //只选中叶子
                 item.IsChecked = true;
                 CheckTreeUp(item);

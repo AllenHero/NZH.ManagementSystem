@@ -102,7 +102,7 @@ namespace NZH.ManagementSystem
                 {
                     if (e.Result != null && e.Result is string)
                     {
-                            ReMessageBox.Show(e.Result.ToString());
+                        ReMessageBox.Show(e.Result.ToString());
                     }
                     else
                     {
@@ -118,7 +118,7 @@ namespace NZH.ManagementSystem
                         }
                         else
                         {
-                            
+
                             ReMessageBox.Show("登录失败");
                             imageLogin.Source = new BitmapImage(new Uri("/NZH.ManagementSystem;component/Image/LandWindow_2.png", UriKind.Relative));
                         }
@@ -139,7 +139,7 @@ namespace NZH.ManagementSystem
 
         private void imageLogin_MouseEnter(object sender, MouseEventArgs e)
         {
-            if (loading.Visibility == System.Windows.Visibility.Visible) return; 
+            if (loading.Visibility == System.Windows.Visibility.Visible) return;
             imageLogin.Source = new BitmapImage(new Uri("/NZH.ManagementSystem;component/Image/LandWindow_4.png", UriKind.Relative));
         }
 

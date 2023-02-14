@@ -245,6 +245,10 @@
       <Project>{5E7453DD-6B80-4F93-8975-B48A61C61A1A}</Project>
       <Name>NZH.Business</Name>
     </ProjectReference>
+    <ProjectReference Include="..\NZH.Common\NZH.Common.csproj">
+      <Project>{FE3034F2-CC2C-4FCB-B5D4-23E8D36D8B23}</Project>
+      <Name>NZH.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NZH.Model\NZH.Model.csproj">
       <Project>{0A315567-67A7-4DAF-B77E-561C7698C4BA}</Project>
       <Name>NZH.Model</Name>

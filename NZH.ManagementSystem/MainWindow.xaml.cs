@@ -491,7 +491,7 @@ namespace NZH.ManagementSystem
         private void RestartSystem()
         {
             ProcessStartInfo psi = new ProcessStartInfo();
-            psi.FileName = Process.GetCurrentProcess().MainModule.FileName; 
+            psi.FileName = Process.GetCurrentProcess().MainModule.FileName;
             Process.Start(psi);
             Application.Current.Shutdown();
         }

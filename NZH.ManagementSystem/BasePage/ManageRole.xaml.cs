@@ -36,7 +36,7 @@ namespace NZH.ManagementSystem.BasePage
         {
             GC.Collect();
         }
-        
+
         private void BtnUpdate_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -44,7 +44,7 @@ namespace NZH.ManagementSystem.BasePage
                 RoleInfo role = dgManageUser.SelectedItem as RoleInfo;
                 if (role != null)
                 {
-                    AddRole updateRole = new  AddRole(role);
+                    AddRole updateRole = new AddRole(role);
                     updateRole.listAuthority = listAuthority;
                     updateRole.listRole = listRole;
                     if (updateRole.ShowDialog() == true)

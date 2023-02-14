@@ -1,4 +1,5 @@
 ﻿using NZH.Business.BaseData;
+using NZH.Common.Extensions;
 using NZH.ManagementSystem.Base;
 using NZH.ManagementSystem.Control;
 using NZH.Model.BaseData;
@@ -130,7 +131,7 @@ namespace NZH.ManagementSystem.BasePage
                 ReMessageBox.Show("登录名不能为空");
                 return;
             }
-            else if (FilterSpecial(textUserName.Text))
+            else if (Util.FilterSpecial(textUserName.Text))
             {
                 ReMessageBox.Show("登录名包含特殊字符，请重新输入");
                 textUserName.Focus();
@@ -142,7 +143,7 @@ namespace NZH.ManagementSystem.BasePage
                 ReMessageBox.Show("姓名不能为空");
                 return;
             }
-            else if (FilterSpecial(textName.Text))
+            else if (Util.FilterSpecial(textName.Text))
             {
                 ReMessageBox.Show("姓名包含特殊字符，请重新输入");
                 textName.Focus();
@@ -223,28 +224,6 @@ namespace NZH.ManagementSystem.BasePage
                 item.IsCheck = true;
             else
                 item.IsCheck = false;
-        }
-
-        /// <summary>
-        /// 验证字符串中是否包含特殊字符
-        /// </summary>
-        /// <param name="str">待判定字符串</param>
-        /// <returns>是否为特殊字符（true：包含，false：不包含）</returns>
-        public bool FilterSpecial(string str)
-        {
-            if (string.IsNullOrEmpty(str))
-            {
-                return true;
-            }
-            string[] aryReg = { "'", "'delete", "?", "<", ">", "%", "\"\"", ",", ".", ">=", "=<", "_", ";", "||", "[", "]", "&", "/", "-", "|", " ", "''" };
-            for (int i = 0; i < aryReg.Length; i++)
-            {
-                if (str.Contains(aryReg[i]))
-                {
-                    return true;
-                }
-            }
-            return false;
         }
     }
 }

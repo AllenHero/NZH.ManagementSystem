@@ -59,14 +59,14 @@ namespace NZH.ManagementSystem.BasePage
             try
             {
                 UserInfo AllRoleInfo = bllBaseData.GetRoleInfo(new RoleInfo());
-                if (AllRoleInfo.role != null)
+                if (AllRoleInfo.Roles != null)
                 {
-                    foreach (var row in AllRoleInfo.role)
+                    foreach (var row in AllRoleInfo.Roles)
                     {
                         RoleModel item = new RoleModel();
                         item.RoleName = row.RoleName;
                         item.RoleID = row.RoleID;
-                        item.isCheck = false;
+                        item.IsCheck = false;
                         RoleModel.Add(item);
                     }
                 }
@@ -100,14 +100,14 @@ namespace NZH.ManagementSystem.BasePage
                     return;
                 }
 
-                if (UserInfoByUser.role != null)
+                if (UserInfoByUser.Roles != null)
                 {
-                    foreach (var row in UserInfoByUser.role)
+                    foreach (var row in UserInfoByUser.Roles)
                     {
                         foreach (var item in RoleModel)
                         {
                             if (item.RoleID == row.RoleID)
-                                item.isCheck = true;
+                                item.IsCheck = true;
                         }
                     }
                 }
@@ -178,7 +178,7 @@ namespace NZH.ManagementSystem.BasePage
             //string ro
             foreach (var row in RoleModel)
             {
-                if (row.isCheck)
+                if (row.IsCheck)
                 {
                     RoleID += row.RoleID + "|";
                     RoleName += row.RoleName + "|";
@@ -231,9 +231,9 @@ namespace NZH.ManagementSystem.BasePage
             var item = dgAddUser.SelectedItem as RoleModel;
             CheckBox ckb = sender as CheckBox;
             if (ckb.IsChecked == true)
-                item.isCheck = true;
+                item.IsCheck = true;
             else
-                item.isCheck = false;
+                item.IsCheck = false;
         }
 
         /// <summary>

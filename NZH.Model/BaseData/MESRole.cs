@@ -8,12 +8,12 @@ namespace NZH.Model.BaseData
 {
     public class MESRole
     {
-        public Guid ROLE_ID { get; set; }
+        public Guid RoleID { get; set; }
 
-        public string ROLE_NAME { get; set; }
+        public string RoleName { get; set; }
 
-        public string ROLE_ID_Check { get; set; }
+        public string RoleIdCheck { get; set; }
 
-        public bool isCheck { get; set; }
+        public bool IsCheck { get; set; }
     }
 }

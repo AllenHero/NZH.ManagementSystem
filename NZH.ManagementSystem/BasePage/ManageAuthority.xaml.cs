@@ -60,9 +60,9 @@ namespace NZH.ManagementSystem.BasePage
             try
             {
                 UserInfo ui = bllBaseData.GetAuthorityInfo(AuthorityInfo);
-                if (ui.authority != null)
+                if (ui.Authoritys != null)
                 {
-                    foreach (var row in ui.authority)
+                    foreach (var row in ui.Authoritys)
                     {
                         Info.Add(row);
                     }

@@ -73,9 +73,9 @@ namespace NZH.ManagementSystem.BasePage
                 ckbOldPassword.IsChecked = true;
                 textUserName.IsEnabled = false;
                 textPassword.IsEnabled = false;
-                textUserName.Text = MESUser.USER_NAME;
-                textName.Text = MESUser.PERSON_NAME;
-                textPassword.Text = MESUser.PASSWORD;
+                textUserName.Text = MESUser.UserName;
+                textName.Text = MESUser.PersonName;
+                textPassword.Text = MESUser.Password;
             }
 
             dataGrid.ItemsSource = MESRole;
@@ -130,20 +130,20 @@ namespace NZH.ManagementSystem.BasePage
 
             if(IsAdd)
             {
-                MESUser.USER_ID = Guid.NewGuid();
-                MESUser.PERSON_ID = Guid.NewGuid();
+                MESUser.UserID = Guid.NewGuid();
+                MESUser.PersonID = Guid.NewGuid();
             }
 
-            MESUser.USER_NAME = textUserName.Text + "";
-            MESUser.PERSON_NAME = textName.Text + "";
+            MESUser.UserName = textUserName.Text + "";
+            MESUser.PersonName = textName.Text + "";
             if (ckbOldPassword.IsChecked == false)
             {
-                MESUser.PASSWORD = AuthorizationHelper.EncodePassword(textPassword.Text + "");
-                MESUser.CHANGE_PASSWORD = true;
+                MESUser.Password = AuthorizationHelper.EncodePassword(textPassword.Text + "");
+                MESUser.ChangePassword = true;
             }
             else
             {
-                MESUser.CHANGE_PASSWORD = false;
+                MESUser.ChangePassword = false;
             }
             MESUser.MESRole = MESRole.ToList();
             try
@@ -189,9 +189,9 @@ namespace NZH.ManagementSystem.BasePage
             var item = dataGrid.SelectedItem as MESRole;
             CheckBox ckb = sender as CheckBox;
             if (ckb.IsChecked == true)
-                item.isCheck = true;
+                item.IsCheck = true;
             else
-                item.isCheck = false;
+                item.IsCheck = false;
         }
 
         /// <summary>

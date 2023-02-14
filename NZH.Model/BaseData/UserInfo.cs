@@ -54,61 +54,21 @@ namespace NZH.Model.BaseData
         public string UserNote { get; set; }
 
         /// <summary>
-        /// 当前级别
-        /// </summary>		
-        public string CurGradeName { get; set; }
-
-        /// <summary>
-        /// 建议级别
-        /// </summary>		
-        public string GradeName { get; set; }
-
-        /// <summary>
-        /// 等级代码
-        /// </summary>		
-        public string GradeCode { get; set; }
-
-        /// <summary>
-        /// 机种代码
-        /// </summary>		
-        public string MachineCode { get; set; }
-
-        /// <summary>
-        /// 机种名称
-        /// </summary>		
-        public string MachineName { get; set; }
-
-        /// <summary>
-        /// 线体
-        /// </summary>		
-        public string LineNo { get; set; }
-
-        /// <summary>
-        /// 分数
-        /// </summary>	
-        public decimal Score { get; set; }
-
-        /// <summary>
-        /// 分数
-        /// </summary>	
-        public decimal ScoreOld { get; set; }
-
-        /// <summary>
         /// 用户信息集合
         /// </summary>
 
-        public List<UserInfo> user { get; set; }
+        public List<UserInfo> Users { get; set; }
 
         /// <summary>
         /// 角色信息
         /// </summary>
 
-        public List<RoleInfo> role { get; set; }
+        public List<RoleInfo> Roles { get; set; }
 
         /// <summary>
         /// 权限信息
         /// </summary>
 
-        public List<AuthorityInfo> authority { get; set; }
+        public List<AuthorityInfo> Authoritys { get; set; }
     }
 }

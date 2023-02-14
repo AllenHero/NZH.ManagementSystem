@@ -60,17 +60,17 @@ namespace NZH.ManagementSystem
 
             TabItemControl.Add(0, "首页");
             TreeModle = new ObservableCollection<TreeModle>();
-            if (UserInfo != null && UserInfo.authority != null)
+            if (UserInfo != null && UserInfo.Authoritys != null)
             {
-                foreach (var row in UserInfo.authority)
+                foreach (var row in UserInfo.Authoritys)
                 {
                     if (row.Menu + "" != "")
                     {
                         TreeModle test = new TreeModle();
                         test.ID = row.FunCode;
-                        test.FATHER_ID = row.ParentID;
-                        test.CODE = row.Menu;
-                        test.NMAE = row.FunName;
+                        test.FatherID = row.ParentID;
+                        test.Code = row.Menu;
+                        test.Name = row.FunName;
                         test.AuNode = row.AuNode;
                         TreeModle.Add(test);
                     }
@@ -280,21 +280,21 @@ namespace NZH.ManagementSystem
 
             foreach (var row in TreeModle)
             {
-                if (row.FATHER_ID == "0")
+                if (row.FatherID == "0")
                 {
                     PropertyNodeItem node = new PropertyNodeItem()
                     {
-                        Icon = row.CODE + "",
-                        DisplayName = row.NMAE + "",
-                        Name = row.NMAE + "",
+                        Icon = row.Code + "",
+                        DisplayName = row.Name + "",
+                        Name = row.Name + "",
                         id = row.ID,
                         AuNode = row.AuNode,
-                        parentId = row.FATHER_ID,
+                        parentId = row.FatherID,
                         IsExpanded = true
 
                     };
                     string id = row.ID;
-                    string pid = row.FATHER_ID;
+                    string pid = row.FatherID;
                     ForeachPropertyNode(node, id);
                     itemList.Add(node);
                 }
@@ -316,14 +316,14 @@ namespace NZH.ManagementSystem
         {
             foreach (var row in TreeModle)
             {
-                if (row.FATHER_ID == pid.ToString())
+                if (row.FatherID == pid.ToString())
                 {
                     string id = row.ID;
-                    string name = row.NMAE + "";
-                    string parentId = row.FATHER_ID;
+                    string name = row.Name + "";
+                    string parentId = row.FatherID;
                     PropertyNodeItem childNodeItem = new PropertyNodeItem()
                     {
-                        Icon = row.CODE + "",
+                        Icon = row.Code + "",
                         DisplayName = name,
                         Name = name,
                         id = id,

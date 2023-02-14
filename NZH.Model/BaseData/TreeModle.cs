@@ -16,17 +16,17 @@ namespace NZH.Model.BaseData
         /// <summary>
         /// 代码（打开页面）
         /// </summary>
-        public string CODE { get; set; }
+        public string Code { get; set; }
 
         /// <summary>
         /// 父ID
         /// </summary>
-        public string FATHER_ID { get; set; }
+        public string FatherID { get; set; }
 
         /// <summary>
         /// 名称（界面名称）
         /// </summary>
-        public string NMAE { get; set; }
+        public string Name { get; set; }
 
         public string AuNode { get; set; }
     }

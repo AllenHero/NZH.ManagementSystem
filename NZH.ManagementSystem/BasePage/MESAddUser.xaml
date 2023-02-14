@@ -9,7 +9,7 @@
     <!--mc:Ignorable="d"-->
     <Window.Resources>
         <DataTemplate x:Key="Checkstate">
-            <CheckBox IsChecked="{Binding isCheck,Mode=TwoWay}" Click="CheckBox_Click"  HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,2,0"></CheckBox>
+            <CheckBox IsChecked="{Binding IsCheck,Mode=TwoWay}" Click="CheckBox_Click"  HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,2,0"></CheckBox>
         </DataTemplate>
     </Window.Resources>
     <Grid>
@@ -38,7 +38,7 @@
         <TextBlock Grid.Row="2"  Grid.Column="3"  HorizontalAlignment="Center"  VerticalAlignment="Center" Foreground="Red" Text="*" Margin="0,0,3,0"/>
         <DataGrid Name="dataGrid" SelectionMode="Single" CanUserReorderColumns="False" CanUserSortColumns="False" AutoGenerateColumns="False" CanUserAddRows="False" Grid.Row="3" Grid.ColumnSpan="3" Margin="6,0,0,0">
             <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding Path=ROLE_NAME }" Header="角色名称" MinWidth="180" IsReadOnly="True"   />
+                <DataGridTextColumn Binding="{Binding Path=RoleName }" Header="角色名称" MinWidth="180" IsReadOnly="True"   />
                 <DataGridTemplateColumn    Header="选择" IsReadOnly="True" CellTemplate="{StaticResource Checkstate}" MinWidth="40"  />
             </DataGrid.Columns>
         </DataGrid>

@@ -102,15 +102,15 @@ namespace NZH.ManagementSystem.BasePage
             {
                 this.Loaded -= new RoutedEventHandler(ManageRole_Loaded);
                 UserInfo userinfo = bllBaseData.GetAuthorityInfo(new AuthorityInfo());
-                if (userinfo != null && userinfo.authority != null)
+                if (userinfo != null && userinfo.Authoritys != null)
                 {
-                    listAuthority = userinfo.authority.ToArray();
+                    listAuthority = userinfo.Authoritys.ToArray();
                 }
                 userinfo = null;
                 userinfo = bllBaseData.GetRoleInfo(new RoleInfo());
-                if (userinfo != null && userinfo.role != null)
+                if (userinfo != null && userinfo.Roles != null)
                 {
-                    listRole = userinfo.role.ToList();
+                    listRole = userinfo.Roles.ToList();
                 }
                 else
                 {
@@ -134,9 +134,9 @@ namespace NZH.ManagementSystem.BasePage
                 if (addRole.ShowDialog() == true)
                 {
                     UserInfo userinfo = bllBaseData.GetRoleInfo(new RoleInfo());
-                    if (userinfo != null && userinfo.role != null)
+                    if (userinfo != null && userinfo.Roles != null)
                     {
-                        listRole = userinfo.role.ToList();
+                        listRole = userinfo.Roles.ToList();
                     }
                     else
                     {

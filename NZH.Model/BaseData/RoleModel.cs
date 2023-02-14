@@ -21,7 +21,7 @@ namespace NZH.Model.BaseData
         /// <summary>
         /// 是否选中
         /// </summary>		
-        public bool isCheck { get; set; }
+        public bool IsCheck { get; set; }
 
         /// <summary>
         /// 权限ID

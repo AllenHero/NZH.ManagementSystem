@@ -11,44 +11,44 @@ namespace NZH.IService.BaseData
     {
         UserInfo Login(string UserName, string UserPassword);
 
-        int UpdatePassWord(string UserName, string userpassword);
+        int UpdatePassWord(string UserName, string UserPassword);
 
-        int AddUser(UserInfo user);
+        int AddUser(UserInfo User);
 
-        int UpdateUser(UserInfo user);
+        int UpdateUser(UserInfo User);
 
         int DeleteUser(int UserID);
 
-        List<UserInfo> GetUserInfo(UserInfo user);
+        List<UserInfo> GetUserInfo(UserInfo User);
 
-        List<RoleInfo> GetRoleInfo(RoleInfo role);
+        List<RoleInfo> GetRoleInfo(RoleInfo Role);
 
-        List<RoleInfo> GetRoleInfoByUser(string roleid);
+        List<RoleInfo> GetRoleInfoByUser(string RoleID);
 
-        int AddRole(RoleInfo role);
+        int AddRole(RoleInfo Role);
 
-        int UpdateRole(RoleInfo role);
+        int UpdateRole(RoleInfo Role);
 
         int DeleteRole(int RoleID);
 
-        List<AuthorityInfo> GetAuthorityInfo(AuthorityInfo authority);
+        List<AuthorityInfo> GetAuthorityInfo(AuthorityInfo Authority);
 
-        int AddAuthority(AuthorityInfo authority);
+        int AddAuthority(AuthorityInfo Authority);
 
-        int UpdateAuthority(AuthorityInfo authority);
+        int UpdateAuthority(AuthorityInfo Authority);
 
         int DeleteAuthority(string FunCode);
 
-        List<MESUser> GetMESUser(MESUser user);
+        List<MESUser> GetMESUser(MESUser User);
 
-        List<MESRole> GetMESRole(MESUser user);
+        List<MESRole> GetMESRole(MESUser usUserer);
 
-        int MESAddUser(MESUser user);
+        int MESAddUser(MESUser User);
 
-        int CheckMESAddUser(MESUser user);
+        int CheckMESAddUser(MESUser User);
 
-        int MESUpdateUser(MESUser user);
+        int MESUpdateUser(MESUser User);
 
-        int MESDeleteUser(MESUser user);
+        int MESDeleteUser(MESUser User);
     }
 }

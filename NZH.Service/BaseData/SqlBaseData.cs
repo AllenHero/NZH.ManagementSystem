@@ -94,8 +94,8 @@ namespace NZH.Service.BaseData
                             authorityinfo = GetAuthorityInfo(new AuthorityInfo());
                         }
 
-                        result.role = roleinfo;
-                        result.authority = authorityinfo;
+                        result.Roles = roleinfo;
+                        result.Authoritys = authorityinfo;
 
                     }
                 }
@@ -378,7 +378,7 @@ namespace NZH.Service.BaseData
                     List<RoleInfo> roleinfo = GetRoleInfo(role);
                     for (int i = 0; i < list.Count; i++)
                     {
-                        list[i].role = GetRoleNameByRoleId(list[i].RoleID, roleinfo);
+                        list[i].Roles = GetRoleNameByRoleId(list[i].RoleID, roleinfo);
                     }
                 }
                 return list;
@@ -979,20 +979,20 @@ namespace NZH.Service.BaseData
         {
             List<MESUser> list = new List<MESUser>();
             #region sql
-            string sql = @" select t1.USER_NAME,t2.PERSON_NAME,t1.ID as USER_ID,t1.PERSON_ID,t1.PASSWORD as UserPassword from SYS_USER_PROFILE t1 left join SYS_PERSON t2 on t1.PERSON_ID=t2.ID ";
+            string sql = @" select t1.USER_NAME as UserName,t2.PERSON_NAME as PersonName,t1.ID as UserID,t1.PERSON_ID as PersonID,t1.PASSWORD as UserPassword from SYS_USER_PROFILE t1 left join SYS_PERSON t2 on t1.PERSON_ID=t2.ID ";
             #region  查询条件
             StringBuilder strWhere = new StringBuilder("");
             //判断用户真实姓名是否为空
-            if (!string.IsNullOrEmpty(user.PERSON_NAME))
+            if (!string.IsNullOrEmpty(user.PersonName))
             {
                 strWhere.Append(string.IsNullOrEmpty(strWhere.ToString()) ? "Where " : " And ");
-                strWhere.Append(" t2.PERSON_NAME like '%" + user.PERSON_NAME + "%' ");
+                strWhere.Append(" t2.PERSON_NAME like '%" + user.PersonName + "%' ");
             }
             //判断用户名是否为空
-            if (!string.IsNullOrEmpty(user.USER_NAME))
+            if (!string.IsNullOrEmpty(user.UserName))
             {
                 strWhere.Append(string.IsNullOrEmpty(strWhere.ToString()) ? "Where " : " And ");
-                strWhere.Append(" t1.USER_NAME like '%" + user.USER_NAME + "%'  ");
+                strWhere.Append(" t1.USER_NAME like '%" + user.UserName + "%'  ");
             }
 
             #endregion
@@ -1030,10 +1030,10 @@ namespace NZH.Service.BaseData
             List<MESRole> list = new List<MESRole>();
             #region sql
             string sql = "";
-            if (user.USER_ID != null)
+            if (user.UserID != null)
             {
-                sql = string.Format(@" select t1.ID as ROLE_ID,t1.ROLE_NAME,(case when t2.ROLE_ID is null then '0' else '1' end)  ROLE_ID_Check from SYS_ROLE t1 left join (select * from SYS_USER_IN_ROLES 
-where USER_ID='{0}') t2 on t1.ID=t2.ROLE_ID ", user.USER_ID);
+                sql = string.Format(@" select t1.ID as RoleID,t1.ROLE_NAME as RoleName,(case when t2.ROLE_ID is null then '0' else '1' end)  RoleIdCheck from SYS_ROLE t1 left join (select * from SYS_USER_IN_ROLES 
+where USER_ID='{0}') t2 on t1.ID=t2.ROLE_ID ", user.UserID);
             }
             else
             {
@@ -1056,10 +1056,10 @@ where USER_ID='{0}') t2 on t1.ID=t2.ROLE_ID ", user.USER_ID);
                     list = Util.DataTableConvertList<MESRole>(ds.Tables[0]);
                 foreach (var row in list)
                 {
-                    if (row.ROLE_ID_Check + "" == "0")
-                        row.isCheck = false;
+                    if (row.RoleIdCheck + "" == "0")
+                        row.IsCheck = false;
                     else
-                        row.isCheck = true;
+                        row.IsCheck = true;
 
                 }
                 return list;
@@ -1086,13 +1086,13 @@ FAILED_PASSWORD_ATTEMPT_COUNT,FAILED_PASSWORD_ATTEMPT_WINDOW_START,FAILED_PASSWO
 FAILED_PASSWORD_ANSWER_ATTEMPT_WINDOW_START) 
 VALUES('{0}','{1}','{2}','51Tg5W5K9IIrKmfISaGB4Q==','{3}','','my office name','D6YL8ChxSPHtEF0hsZrvAQ==',1,
 GETDATE(),GETDATE(),GETDATE(),GETDATE(),GETDATE(),
-0,GETDATE(),0,GETDATE())", user.USER_ID, user.USER_NAME, user.PASSWORD, user.PERSON_ID));
-            sqllist.Add(string.Format(@" INSERT INTO SYS_PERSON (ID, PERSON_NAME) VALUES ('{0}', '{1}')", user.PERSON_ID, user.PERSON_NAME));
-            sqllist.Add(" Delete from SYS_USER_IN_ROLES Where USER_ID='" + user.USER_ID + "' ");
+0,GETDATE(),0,GETDATE())", user.UserID, user.UserName, user.Password, user.PersonID));
+            sqllist.Add(string.Format(@" INSERT INTO SYS_PERSON (ID, PERSON_NAME) VALUES ('{0}', '{1}')", user.PersonID, user.PersonName));
+            sqllist.Add(" Delete from SYS_USER_IN_ROLES Where USER_ID='" + user.UserID + "' ");
             foreach (var row in user.MESRole)
             {
-                if (row.isCheck)
-                    sqllist.Add(string.Format(@" INSERT INTO SYS_USER_IN_ROLES (USER_ID, ROLE_ID) VALUES ('{0}', '{1}')", user.USER_ID, row.ROLE_ID));
+                if (row.IsCheck)
+                    sqllist.Add(string.Format(@" INSERT INTO SYS_USER_IN_ROLES (USER_ID, ROLE_ID) VALUES ('{0}', '{1}')", user.UserID, row.RoleID));
             }
 
             result = ExecuteNonQuery(sqllist);
@@ -1107,7 +1107,7 @@ GETDATE(),GETDATE(),GETDATE(),GETDATE(),GETDATE(),
         public int CheckMESAddUser(MESUser user)
         {
             int result = 0;
-            string sql = string.Format(@"select * from SYS_USER_PROFILE where user_name='{0}' ", user.USER_NAME);
+            string sql = string.Format(@"select * from SYS_USER_PROFILE where user_name='{0}' ", user.UserName);
 
             try
             {
@@ -1140,16 +1140,16 @@ GETDATE(),GETDATE(),GETDATE(),GETDATE(),GETDATE(),
         {
             int result = 0;
             List<string> sqllist = new List<string>();
-            if (user.CHANGE_PASSWORD)
+            if (user.ChangePassword)
             {
-                sqllist.Add(string.Format(@" UPDATE SYS_USER_PROFILE SET PASSWORD='{0}' WHERE ID='{1}'", user.PASSWORD, user.USER_ID));
+                sqllist.Add(string.Format(@" UPDATE SYS_USER_PROFILE SET PASSWORD='{0}' WHERE ID='{1}'", user.Password, user.UserID));
             }
-            sqllist.Add(string.Format(@" UPDATE SYS_PERSON SET PERSON_NAME='{0}' WHERE ID='{1}'", user.PERSON_NAME, user.PERSON_ID));
-            sqllist.Add(" Delete from SYS_USER_IN_ROLES Where USER_ID='" + user.USER_ID + "' ");
+            sqllist.Add(string.Format(@" UPDATE SYS_PERSON SET PERSON_NAME='{0}' WHERE ID='{1}'", user.PersonName, user.PersonID));
+            sqllist.Add(" Delete from SYS_USER_IN_ROLES Where USER_ID='" + user.UserID + "' ");
             foreach (var row in user.MESRole)
             {
-                if (row.isCheck)
-                    sqllist.Add(string.Format(@" INSERT INTO SYS_USER_IN_ROLES (USER_ID, ROLE_ID) VALUES ('{0}', '{1}')", user.USER_ID, row.ROLE_ID));
+                if (row.IsCheck)
+                    sqllist.Add(string.Format(@" INSERT INTO SYS_USER_IN_ROLES (USER_ID, ROLE_ID) VALUES ('{0}', '{1}')", user.UserID, row.RoleID));
             }
 
             result = ExecuteNonQuery(sqllist);
@@ -1165,9 +1165,9 @@ GETDATE(),GETDATE(),GETDATE(),GETDATE(),GETDATE(),
         {
             int result = 0;
             List<string> sqllist = new List<string>();
-            sqllist.Add(" Delete from SYS_USER_PROFILE Where ID='" + user.USER_ID + "' ");
-            sqllist.Add(" Delete from SYS_PERSON Where ID='" + user.PERSON_ID + "' ");
-            sqllist.Add(" Delete from SYS_USER_IN_ROLES Where USER_ID='" + user.USER_ID + "' ");
+            sqllist.Add(" Delete from SYS_USER_PROFILE Where ID='" + user.UserID + "' ");
+            sqllist.Add(" Delete from SYS_PERSON Where ID='" + user.PersonID + "' ");
+            sqllist.Add(" Delete from SYS_USER_IN_ROLES Where USER_ID='" + user.UserID + "' ");
             result = ExecuteNonQuery(sqllist);
             return result;
         }

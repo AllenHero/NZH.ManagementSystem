@@ -55,8 +55,8 @@ namespace NZH.ManagementSystem.BasePage
         {
             try
             {
-                MESUser.USER_NAME = textUserName.Text + "";
-                MESUser.PERSON_NAME = textTrueName.Text + "";
+                MESUser.UserName = textUserName.Text + "";
+                MESUser.PersonName = textTrueName.Text + "";
                 AllMESUser = new ObservableCollection<MESUser>(bllBaseData.GetMESUser(MESUser));
                 dataGrid.ItemsSource = AllMESUser;
             }

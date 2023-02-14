@@ -60,11 +60,11 @@ namespace NZH.ManagementSystem.BasePage
                 UserInfo.UserName = textUserName.Text + "";
                 UserInfo ui = bllBaseData.GetUserInfo(UserInfo);
 
-                foreach (var row in ui.user)
+                foreach (var row in ui.Users)
                 {
 
                     string RoleName = "";
-                    foreach (var item in row.role)
+                    foreach (var item in row.Roles)
                     {
                         RoleName += item.RoleName + "|";
                     }

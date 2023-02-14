@@ -8,17 +8,17 @@ namespace NZH.Model.BaseData
 {
     public class MESUser
     {
-        public Guid USER_ID { get; set; }
+        public Guid UserID { get; set; }
 
-        public Guid PERSON_ID { get; set; }
+        public Guid PersonID { get; set; }
 
-        public string USER_NAME { get; set; }
+        public string UserName { get; set; }
 
-        public string PERSON_NAME { get; set; }
+        public string PersonName { get; set; }
 
-        public string PASSWORD { get; set; }
+        public string Password { get; set; }
 
-        public bool CHANGE_PASSWORD { get; set; }
+        public bool ChangePassword { get; set; }
 
         public List<MESRole> MESRole { get; set; }
     }

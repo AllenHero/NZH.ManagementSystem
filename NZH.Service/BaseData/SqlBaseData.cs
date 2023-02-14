@@ -25,78 +25,61 @@ namespace NZH.Service.BaseData
         /// <returns></returns>
         public UserInfo Login(string UserName, string UserPassword)
         {
-            UserInfo result = new UserInfo();
+            UserInfo User = new UserInfo();
             if (Util.FilterSpecial(UserName))
-                return result;
-            DataSet ds = new DataSet();
-            DataTable dt = new DataTable();
+                return User;
             string sql = @"select * from T_User where UserName=@UserName and UserPassword=@UserPassword and UserUsable=1";
             SqlParameter[] parameter = {
                                 new SqlParameter("@UserName",SqlDbType.VarChar),
                                 new SqlParameter("@UserPassword",SqlDbType.VarChar),
                                            };
-
             parameter[0].Value = UserName;
             parameter[1].Value = Util.GetMd5Str(UserPassword);
             try
             {
-                using (DbConnection dbConnection = base.Context.CreateConnection())
+                DataTable dt = GetDataTable(sql, parameter);
+                if (dt != null && dt.Rows.Count > 0)
                 {
-                    SqlCommand sqlCommand = (SqlCommand)base.Context.CreateCommand(sql, dbConnection);
-                    sqlCommand.CommandText = sql;
-                    foreach (SqlParameter parm in parameter)
-                        sqlCommand.Parameters.Add(parm);
-                    SqlDataAdapter da = new SqlDataAdapter(sqlCommand);
-                    da.Fill(ds);
-                    sqlCommand.Dispose();
-                    dbConnection.Close();
-                }
-                if (ds != null && ds.Tables[0].Rows.Count > 0)
-                {
-                    dt = ds.Tables[0];
-                    result.UserID = (int)dt.Rows[0]["UserID"];
-                    result.UserName = dt.Rows[0]["UserName"] + "";
-                    result.TrueName = dt.Rows[0]["TrueName"] + "";
-                    result.UserUsable = (int)dt.Rows[0]["UserUsable"];
-                    result.CreateDate = string.IsNullOrEmpty(dt.Rows[0]["CreateDate"].ToString()) ? DateTime.Now : (DateTime)dt.Rows[0]["CreateDate"];
-                    result.RoleID = dt.Rows[0]["RoleID"].ToString();
-                    result.UserNote = dt.Rows[0]["UserNote"].ToString();
-
-                    List<RoleInfo> roleinfo = new List<RoleInfo>();
-                    List<AuthorityInfo> authorityinfo = new List<AuthorityInfo>();
-                    string authorityid = "";
+                    User.UserID = (int)dt.Rows[0]["UserID"];
+                    User.UserName = dt.Rows[0]["UserName"] + "";
+                    User.TrueName = dt.Rows[0]["TrueName"] + "";
+                    User.UserUsable = (int)dt.Rows[0]["UserUsable"];
+                    User.CreateDate = string.IsNullOrEmpty(dt.Rows[0]["CreateDate"].ToString()) ? DateTime.Now : (DateTime)dt.Rows[0]["CreateDate"];
+                    User.RoleID = dt.Rows[0]["RoleID"].ToString();
+                    User.UserNote = dt.Rows[0]["UserNote"].ToString();
+                    List<RoleInfo> Roles = new List<RoleInfo>();
+                    List<AuthorityInfo> Authoritys = new List<AuthorityInfo>();
+                    string AuthorityId = "";
                     //角色信息
-                    if (!string.IsNullOrWhiteSpace(result.RoleID))
+                    if (!string.IsNullOrWhiteSpace(User.RoleID))
                     {
-                        string[] roles = result.RoleID.Split('|');
+                        string[] roles = User.RoleID.Split('|');
                         bool flag = true;
                         for (int j = 0; j < roles.Length; j++)
                         {
-                            RoleInfo ri = new RoleInfo();
-                            ri.RoleID = Convert.ToInt32(roles[j]);
-                            List<RoleInfo> role = GetRoleInfo(ri);
-                            ri = GetOneRoleInfo(role);
-                            authorityid += "|" + ri.AuthorityID;
+                            RoleInfo role = new RoleInfo();
+                            role.RoleID = Convert.ToInt32(roles[j]);
+                            List<RoleInfo> roleList = GetRoleInfo(role);
+                            role = GetOneRoleInfo(roleList);
+                            AuthorityId += "|" + role.AuthorityID;
                             //权限信息
                             if (roles[j].ToString() == "1")
                             {
                                 flag = false;
                             }
-                            roleinfo.Add(ri);
+                            Roles.Add(role);
                         }
                         //判断是否有管理员权限
                         if (flag)
                         {
-                            authorityinfo = GetAuthorityInfoByRole(authorityid);
+                            Authoritys = GetAuthorityInfoByRole(AuthorityId);
                         }
                         else
                         {
-                            authorityinfo = GetAuthorityInfo(new AuthorityInfo());
+                            Authoritys = GetAuthorityInfo(new AuthorityInfo());
                         }
-
-                        result.Roles = roleinfo;
-                        result.Authoritys = authorityinfo;
-
+                        User.Roles = Roles;
+                        User.Authoritys = Authoritys;
                     }
                 }
             }
@@ -104,9 +87,7 @@ namespace NZH.Service.BaseData
             {
                 throw new Exception(ex.Message);
             }
-
-
-            return result;
+            return User;
         }
 
         /// <summary>
@@ -116,14 +97,14 @@ namespace NZH.Service.BaseData
         /// <returns>角色实体</returns>
         public RoleInfo GetOneRoleInfo(List<RoleInfo> Roles)
         {
-            RoleInfo ri = new RoleInfo();
+            RoleInfo Role = new RoleInfo();
             if (Roles != null && Roles.Count > 0)
             {
-                ri.RoleName = Roles[0].RoleName;
-                ri.RoleNode = Roles[0].RoleNode;
-                ri.AuthorityID = Roles[0].AuthorityID;
+                Role.RoleName = Roles[0].RoleName;
+                Role.RoleNode = Roles[0].RoleNode;
+                Role.AuthorityID = Roles[0].AuthorityID;
             }
-            return ri;
+            return Role;
         }
 
         /// <summary>
@@ -134,7 +115,11 @@ namespace NZH.Service.BaseData
         /// <returns>执行数</returns>
         public int UpdatePassWord(string UserName, string UserPassword)
         {
-            int result = 0;
+            int Result = 0;
+            if (string.IsNullOrWhiteSpace(UserName))
+            {
+                return Result;
+            }
             string sql = " Update T_User Set UserPassword=@UserPassword where UserName=@UserName ";
             SqlParameter[] parameter = {
                                 new SqlParameter("@UserName",SqlDbType.VarChar),
@@ -144,26 +129,13 @@ namespace NZH.Service.BaseData
             parameter[1].Value = Util.GetMd5Str(UserPassword);
             try
             {
-                using (DbConnection dbConnection = base.Context.CreateConnection())
-                {
-                    if (dbConnection == null) return result;
-                    SqlCommand sqlCommand = (SqlCommand)base.Context.CreateCommand(sql, dbConnection);
-                    sqlCommand.CommandText = sql;
-                    foreach (SqlParameter parm in parameter)
-                        sqlCommand.Parameters.Add(parm);
-                    sqlCommand.CommandTimeout = 5;
-                    result = sqlCommand.ExecuteNonQuery();
-                    sqlCommand.Dispose();
-                    dbConnection.Close();
-                    return result;
-                }
-
+                Result = ExecuteNonQuery(sql, parameter);
+                return Result;
             }
             catch (Exception ex)
             {
-                return result;
+                return Result;
             }
-
         }
 
         /// <summary>
@@ -173,10 +145,10 @@ namespace NZH.Service.BaseData
         /// <returns>返回添加返回数</returns>
         public int AddUser(UserInfo User)
         {
-            int result = 0;
+            int Result = 0;
             if (User == null)
             {
-                return result;
+                return Result;
             }
             #region sql
             string sql = @"INSERT INTO T_User
@@ -201,24 +173,12 @@ namespace NZH.Service.BaseData
             #endregion
             try
             {
-                using (DbConnection dbConnection = base.Context.CreateConnection())
-                {
-                    if (dbConnection == null) return result;
-                    SqlCommand sqlCommand = (SqlCommand)base.Context.CreateCommand(sql, dbConnection);
-                    sqlCommand.CommandText = sql;
-                    foreach (SqlParameter parm in parameter)
-                        sqlCommand.Parameters.Add(parm);
-                    sqlCommand.CommandTimeout = 5;
-                    result = sqlCommand.ExecuteNonQuery();
-                    sqlCommand.Dispose();
-                    dbConnection.Close();
-                    return result;
-                }
-
+                Result = ExecuteNonQuery(sql, parameter);
+                return Result;
             }
             catch (Exception ex)
             {
-                return result;
+                return Result;
             }
         }
 
@@ -229,7 +189,11 @@ namespace NZH.Service.BaseData
         /// <returns>返回添加返回数</returns>
         public int UpdateUser(UserInfo User)
         {
-            int result = 0;
+            int Result = 0;
+            if (User == null)
+            {
+                return Result;
+            }
             #region sql
             string sql = " UPDATE T_User SET ";
             StringBuilder strWhere = new StringBuilder("");
@@ -260,33 +224,22 @@ namespace NZH.Service.BaseData
             //判断用户名是否为空
             if (string.IsNullOrEmpty(strWhere.ToString()))
             {
-                return 0;
+                return Result;
             }
             else
             {
                 strWhere.Append(" Where UserName='" + User.UserName + "' ");
             }
             sql += strWhere;
-
             #endregion
             try
             {
-                using (DbConnection dbConnection = base.Context.CreateConnection())
-                {
-                    if (dbConnection == null) return result;
-                    SqlCommand sqlCommand = (SqlCommand)base.Context.CreateCommand(sql, dbConnection);
-                    sqlCommand.CommandText = sql;
-                    sqlCommand.CommandTimeout = 5;
-                    result = sqlCommand.ExecuteNonQuery();
-                    sqlCommand.Dispose();
-                    dbConnection.Close();
-                    return result;
-                }
-
+                Result = ExecuteNonQuery(sql);
+                return Result;
             }
             catch (Exception ex)
             {
-                return result;
+                return Result;
             }
         }
 
@@ -297,29 +250,18 @@ namespace NZH.Service.BaseData
         /// <returns>返回添加返回数</returns>
         public int DeleteUser(int UserID)
         {
-            int result = 0;
+            int Result = 0;
             #region sql
             string sql = " Delete from T_User Where UserID=" + UserID + " ";
-
             #endregion
             try
             {
-                using (DbConnection dbConnection = base.Context.CreateConnection())
-                {
-                    if (dbConnection == null) return result;
-                    SqlCommand sqlCommand = (SqlCommand)base.Context.CreateCommand(sql, dbConnection);
-                    sqlCommand.CommandText = sql;
-                    sqlCommand.CommandTimeout = 5;
-                    result = sqlCommand.ExecuteNonQuery();
-                    sqlCommand.Dispose();
-                    dbConnection.Close();
-                    return result;
-                }
-
+                Result = ExecuteNonQuery(sql);
+                return Result;
             }
             catch (Exception ex)
             {
-                return result;
+                return Result;
             }
         }
 
@@ -330,7 +272,11 @@ namespace NZH.Service.BaseData
         /// <returns>用户信息集合</returns>
         public List<UserInfo> GetUserInfo(UserInfo User)
         {
-            List<UserInfo> list = new List<UserInfo>();
+            List<UserInfo> UserList = new List<UserInfo>();
+            if (User == null)
+            {
+                return UserList;
+            }
             #region sql
             string sql = @" select * from T_User ";
             #region  查询条件
@@ -353,42 +299,29 @@ namespace NZH.Service.BaseData
                 strWhere.Append(string.IsNullOrEmpty(strWhere.ToString()) ? "Where " : " And ");
                 strWhere.Append(" UserUsable='" + User.UserUsable + "' ");
             }
-
             #endregion
             sql += strWhere;
-
             #endregion
             try
             {
-                DataSet ds = new DataSet();
-                using (DbConnection dbConnection = base.Context.CreateConnection())
-                {
-                    SqlCommand sqlCommand = (SqlCommand)base.Context.CreateCommand(sql, dbConnection);
-                    sqlCommand.CommandText = sql;
-                    SqlDataAdapter da = new SqlDataAdapter(sqlCommand);
-                    da.Fill(ds);
-                    sqlCommand.Dispose();
-                    dbConnection.Close();
-                }
-                if (ds != null && ds.Tables[0].Rows.Count > 0)
-                    list = Util.DataTableConvertList<UserInfo>(ds.Tables[0]);
-                if (list.Count > 0)
+                DataTable dt = GetDataTable(sql);
+                if (dt != null && dt.Rows.Count > 0)
+                    UserList = Util.DataTableConvertList<UserInfo>(dt);
+                if (UserList.Count > 0)
                 {
                     RoleInfo role = new RoleInfo();
-                    List<RoleInfo> roleinfo = GetRoleInfo(role);
-                    for (int i = 0; i < list.Count; i++)
+                    List<RoleInfo> Roles = GetRoleInfo(role);
+                    for (int i = 0; i < UserList.Count; i++)
                     {
-                        list[i].Roles = GetRoleNameByRoleId(list[i].RoleID, roleinfo);
+                        UserList[i].Roles = GetRoleNameByRoleId(UserList[i].RoleID, Roles);
                     }
                 }
-                return list;
+                return UserList;
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
-
-
         }
 
         /// <summary>
@@ -399,29 +332,29 @@ namespace NZH.Service.BaseData
         /// <returns></returns>
         public List<RoleInfo> GetRoleNameByRoleId(string RoleID, List<RoleInfo> Roles)
         {
-            List<RoleInfo> rolenamelist = new List<RoleInfo>();
+            List<RoleInfo> RoleList = new List<RoleInfo>();
             if (string.IsNullOrEmpty(RoleID))
             {
-                return rolenamelist;
+                return RoleList;
             }
             if (!string.IsNullOrEmpty(RoleID))
             {
-                string[] rolesid = RoleID.Split('|');
-                for (int j = 0; j < rolesid.Count(); j++)
+                string[] RoleIds = RoleID.Split('|');
+                for (int j = 0; j < RoleIds.Count(); j++)
                 {
                     RoleInfo role = new RoleInfo();
                     for (int k = 0; k < Roles.Count; k++)
                     {
-                        if (Convert.ToInt32(rolesid[j]) == Roles[k].RoleID)
+                        if (Convert.ToInt32(RoleIds[j]) == Roles[k].RoleID)
                         {
                             role.RoleName = Roles[k].RoleName;
-                            rolenamelist.Add(role);
+                            RoleList.Add(role);
                         }
                     }
                 }
-                return rolenamelist;
+                return RoleList;
             }
-            return rolenamelist;
+            return RoleList;
         }
 
         /// <summary>
@@ -431,7 +364,11 @@ namespace NZH.Service.BaseData
         /// <returns>角色信息的集合</returns>
         public List<RoleInfo> GetRoleInfo(RoleInfo Role)
         {
-            List<RoleInfo> list = new List<RoleInfo>();
+            List<RoleInfo> RoleList = new List<RoleInfo>();
+            if (Role == null)
+            {
+                return RoleList;
+            }
             #region
             string sql = " Select * from T_Role ";
             StringBuilder strWhere = new StringBuilder("");
@@ -466,29 +403,18 @@ namespace NZH.Service.BaseData
                 strWhere.Append(" RoleUsable='" + Role.RoleUsable + "'  ");
             }
             sql += strWhere;
-
             #endregion
             try
             {
-                DataSet ds = new DataSet();
-                using (DbConnection dbConnection = base.Context.CreateConnection())
-                {
-                    SqlCommand sqlCommand = (SqlCommand)base.Context.CreateCommand(sql, dbConnection);
-                    sqlCommand.CommandText = sql;
-                    SqlDataAdapter da = new SqlDataAdapter(sqlCommand);
-                    da.Fill(ds);
-                    sqlCommand.Dispose();
-                    dbConnection.Close();
-                }
-                if (ds != null && ds.Tables[0].Rows.Count > 0)
-                    list = Util.DataTableConvertList<RoleInfo>(ds.Tables[0]);
-                return list;
+                DataTable dt = GetDataTable(sql);
+                if (dt != null && dt.Rows.Count > 0)
+                    RoleList = Util.DataTableConvertList<RoleInfo>(dt);
+                return RoleList;
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
-
         }
 
         /// <summary>
@@ -498,41 +424,31 @@ namespace NZH.Service.BaseData
         /// <returns>权限信息的集合</returns>
         public List<RoleInfo> GetRoleInfoByUser(string RoleID)
         {
-            List<RoleInfo> list = new List<RoleInfo>();
-            #region
-            if (string.IsNullOrEmpty(RoleID))
+            List<RoleInfo> RoleList = new List<RoleInfo>();
+            if (string.IsNullOrWhiteSpace(RoleID))
             {
-                return list;
+                return RoleList;
             }
+            #region
             else
             {
-                string role = RoleID;
+                string roleId = RoleID;
                 if (RoleID.IndexOf('|', 0) == 0)
                 {
-                    role = RoleID.Substring(1, RoleID.Length - 1).Replace('|', ',');
+                    roleId = RoleID.Substring(1, RoleID.Length - 1).Replace('|', ',');
                 }
                 else
                 {
-                    role = RoleID.Replace('|', ',');
+                    roleId = RoleID.Replace('|', ',');
                 }
-                string sql = " Select * from T_Role Where RoleID in (" + role + ")";
-
+                string sql = " Select * from T_Role Where RoleID in (" + roleId + ")";
                 #endregion
                 try
                 {
-                    DataSet ds = new DataSet();
-                    using (DbConnection dbConnection = base.Context.CreateConnection())
-                    {
-                        SqlCommand sqlCommand = (SqlCommand)base.Context.CreateCommand(sql, dbConnection);
-                        sqlCommand.CommandText = sql;
-                        SqlDataAdapter da = new SqlDataAdapter(sqlCommand);
-                        da.Fill(ds);
-                        sqlCommand.Dispose();
-                        dbConnection.Close();
-                    }
-                    if (ds != null && ds.Tables[0].Rows.Count > 0)
-                        list = Util.DataTableConvertList<RoleInfo>(ds.Tables[0]);
-                    return list;
+                    DataTable dt = GetDataTable(sql);
+                    if (dt != null && dt.Rows.Count > 0)
+                        RoleList = Util.DataTableConvertList<RoleInfo>(dt);
+                    return RoleList;
                 }
                 catch (Exception ex)
                 {
@@ -548,9 +464,10 @@ namespace NZH.Service.BaseData
         /// <returns>返回添加返回数</returns>
         public int AddRole(RoleInfo Role)
         {
+            int Result = 0;
             if (Role == null)
             {
-                return 0;
+                return Result;
             }
             #region sql
             string sql = @"INSERT INTO T_Role
@@ -567,23 +484,10 @@ namespace NZH.Service.BaseData
             parameter[2].Value = Role.AuthorityID;
             parameter[3].Value = Role.RoleUsable;
             #endregion
-
             try
             {
-                int result = 0;
-                using (DbConnection dbConnection = base.Context.CreateConnection())
-                {
-                    if (dbConnection == null) return result;
-                    SqlCommand sqlCommand = (SqlCommand)base.Context.CreateCommand(sql, dbConnection);
-                    sqlCommand.CommandText = sql;
-                    foreach (SqlParameter parm in parameter)
-                        sqlCommand.Parameters.Add(parm);
-                    sqlCommand.CommandTimeout = 5;
-                    result = sqlCommand.ExecuteNonQuery();
-                    sqlCommand.Dispose();
-                    dbConnection.Close();
-                    return result;
-                }
+                Result = ExecuteNonQuery(sql, parameter);
+                return Result;
             }
             catch (Exception ex)
             {
@@ -598,6 +502,11 @@ namespace NZH.Service.BaseData
         /// <returns>返回添加返回数</returns>
         public int UpdateRole(RoleInfo Role)
         {
+            int Result = 0;
+            if (Role == null)
+            {
+                return Result;
+            }
             #region sql
             string sql = " UPDATE T_Role SET ";
             StringBuilder strWhere = new StringBuilder("");
@@ -634,22 +543,11 @@ namespace NZH.Service.BaseData
                 strWhere.Append(" Where RoleID=" + Role.RoleID + " ");
             }
             sql += strWhere;
-
             #endregion
             try
             {
-                int result = 0;
-                using (DbConnection dbConnection = base.Context.CreateConnection())
-                {
-                    if (dbConnection == null) return result;
-                    SqlCommand sqlCommand = (SqlCommand)base.Context.CreateCommand(sql, dbConnection);
-                    sqlCommand.CommandText = sql;
-                    sqlCommand.CommandTimeout = 5;
-                    result = sqlCommand.ExecuteNonQuery();
-                    sqlCommand.Dispose();
-                    dbConnection.Close();
-                    return result;
-                }
+                Result = ExecuteNonQuery(sql);
+                return Result;
             }
             catch (Exception ex)
             {
@@ -664,23 +562,14 @@ namespace NZH.Service.BaseData
         /// <returns>返回添加返回数</returns>
         public int DeleteRole(int RoleID)
         {
+            int Result = 0;
             #region sql
             string sql = " Delete from T_Role Where RoleID=" + RoleID + " ";
             #endregion
             try
             {
-                int result = 0;
-                using (DbConnection dbConnection = base.Context.CreateConnection())
-                {
-                    if (dbConnection == null) return result;
-                    SqlCommand sqlCommand = (SqlCommand)base.Context.CreateCommand(sql, dbConnection);
-                    sqlCommand.CommandText = sql;
-                    sqlCommand.CommandTimeout = 5;
-                    result = sqlCommand.ExecuteNonQuery();
-                    sqlCommand.Dispose();
-                    dbConnection.Close();
-                    return result;
-                }
+                Result = ExecuteNonQuery(sql);
+                return Result;
             }
             catch (Exception ex)
             {
@@ -695,9 +584,11 @@ namespace NZH.Service.BaseData
         /// <returns>权限信息的集合</returns>
         public List<AuthorityInfo> GetAuthorityInfo(AuthorityInfo Authority)
         {
-            List<AuthorityInfo> list = new List<AuthorityInfo>();
-            DataSet ds = new DataSet();
-
+            List<AuthorityInfo> AuthorityList = new List<AuthorityInfo>();
+            if (Authority == null)
+            {
+                return AuthorityList;
+            }
             #region
             string sql = " Select * from T_Authority ";
             StringBuilder strWhere = new StringBuilder("");
@@ -739,28 +630,18 @@ namespace NZH.Service.BaseData
             }
             strWhere.Append(" order by SortCode asc ");
             sql += strWhere;
-
             #endregion
             try
             {
-                using (DbConnection dbConnection = base.Context.CreateConnection())
-                {
-                    SqlCommand sqlCommand = (SqlCommand)base.Context.CreateCommand(sql, dbConnection);
-                    sqlCommand.CommandText = sql;
-                    SqlDataAdapter da = new SqlDataAdapter(sqlCommand);
-                    da.Fill(ds);
-                    sqlCommand.Dispose();
-                    dbConnection.Close();
-                }
-                if (ds != null && ds.Tables[0].Rows.Count > 0)
-                    list = Util.DataTableConvertList<AuthorityInfo>(ds.Tables[0]);
-                return list;
+                DataTable dt = GetDataTable(sql);
+                if (dt != null && dt.Rows.Count > 0)
+                    AuthorityList = Util.DataTableConvertList<AuthorityInfo>(dt);
+                return AuthorityList;
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
-
         }
 
         /// <summary>
@@ -770,45 +651,34 @@ namespace NZH.Service.BaseData
         /// <returns>权限信息的集合</returns>
         public List<AuthorityInfo> GetAuthorityInfoByRole(string AuthorityID)
         {
-            List<AuthorityInfo> list = new List<AuthorityInfo>();
-            DataSet ds = new DataSet();
+            List<AuthorityInfo> AuthorityList = new List<AuthorityInfo>();
             if (string.IsNullOrEmpty(AuthorityID))
             {
-                return list;
+                return AuthorityList;
             }
             #region
-            string authority = AuthorityID;
+            string authorityId = AuthorityID;
             if (AuthorityID.IndexOf('|', 0) == 0)
             {
-                authority = AuthorityID.Substring(1, AuthorityID.Length - 1).Replace('|', ',');
+                authorityId = AuthorityID.Substring(1, AuthorityID.Length - 1).Replace('|', ',');
             }
             else
             {
-                authority = AuthorityID.Replace('|', ',');
+                authorityId = AuthorityID.Replace('|', ',');
             }
-            string sql = " Select * from T_Authority Where AuthorityID in (" + authority + ")  order by sortcode asc ";
-
+            string sql = " Select * from T_Authority Where AuthorityID in (" + authorityId + ")  order by sortcode asc ";
             #endregion
             try
             {
-                using (DbConnection dbConnection = base.Context.CreateConnection())
-                {
-                    SqlCommand sqlCommand = (SqlCommand)base.Context.CreateCommand(sql, dbConnection);
-                    sqlCommand.CommandText = sql;
-                    SqlDataAdapter da = new SqlDataAdapter(sqlCommand);
-                    da.Fill(ds);
-                    sqlCommand.Dispose();
-                    dbConnection.Close();
-                }
-                if (ds != null && ds.Tables[0].Rows.Count > 0)
-                    list = Util.DataTableConvertList<AuthorityInfo>(ds.Tables[0]);
-                return list;
+                DataTable dt = GetDataTable(sql);
+                if (dt != null && dt.Rows.Count > 0)
+                    AuthorityList = Util.DataTableConvertList<AuthorityInfo>(dt);
+                return AuthorityList;
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
-
         }
 
         /// <summary>
@@ -818,9 +688,10 @@ namespace NZH.Service.BaseData
         /// <returns>返回添加返回数</returns>
         public int AddAuthority(AuthorityInfo Authority)
         {
+            int Result = 0;
             if (Authority == null)
             {
-                return 0;
+                return Result;
             }
             #region sql
             string sql = @"INSERT INTO T_Authority
@@ -833,7 +704,6 @@ namespace NZH.Service.BaseData
                                 new SqlParameter("@Menu",SqlDbType.VarChar),
                                 new SqlParameter("@FunCode",SqlDbType.VarChar),
                                 new SqlParameter("@SortCode",SqlDbType.Int)
-
                                            };
             parameter[0].Value = Authority.ParentID;
             parameter[1].Value = Authority.FunName;
@@ -841,24 +711,11 @@ namespace NZH.Service.BaseData
             parameter[3].Value = Authority.Menu;
             parameter[4].Value = Authority.FunCode;
             parameter[5].Value = Authority.SortCode;
-
             #endregion
             try
             {
-                int result = 0;
-                using (DbConnection dbConnection = base.Context.CreateConnection())
-                {
-                    if (dbConnection == null) return result;
-                    SqlCommand sqlCommand = (SqlCommand)base.Context.CreateCommand(sql, dbConnection);
-                    sqlCommand.CommandText = sql;
-                    foreach (SqlParameter parm in parameter)
-                        sqlCommand.Parameters.Add(parm);
-                    sqlCommand.CommandTimeout = 5;
-                    result = sqlCommand.ExecuteNonQuery();
-                    sqlCommand.Dispose();
-                    dbConnection.Close();
-                    return result;
-                }
+                Result = ExecuteNonQuery(sql, parameter);
+                return Result;
             }
             catch (Exception ex)
             {
@@ -873,6 +730,11 @@ namespace NZH.Service.BaseData
         /// <returns>返回添加返回数</returns>
         public int UpdateAuthority(AuthorityInfo Authority)
         {
+            int Result = 0;
+            if (Authority == null)
+            {
+                return Result;
+            }
             #region sql
             string sql = " UPDATE T_Authority SET ";
             StringBuilder strWhere = new StringBuilder("");
@@ -909,29 +771,18 @@ namespace NZH.Service.BaseData
             //判断修改条件是否为空
             if (string.IsNullOrEmpty(strWhere.ToString()))
             {
-                return 0;
+                return Result;
             }
             else
             {
                 strWhere.Append(" Where FunCode='" + Authority.FunCode + "' ");
             }
             sql += strWhere;
-
             #endregion
             try
             {
-                int result = 0;
-                using (DbConnection dbConnection = base.Context.CreateConnection())
-                {
-                    if (dbConnection == null) return result;
-                    SqlCommand sqlCommand = (SqlCommand)base.Context.CreateCommand(sql, dbConnection);
-                    sqlCommand.CommandText = sql;
-                    sqlCommand.CommandTimeout = 5;
-                    result = sqlCommand.ExecuteNonQuery();
-                    sqlCommand.Dispose();
-                    dbConnection.Close();
-                    return result;
-                }
+                Result = ExecuteNonQuery(sql);
+                return Result;
             }
             catch (Exception ex)
             {
@@ -946,23 +797,18 @@ namespace NZH.Service.BaseData
         /// <returns>返回添加返回数</returns>
         public int DeleteAuthority(string FunCode)
         {
+            int Result = 0;
+            if (string.IsNullOrWhiteSpace(FunCode))
+            {
+                return Result;
+            }
             #region sql
             string sql = @" Delete from T_Authority Where FunCode='" + FunCode + "' or ParentID='" + FunCode + "'";
             #endregion
             try
             {
-                int result = 0;
-                using (DbConnection dbConnection = base.Context.CreateConnection())
-                {
-                    if (dbConnection == null) return result;
-                    SqlCommand sqlCommand = (SqlCommand)base.Context.CreateCommand(sql, dbConnection);
-                    sqlCommand.CommandText = sql;
-                    sqlCommand.CommandTimeout = 5;
-                    result = sqlCommand.ExecuteNonQuery();
-                    sqlCommand.Dispose();
-                    dbConnection.Close();
-                    return result;
-                }
+                Result = ExecuteNonQuery(sql);
+                return Result;
             }
             catch (Exception ex)
             {
@@ -977,7 +823,11 @@ namespace NZH.Service.BaseData
         /// <returns></returns>
         public List<MESUser> GetMESUser(MESUser MesUser)
         {
-            List<MESUser> list = new List<MESUser>();
+            List<MESUser> MesUsrList = new List<MESUser>();
+            if (MesUser == null)
+            {
+                return MesUsrList;
+            }
             #region sql
             string sql = @" select t1.USER_NAME as UserName,t2.PERSON_NAME as PersonName,t1.ID as UserID,t1.PERSON_ID as PersonID,t1.PASSWORD as UserPassword from SYS_USER_PROFILE t1 left join SYS_PERSON t2 on t1.PERSON_ID=t2.ID ";
             #region  查询条件
@@ -994,25 +844,15 @@ namespace NZH.Service.BaseData
                 strWhere.Append(string.IsNullOrEmpty(strWhere.ToString()) ? "Where " : " And ");
                 strWhere.Append(" t1.USER_NAME like '%" + MesUser.UserName + "%'  ");
             }
-
             #endregion
             sql += strWhere;
             #endregion
             try
             {
-                DataSet ds = new DataSet();
-                using (DbConnection dbConnection = base.Context.CreateConnection())
-                {
-                    SqlCommand sqlCommand = (SqlCommand)base.Context.CreateCommand(sql, dbConnection);
-                    sqlCommand.CommandText = sql;
-                    SqlDataAdapter da = new SqlDataAdapter(sqlCommand);
-                    da.Fill(ds);
-                    sqlCommand.Dispose();
-                    dbConnection.Close();
-                }
-                if (ds != null && ds.Tables[0].Rows.Count > 0)
-                    list = Util.DataTableConvertList<MESUser>(ds.Tables[0]);
-                return list;
+                DataTable dt = GetDataTable(sql);
+                if (dt != null && dt.Rows.Count > 0)
+                    MesUsrList = Util.DataTableConvertList<MESUser>(dt);
+                return MesUsrList;
             }
             catch (Exception ex)
             {
@@ -1027,7 +867,11 @@ namespace NZH.Service.BaseData
         /// <returns></returns>
         public List<MESRole> GetMESRole(MESUser MesUser)
         {
-            List<MESRole> list = new List<MESRole>();
+            List<MESRole> MesRoleList = new List<MESRole>();
+            if (MesUser == null)
+            {
+                return MesRoleList;
+            }
             #region sql
             string sql = "";
             if (MesUser.UserID != null)
@@ -1042,27 +886,17 @@ where USER_ID='{0}') t2 on t1.ID=t2.ROLE_ID ", MesUser.UserID);
             #endregion
             try
             {
-                DataSet ds = new DataSet();
-                using (DbConnection dbConnection = base.Context.CreateConnection())
-                {
-                    SqlCommand sqlCommand = (SqlCommand)base.Context.CreateCommand(sql, dbConnection);
-                    sqlCommand.CommandText = sql;
-                    SqlDataAdapter da = new SqlDataAdapter(sqlCommand);
-                    da.Fill(ds);
-                    sqlCommand.Dispose();
-                    dbConnection.Close();
-                }
-                if (ds != null && ds.Tables[0].Rows.Count > 0)
-                    list = Util.DataTableConvertList<MESRole>(ds.Tables[0]);
-                foreach (var row in list)
+                DataTable dt = GetDataTable(sql);
+                if (dt != null && dt.Rows.Count > 0)
+                    MesRoleList = Util.DataTableConvertList<MESRole>(dt);
+                foreach (var row in MesRoleList)
                 {
                     if (row.RoleIdCheck + "" == "0")
                         row.IsCheck = false;
                     else
                         row.IsCheck = true;
-
                 }
-                return list;
+                return MesRoleList;
             }
             catch (Exception ex)
             {
@@ -1077,9 +911,13 @@ where USER_ID='{0}') t2 on t1.ID=t2.ROLE_ID ", MesUser.UserID);
         /// <returns></returns>
         public int AddMESUser(MESUser MesUser)
         {
-            int result = 0;
-            List<string> sqllist = new List<string>();
-            sqllist.Add(string.Format(@" INSERT INTO SYS_USER_PROFILE 
+            int Result = 0;
+            if (MesUser == null)
+            {
+                return Result;
+            }
+            List<string> SqlList = new List<string>();
+            SqlList.Add(string.Format(@" INSERT INTO SYS_USER_PROFILE 
 (ID, USER_NAME,PASSWORD,PASSWORD_SALT,PERSON_ID,MOBILE_PIN,PASSWORD_QUESTION,PASSWORD_ANSWER,IS_APPROVED,
 DATETIME_LAST_ACTIVITY,DATETIME_LAST_LOGIN,DATETIME_LAST_PASSWORD_CHANGED,DATETIME_CREATION,DATETIME_LAST_LOCKED_OUT,
 FAILED_PASSWORD_ATTEMPT_COUNT,FAILED_PASSWORD_ATTEMPT_WINDOW_START,FAILED_PASSWORD_ANSWER_ATTEMPT_COUNT,
@@ -1087,16 +925,15 @@ FAILED_PASSWORD_ANSWER_ATTEMPT_WINDOW_START)
 VALUES('{0}','{1}','{2}','51Tg5W5K9IIrKmfISaGB4Q==','{3}','','my office name','D6YL8ChxSPHtEF0hsZrvAQ==',1,
 GETDATE(),GETDATE(),GETDATE(),GETDATE(),GETDATE(),
 0,GETDATE(),0,GETDATE())", MesUser.UserID, MesUser.UserName, MesUser.Password, MesUser.PersonID));
-            sqllist.Add(string.Format(@" INSERT INTO SYS_PERSON (ID, PERSON_NAME) VALUES ('{0}', '{1}')", MesUser.PersonID, MesUser.PersonName));
-            sqllist.Add(" Delete from SYS_USER_IN_ROLES Where USER_ID='" + MesUser.UserID + "' ");
+            SqlList.Add(string.Format(@" INSERT INTO SYS_PERSON (ID, PERSON_NAME) VALUES ('{0}', '{1}')", MesUser.PersonID, MesUser.PersonName));
+            SqlList.Add(" Delete from SYS_USER_IN_ROLES Where USER_ID='" + MesUser.UserID + "' ");
             foreach (var row in MesUser.MESRoles)
             {
                 if (row.IsCheck)
-                    sqllist.Add(string.Format(@" INSERT INTO SYS_USER_IN_ROLES (USER_ID, ROLE_ID) VALUES ('{0}', '{1}')", MesUser.UserID, row.RoleID));
+                    SqlList.Add(string.Format(@" INSERT INTO SYS_USER_IN_ROLES (USER_ID, ROLE_ID) VALUES ('{0}', '{1}')", MesUser.UserID, row.RoleID));
             }
-
-            result = ExecuteNonQuery(sqllist);
-            return result;
+            Result = BatchExecuteNonQuery(SqlList);
+            return Result;
         }
 
         /// <summary>
@@ -1106,24 +943,18 @@ GETDATE(),GETDATE(),GETDATE(),GETDATE(),GETDATE(),
         /// <returns></returns>
         public int CheckAddMESUser(MESUser MesUser)
         {
-            int result = 0;
+            int Result = 0;
+            if (MesUser == null)
+            {
+                return Result;
+            }
             string sql = string.Format(@"select * from SYS_USER_PROFILE where user_name='{0}' ", MesUser.UserName);
-
             try
             {
-                DataSet ds = new DataSet();
-                using (DbConnection dbConnection = base.Context.CreateConnection())
-                {
-                    SqlCommand sqlCommand = (SqlCommand)base.Context.CreateCommand(sql, dbConnection);
-                    sqlCommand.CommandText = sql;
-                    SqlDataAdapter da = new SqlDataAdapter(sqlCommand);
-                    da.Fill(ds);
-                    sqlCommand.Dispose();
-                    dbConnection.Close();
-                }
-                if (ds != null && ds.Tables[0].Rows.Count > 0)
-                    result = 1;
-                return result;
+                DataTable dt = GetDataTable(sql);
+                if (dt != null && dt.Rows.Count > 0)
+                    Result = 1;
+                return Result;
             }
             catch (Exception ex)
             {
@@ -1138,22 +969,25 @@ GETDATE(),GETDATE(),GETDATE(),GETDATE(),GETDATE(),
         /// <returns></returns>
         public int UpdateMESUser(MESUser MesUser)
         {
-            int result = 0;
-            List<string> sqllist = new List<string>();
+            int Result = 0;
+            if (MesUser == null)
+            {
+                return Result;
+            }
+            List<string> SqlList = new List<string>();
             if (MesUser.ChangePassword)
             {
-                sqllist.Add(string.Format(@" UPDATE SYS_USER_PROFILE SET PASSWORD='{0}' WHERE ID='{1}'", MesUser.Password, MesUser.UserID));
+                SqlList.Add(string.Format(@" UPDATE SYS_USER_PROFILE SET PASSWORD='{0}' WHERE ID='{1}'", MesUser.Password, MesUser.UserID));
             }
-            sqllist.Add(string.Format(@" UPDATE SYS_PERSON SET PERSON_NAME='{0}' WHERE ID='{1}'", MesUser.PersonName, MesUser.PersonID));
-            sqllist.Add(" Delete from SYS_USER_IN_ROLES Where USER_ID='" + MesUser.UserID + "' ");
+            SqlList.Add(string.Format(@" UPDATE SYS_PERSON SET PERSON_NAME='{0}' WHERE ID='{1}'", MesUser.PersonName, MesUser.PersonID));
+            SqlList.Add(" Delete from SYS_USER_IN_ROLES Where USER_ID='" + MesUser.UserID + "' ");
             foreach (var row in MesUser.MESRoles)
             {
                 if (row.IsCheck)
-                    sqllist.Add(string.Format(@" INSERT INTO SYS_USER_IN_ROLES (USER_ID, ROLE_ID) VALUES ('{0}', '{1}')", MesUser.UserID, row.RoleID));
+                    SqlList.Add(string.Format(@" INSERT INTO SYS_USER_IN_ROLES (USER_ID, ROLE_ID) VALUES ('{0}', '{1}')", MesUser.UserID, row.RoleID));
             }
-
-            result = ExecuteNonQuery(sqllist);
-            return result;
+            Result = BatchExecuteNonQuery(SqlList);
+            return Result;
         }
 
         /// <summary>
@@ -1163,49 +997,18 @@ GETDATE(),GETDATE(),GETDATE(),GETDATE(),GETDATE(),
         /// <returns></returns>
         public int DeleteMESUser(MESUser MesUser)
         {
-            int result = 0;
-            List<string> sqllist = new List<string>();
-            sqllist.Add(" Delete from SYS_USER_PROFILE Where ID='" + MesUser.UserID + "' ");
-            sqllist.Add(" Delete from SYS_PERSON Where ID='" + MesUser.PersonID + "' ");
-            sqllist.Add(" Delete from SYS_USER_IN_ROLES Where USER_ID='" + MesUser.UserID + "' ");
-            result = ExecuteNonQuery(sqllist);
-            return result;
+            int Result = 0;
+            if (MesUser == null)
+            {
+                return Result;
+            }
+            List<string> SqlList = new List<string>();
+            SqlList.Add(" Delete from SYS_USER_PROFILE Where ID='" + MesUser.UserID + "' ");
+            SqlList.Add(" Delete from SYS_PERSON Where ID='" + MesUser.PersonID + "' ");
+            SqlList.Add(" Delete from SYS_USER_IN_ROLES Where USER_ID='" + MesUser.UserID + "' ");
+            Result = BatchExecuteNonQuery(SqlList);
+            return Result;
         }
-
-        /// <summary>
-        /// 执行多条SQL语句，实现数据库事务。最多1000
-        /// </summary>
-        /// <param name="SQLStringList">多条SQL语句</param>        
-        public int ExecuteNonQuery(List<string> SQLStringList)
-        {
-            int result = 0;
-            string sql = "";
-            foreach (var row in SQLStringList)
-            {
-                sql += row + ";";
-            }
-            try
-            {
-                using (DbConnection dbConnection = base.Context.CreateConnection())
-                {
-                    if (dbConnection == null) return result;
-                    SqlCommand sqlCommand = (SqlCommand)base.Context.CreateCommand(sql, dbConnection);
-                    sqlCommand.CommandText = sql;
-                    sqlCommand.CommandTimeout = 5;
-                    result = sqlCommand.ExecuteNonQuery();
-                    sqlCommand.Dispose();
-                    dbConnection.Close();
-                    return result;
-                }
-
-            }
-            catch (Exception ex)
-            {
-                return result;
-            }
-
-        }
-
 
         #region SqlHelper辅助类
 
@@ -1242,7 +1045,7 @@ GETDATE(),GETDATE(),GETDATE(),GETDATE(),GETDATE(),
         /// <param name="sql"></param>
         /// <param name="pms"></param>
         /// <returns></returns>
-        public DataTable GetDataTable(string sql,params SqlParameter[] pms)
+        public DataTable GetDataTable(string sql, params SqlParameter[] pms)
         {
             try
             {
@@ -1304,7 +1107,7 @@ GETDATE(),GETDATE(),GETDATE(),GETDATE(),GETDATE(),
         /// <param name="sql"></param>
         /// <param name="pms"></param>
         /// <returns></returns>
-        public int ExecuteNonQuery(string sql,params SqlParameter[] pms)
+        public int ExecuteNonQuery(string sql, params SqlParameter[] pms)
         {
             try
             {
@@ -1330,6 +1133,29 @@ GETDATE(),GETDATE(),GETDATE(),GETDATE(),GETDATE(),
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// 执行多条SQL语句，实现数据库事务。最多1000
+        /// </summary>
+        /// <param name="SQLStringList">多条SQL语句</param>        
+        public int BatchExecuteNonQuery(List<string> SqlList)
+        {
+            int Result = 0;
+            string Sqls = "";
+            foreach (var row in SqlList)
+            {
+                Sqls += row + ";";
+            }
+            try
+            {
+                Result = ExecuteNonQuery(Sqls);
+                return Result;
+            }
+            catch (Exception ex)
+            {
+                return Result;
             }
         }
 
@@ -1363,7 +1189,7 @@ GETDATE(),GETDATE(),GETDATE(),GETDATE(),GETDATE(),
         /// <param name="sql"></param>
         /// <param name="pms"></param>
         /// <returns></returns>
-        public object ExecuteScalar(string sql,params SqlParameter[] pms)
+        public object ExecuteScalar(string sql, params SqlParameter[] pms)
         {
             try
             {
@@ -1423,7 +1249,7 @@ GETDATE(),GETDATE(),GETDATE(),GETDATE(),GETDATE(),
         /// <param name="sql"></param>
         /// <param name="pms"></param>
         /// <returns></returns>
-        public SqlDataReader ExecuteReader(string sql,params SqlParameter[] pms)
+        public SqlDataReader ExecuteReader(string sql, params SqlParameter[] pms)
         {
             try
             {

@@ -63,9 +63,9 @@
     <Compile Include="BaseData\AuthorityService.cs" />
     <Compile Include="BaseData\MESUserService.cs" />
     <Compile Include="BaseData\RoleService.cs" />
-    <Compile Include="BaseData\SqlBaseData.cs" />
     <Compile Include="BaseData\UserService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SqlBaseData.cs" />
     <Compile Include="SQLDatabaseContext.Base.cs" />
     <Compile Include="SQLDatabaseContext.cs" />
   </ItemGroup>

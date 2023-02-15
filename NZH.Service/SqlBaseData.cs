@@ -1,23 +1,18 @@
 ﻿using NZH.IService;
-using NZH.IService.BaseData;
-using NZH.Model.BaseData;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using NZH.Common.Extensions;
-using System.Data.Common;
 
-namespace NZH.Service.BaseData
+namespace NZH.Service
 {
     public class SQLBaseData : BaseDataAdapter
     {
         public SQLBaseData(BaseDatabaseContext context) : base(context) { }
-
-        #region SqlHelper辅助类
 
         /// <summary>
         /// 返回DataTable
@@ -285,7 +280,5 @@ namespace NZH.Service.BaseData
                 throw new Exception(ex.Message);
             }
         }
-
-        #endregion
     }
 }

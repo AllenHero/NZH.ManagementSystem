@@ -9,11 +9,11 @@ namespace NZH.IService.BaseData
 {
     public interface IAuthorityService
     {
-        List<AuthorityInfo> GetAuthorityInfo(AuthorityInfo authority);
+        List<AuthorityInfo> GetAuthorityInfo(AuthorityInfo Authority, bool Type);
 
-        int AddAuthority(AuthorityInfo authority);
+        int AddAuthority(AuthorityInfo Authority);
 
-        int UpdateAuthority(AuthorityInfo authority);
+        int UpdateAuthority(AuthorityInfo Authority);
 
         int DeleteAuthority(string FunCode);
     }

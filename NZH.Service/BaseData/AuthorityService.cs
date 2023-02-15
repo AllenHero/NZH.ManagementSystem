@@ -5,7 +5,6 @@ using NZH.Model.BaseData;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.Common;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
@@ -13,133 +12,117 @@ using System.Threading.Tasks;
 
 namespace NZH.Service.BaseData
 {
-    public class AuthorityService: BaseDataAdapter, IAuthorityService
+    public class AuthorityService : SQLBaseData, IAuthorityService
     {
-        public SQLBaseData(BaseDatabaseContext context) : base(context) { }
+        public AuthorityService(BaseDatabaseContext context) : base(context) { }
 
         /// <summary>
         /// 获取权限信息
         /// </summary>
-        /// <param name="authority">权限实体</param>
+        /// <param name="Authority">权限实体</param>
+        /// <param name="Type">权限类型</param>
         /// <returns>权限信息的集合</returns>
-        public List<AuthorityInfo> GetAuthorityInfo(AuthorityInfo authority)
+        public List<AuthorityInfo> GetAuthorityInfo(AuthorityInfo Authority, bool Type)
         {
-            List<AuthorityInfo> list = new List<AuthorityInfo>();
-            DataSet ds = new DataSet();
-
-            #region
+            List<AuthorityInfo> AuthorityList = new List<AuthorityInfo>();
+            if (Authority == null)
+            {
+                return AuthorityList;
+            }
             string sql = " Select * from T_Authority ";
             StringBuilder strWhere = new StringBuilder("");
             //判断权限ID是否为空
-            if (authority.AuthorityID != 0)
+            if (Authority.AuthorityID != 0)
             {
                 strWhere.Append(string.IsNullOrEmpty(strWhere.ToString()) ? "Where " : " And ");
-                strWhere.Append(" AuthorityID='" + authority.AuthorityID + "'  ");
+                strWhere.Append(" AuthorityID='" + Authority.AuthorityID + "'  ");
             }
             //判断功能码是否为空
-            if (!string.IsNullOrEmpty(authority.FunCode))
+            if (!string.IsNullOrEmpty(Authority.FunCode))
             {
                 strWhere.Append(string.IsNullOrEmpty(strWhere.ToString()) ? "Where " : " And ");
-                strWhere.Append(" FunCode='" + authority.FunCode + "' ");
+                strWhere.Append(" FunCode='" + Authority.FunCode + "' ");
             }
             //判断功能名称是否为空
-            if (!string.IsNullOrEmpty(authority.FunName))
+            if (!string.IsNullOrEmpty(Authority.FunName))
             {
                 strWhere.Append(string.IsNullOrEmpty(strWhere.ToString()) ? "Where " : " And ");
-                strWhere.Append(" FunName='" + authority.FunName + "' ");
+                strWhere.Append(" FunName='" + Authority.FunName + "' ");
             }
             //判断父节点是否为空
-            if (!string.IsNullOrEmpty(authority.ParentID))
+            if (!string.IsNullOrEmpty(Authority.ParentID))
             {
                 strWhere.Append(string.IsNullOrEmpty(strWhere.ToString()) ? "Where " : " And ");
-                strWhere.Append(" ParentID='" + authority.ParentID + "' ");
+                strWhere.Append(" ParentID='" + Authority.ParentID + "' ");
             }
             //判断权限路径是否为空
-            if (!string.IsNullOrEmpty(authority.Menu))
+            if (!string.IsNullOrEmpty(Authority.Menu))
             {
                 strWhere.Append(string.IsNullOrEmpty(strWhere.ToString()) ? "Where " : " And ");
-                strWhere.Append(" Menu='" + authority.Menu + "' ");
+                strWhere.Append(" Menu='" + Authority.Menu + "' ");
             }
             //判断权限备注是否为空
-            if (authority.SortCode > 0)
+            if (Authority.SortCode > 0)
             {
                 strWhere.Append(string.IsNullOrEmpty(strWhere.ToString()) ? "Where " : " And ");
-                strWhere.Append(" SortCode='" + authority.SortCode + "' ");
+                strWhere.Append(" SortCode='" + Authority.SortCode + "' ");
+            }
+            if (!Type)//true-查所有权限;false-查启用权限
+            {
+                //启用
+                strWhere.Append(string.IsNullOrEmpty(strWhere.ToString()) ? "Where " : " And ");
+                strWhere.Append(" Enable='1' ");
             }
             strWhere.Append(" order by SortCode asc ");
             sql += strWhere;
-
-            #endregion
             try
             {
-                using (DbConnection dbConnection = base.Context.CreateConnection())
-                {
-                    SqlCommand sqlCommand = (SqlCommand)base.Context.CreateCommand(sql, dbConnection);
-                    sqlCommand.CommandText = sql;
-                    SqlDataAdapter da = new SqlDataAdapter(sqlCommand);
-                    da.Fill(ds);
-                    sqlCommand.Dispose();
-                    dbConnection.Close();
-                }
-                if (ds != null && ds.Tables[0].Rows.Count > 0)
-                    list = Util.DataTableConvertList<AuthorityInfo>(ds.Tables[0]);
-                return list;
+                DataTable dt = GetDataTable(sql);
+                if (dt != null && dt.Rows.Count > 0)
+                    AuthorityList = Util.DataTableConvertList<AuthorityInfo>(dt);
+                return AuthorityList;
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
-
         }
 
         /// <summary>
         /// 添加权限
         /// </summary>
-        /// <param name="role">权限实体</param>
+        /// <param name="Authority">权限实体</param>
         /// <returns>返回添加返回数</returns>
-        public int AddAuthority(AuthorityInfo authority)
+        public int AddAuthority(AuthorityInfo Authority)
         {
-            if (authority == null)
+            int Result = 0;
+            if (Authority == null)
             {
-                return 0;
+                return Result;
             }
-            #region sql
             string sql = @"INSERT INTO T_Authority
            (ParentID, FunName, AuNode, Menu, FunCode,SortCode)
-     VALUES(@ParentID, @FunName, @AuNode, @Menu, @FunCode,@SortCode)";
+     VALUES(@ParentID, @FunName, @AuNode, @Menu, @FunCode,@SortCode,@Enable)";
             SqlParameter[] parameter = {
                                 new SqlParameter("@ParentID",SqlDbType.VarChar),
                                 new SqlParameter("@FunName",SqlDbType.VarChar),
                                 new SqlParameter("@AuNode",SqlDbType.VarChar),
                                 new SqlParameter("@Menu",SqlDbType.VarChar),
                                 new SqlParameter("@FunCode",SqlDbType.VarChar),
-                                new SqlParameter("@SortCode",SqlDbType.Int)
-
+                                new SqlParameter("@SortCode",SqlDbType.Int),
+                                new SqlParameter("@Enable",SqlDbType.Int)
                                            };
-            parameter[0].Value = authority.ParentID;
-            parameter[1].Value = authority.FunName;
-            parameter[2].Value = authority.AuNode;
-            parameter[3].Value = authority.Menu;
-            parameter[4].Value = authority.FunCode;
-            parameter[5].Value = authority.SortCode;
-
-            #endregion
+            parameter[0].Value = Authority.ParentID;
+            parameter[1].Value = Authority.FunName;
+            parameter[2].Value = Authority.AuNode;
+            parameter[3].Value = Authority.Menu;
+            parameter[4].Value = Authority.FunCode;
+            parameter[5].Value = Authority.SortCode;
+            parameter[6].Value = Authority.Enable;
             try
             {
-                int result = 0;
-                using (DbConnection dbConnection = base.Context.CreateConnection())
-                {
-                    if (dbConnection == null) return result;
-                    SqlCommand sqlCommand = (SqlCommand)base.Context.CreateCommand(sql, dbConnection);
-                    sqlCommand.CommandText = sql;
-                    foreach (SqlParameter parm in parameter)
-                        sqlCommand.Parameters.Add(parm);
-                    sqlCommand.CommandTimeout = 5;
-                    result = sqlCommand.ExecuteNonQuery();
-                    sqlCommand.Dispose();
-                    dbConnection.Close();
-                    return result;
-                }
+                Result = ExecuteNonQuery(sql, parameter);
+                return Result;
             }
             catch (Exception ex)
             {
@@ -150,69 +133,63 @@ namespace NZH.Service.BaseData
         /// <summary>
         /// 修改权限
         /// </summary>
-        /// <param name="role">权限实体</param>
+        /// <param name="Authority">权限实体</param>
         /// <returns>返回添加返回数</returns>
-        public int UpdateAuthority(AuthorityInfo authority)
+        public int UpdateAuthority(AuthorityInfo Authority)
         {
-            #region sql
+            int Result = 0;
+            if (Authority == null)
+            {
+                return Result;
+            }
             string sql = " UPDATE T_Authority SET ";
             StringBuilder strWhere = new StringBuilder("");
             //判断权限功能名是否为空
-            if (!string.IsNullOrEmpty(authority.FunName))
+            if (!string.IsNullOrEmpty(Authority.FunName))
             {
                 strWhere.Append(string.IsNullOrEmpty(strWhere.ToString()) ? " " : ", ");
-                strWhere.Append(" FunName='" + authority.FunName + "' ");
+                strWhere.Append(" FunName='" + Authority.FunName + "' ");
             }
             //判断权限父节点是否为空
-            if (!string.IsNullOrEmpty(authority.ParentID))
+            if (!string.IsNullOrEmpty(Authority.ParentID))
             {
                 strWhere.Append(string.IsNullOrEmpty(strWhere.ToString()) ? " " : ", ");
-                strWhere.Append(" ParentID='" + authority.ParentID + "' ");
+                strWhere.Append(" ParentID='" + Authority.ParentID + "' ");
             }
             //判断权限目录是否为空
-            if (!string.IsNullOrEmpty(authority.Menu))
+            if (!string.IsNullOrEmpty(Authority.Menu))
             {
                 strWhere.Append(string.IsNullOrEmpty(strWhere.ToString()) ? " " : ", ");
-                strWhere.Append(" Menu='" + authority.Menu + "' ");
+                strWhere.Append(" Menu='" + Authority.Menu + "' ");
             }
             //判断标识码是否为空
-            if (!string.IsNullOrEmpty(authority.AuNode))
+            if (!string.IsNullOrEmpty(Authority.AuNode))
             {
                 strWhere.Append(string.IsNullOrEmpty(strWhere.ToString()) ? " " : ", ");
-                strWhere.Append(" AuNode='" + authority.AuNode + "' ");
+                strWhere.Append(" AuNode='" + Authority.AuNode + "' ");
             }
             //判断权限备注是否为空
-            if (authority.SortCode > 0)
+            if (Authority.SortCode > 0)
             {
                 strWhere.Append(string.IsNullOrEmpty(strWhere.ToString()) ? " " : ", ");
-                strWhere.Append(" SortCode='" + authority.SortCode + "' ");
+                strWhere.Append(" SortCode='" + Authority.SortCode + "' ");
             }
+            strWhere.Append(string.IsNullOrEmpty(strWhere.ToString()) ? " " : ", ");
+            strWhere.Append(" Enable='" + Authority.Enable + "' ");//是否启用
             //判断修改条件是否为空
             if (string.IsNullOrEmpty(strWhere.ToString()))
             {
-                return 0;
+                return Result;
             }
             else
             {
-                strWhere.Append(" Where FunCode='" + authority.FunCode + "' ");
+                strWhere.Append(" Where FunCode='" + Authority.FunCode + "' ");
             }
             sql += strWhere;
-
-            #endregion
             try
             {
-                int result = 0;
-                using (DbConnection dbConnection = base.Context.CreateConnection())
-                {
-                    if (dbConnection == null) return result;
-                    SqlCommand sqlCommand = (SqlCommand)base.Context.CreateCommand(sql, dbConnection);
-                    sqlCommand.CommandText = sql;
-                    sqlCommand.CommandTimeout = 5;
-                    result = sqlCommand.ExecuteNonQuery();
-                    sqlCommand.Dispose();
-                    dbConnection.Close();
-                    return result;
-                }
+                Result = ExecuteNonQuery(sql);
+                return Result;
             }
             catch (Exception ex)
             {
@@ -223,27 +200,20 @@ namespace NZH.Service.BaseData
         /// <summary>
         /// 删除权限
         /// </summary>
-        /// <param name="ID_RoleID">权限实体</param>
+        /// <param name="FunCode">权限实体</param>
         /// <returns>返回添加返回数</returns>
         public int DeleteAuthority(string FunCode)
         {
-            #region sql
+            int Result = 0;
+            if (string.IsNullOrWhiteSpace(FunCode))
+            {
+                return Result;
+            }
             string sql = @" Delete from T_Authority Where FunCode='" + FunCode + "' or ParentID='" + FunCode + "'";
-            #endregion
             try
             {
-                int result = 0;
-                using (DbConnection dbConnection = base.Context.CreateConnection())
-                {
-                    if (dbConnection == null) return result;
-                    SqlCommand sqlCommand = (SqlCommand)base.Context.CreateCommand(sql, dbConnection);
-                    sqlCommand.CommandText = sql;
-                    sqlCommand.CommandTimeout = 5;
-                    result = sqlCommand.ExecuteNonQuery();
-                    sqlCommand.Dispose();
-                    dbConnection.Close();
-                    return result;
-                }
+                Result = ExecuteNonQuery(sql);
+                return Result;
             }
             catch (Exception ex)
             {

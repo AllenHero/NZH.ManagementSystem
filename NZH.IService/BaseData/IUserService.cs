@@ -11,14 +11,14 @@ namespace NZH.IService.BaseData
     {
         UserInfo Login(string UserName, string UserPassword);
 
-        int UpdatePassWord(string UserName, string userpassword);
+        int UpdatePassWord(string UserName, string UserPassword);
 
-        int AddUser(UserInfo user);
+        int AddUser(UserInfo User);
 
-        int UpdateUser(UserInfo user);
+        int UpdateUser(UserInfo User);
 
         int DeleteUser(int UserID);
 
-        List<UserInfo> GetUserInfo(UserInfo user);
+        List<UserInfo> GetUserInfo(UserInfo User);
     }
 }

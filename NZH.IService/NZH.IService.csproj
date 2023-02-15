@@ -44,7 +44,11 @@
     <Compile Include="BaseDataAdapter.cs" />
     <Compile Include="BaseDatabaseContext.Base.cs" />
     <Compile Include="BaseDatabaseContext.cs" />
+    <Compile Include="BaseData\IAuthorityService.cs" />
     <Compile Include="BaseData\IBaseData.cs" />
+    <Compile Include="BaseData\IMESUserService.cs" />
+    <Compile Include="BaseData\IRoleService.cs" />
+    <Compile Include="BaseData\IUserService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

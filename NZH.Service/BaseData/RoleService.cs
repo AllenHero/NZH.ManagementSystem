@@ -5,7 +5,6 @@ using NZH.Model.BaseData;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.Common;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
@@ -13,152 +12,98 @@ using System.Threading.Tasks;
 
 namespace NZH.Service.BaseData
 {
-    public class RoleService : BaseDataAdapter, IRoleService
+    public class RoleService : SQLBaseData, IRoleService
     {
-        public SQLBaseData(BaseDatabaseContext context) : base(context) { }
-
-        /// <summary>
-        /// 通过角色ID获取角色名
-        /// </summary>
-        /// <param name="roleid"></param>
-        /// <param name="roleinfo"></param>
-        /// <returns></returns>
-        public List<RoleInfo> GetRoleNameByRoleId(string roleid, List<RoleInfo> roleinfo)
-        {
-            List<RoleInfo> rolenamelist = new List<RoleInfo>();
-            if (string.IsNullOrEmpty(roleid))
-            {
-                return rolenamelist;
-            }
-            if (!string.IsNullOrEmpty(roleid))
-            {
-                string[] rolesid = roleid.Split('|');
-                for (int j = 0; j < rolesid.Count(); j++)
-                {
-                    RoleInfo role = new RoleInfo();
-                    for (int k = 0; k < roleinfo.Count; k++)
-                    {
-                        if (Convert.ToInt32(rolesid[j]) == roleinfo[k].RoleID)
-                        {
-                            role.RoleName = roleinfo[k].RoleName;
-                            rolenamelist.Add(role);
-                        }
-                    }
-                }
-                return rolenamelist;
-            }
-            return rolenamelist;
-        }
+        public RoleService(BaseDatabaseContext context) : base(context) { }
 
         /// <summary>
         /// 获取角色信息
         /// </summary>
-        /// <param name="role">角色实体</param>
+        /// <param name="Role">角色实体</param>
         /// <returns>角色信息的集合</returns>
-        public List<RoleInfo> GetRoleInfo(RoleInfo role)
+        public List<RoleInfo> GetRoleInfo(RoleInfo Role)
         {
-            List<RoleInfo> list = new List<RoleInfo>();
-            #region
+            List<RoleInfo> RoleList = new List<RoleInfo>();
+            if (Role == null)
+            {
+                return RoleList;
+            }
             string sql = " Select * from T_Role ";
             StringBuilder strWhere = new StringBuilder("");
             //判断角色ID是否为空
-            if (role.RoleID != 0)
+            if (Role.RoleID != 0)
             {
                 strWhere.Append(string.IsNullOrEmpty(strWhere.ToString()) ? "Where " : " And ");
-                strWhere.Append(" RoleID='" + role.RoleID + "'  ");
+                strWhere.Append(" RoleID='" + Role.RoleID + "'  ");
             }
             //判断角色名是否为空
-            if (!string.IsNullOrEmpty(role.RoleName))
+            if (!string.IsNullOrEmpty(Role.RoleName))
             {
                 strWhere.Append(string.IsNullOrEmpty(strWhere.ToString()) ? "Where " : " And ");
-                strWhere.Append(" RoleName='" + role.RoleName + "'  ");
+                strWhere.Append(" RoleName='" + Role.RoleName + "'  ");
             }
             //判断角色备注是否为空
-            if (!string.IsNullOrEmpty(role.RoleNode))
+            if (!string.IsNullOrEmpty(Role.RoleNode))
             {
                 strWhere.Append(string.IsNullOrEmpty(strWhere.ToString()) ? "Where " : " And ");
-                strWhere.Append(" RoleNode like '%" + role.RoleNode + "%'  ");
+                strWhere.Append(" RoleNode like '%" + Role.RoleNode + "%'  ");
             }
             //判断角色权限是否为空
-            if (!string.IsNullOrEmpty(role.AuthorityID))
+            if (!string.IsNullOrEmpty(Role.AuthorityID))
             {
                 strWhere.Append(string.IsNullOrEmpty(strWhere.ToString()) ? "Where " : " And ");
-                strWhere.Append(" AuthorityID like '%" + role.AuthorityID + "%'  ");
+                strWhere.Append(" AuthorityID like '%" + Role.AuthorityID + "%'  ");
             }
             //判断角色是否有效
-            if (role.RoleUsable > 1)
+            if (Role.RoleUsable > 1)
             {
                 strWhere.Append(string.IsNullOrEmpty(strWhere.ToString()) ? "Where " : " And ");
-                strWhere.Append(" RoleUsable='" + role.RoleUsable + "'  ");
+                strWhere.Append(" RoleUsable='" + Role.RoleUsable + "'  ");
             }
             sql += strWhere;
-
-            #endregion
             try
             {
-                DataSet ds = new DataSet();
-                using (DbConnection dbConnection = base.Context.CreateConnection())
-                {
-                    SqlCommand sqlCommand = (SqlCommand)base.Context.CreateCommand(sql, dbConnection);
-                    sqlCommand.CommandText = sql;
-                    SqlDataAdapter da = new SqlDataAdapter(sqlCommand);
-                    da.Fill(ds);
-                    sqlCommand.Dispose();
-                    dbConnection.Close();
-                }
-                if (ds != null && ds.Tables[0].Rows.Count > 0)
-                    list = Util.DataTableConvertList<RoleInfo>(ds.Tables[0]);
-                return list;
+                DataTable dt = GetDataTable(sql);
+                if (dt != null && dt.Rows.Count > 0)
+                    RoleList = Util.DataTableConvertList<RoleInfo>(dt);
+                return RoleList;
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
-
         }
 
         /// <summary>
         /// 通过某一角色获取权限信息
         /// </summary>
-        /// <param name="authorityid">权限id</param>
+        /// <param name="RoleID">权限id</param>
         /// <returns>权限信息的集合</returns>
-        public List<RoleInfo> GetRoleInfoByUser(string roleid)
+        public List<RoleInfo> GetRoleInfoByUser(string RoleID)
         {
-            List<RoleInfo> list = new List<RoleInfo>();
-            #region
-            if (string.IsNullOrEmpty(roleid))
+            List<RoleInfo> RoleList = new List<RoleInfo>();
+            if (string.IsNullOrWhiteSpace(RoleID))
             {
-                return list;
+                return RoleList;
             }
             else
             {
-                string role = roleid;
-                if (roleid.IndexOf('|', 0) == 0)
+                string roleId = RoleID;
+                if (RoleID.IndexOf('|', 0) == 0)
                 {
-                    role = roleid.Substring(1, roleid.Length - 1).Replace('|', ',');
+                    roleId = RoleID.Substring(1, RoleID.Length - 1).Replace('|', ',');
                 }
                 else
                 {
-                    role = roleid.Replace('|', ',');
+                    roleId = RoleID.Replace('|', ',');
                 }
-                string sql = " Select * from T_Role Where RoleID in (" + role + ")";
-
-                #endregion
+                string sql = " Select * from T_Role Where RoleID in (" + roleId + ")";
                 try
                 {
-                    DataSet ds = new DataSet();
-                    using (DbConnection dbConnection = base.Context.CreateConnection())
-                    {
-                        SqlCommand sqlCommand = (SqlCommand)base.Context.CreateCommand(sql, dbConnection);
-                        sqlCommand.CommandText = sql;
-                        SqlDataAdapter da = new SqlDataAdapter(sqlCommand);
-                        da.Fill(ds);
-                        sqlCommand.Dispose();
-                        dbConnection.Close();
-                    }
-                    if (ds != null && ds.Tables[0].Rows.Count > 0)
-                        list = Util.DataTableConvertList<RoleInfo>(ds.Tables[0]);
-                    return list;
+                    DataTable dt = GetDataTable(sql);
+                    if (dt != null && dt.Rows.Count > 0)
+                        RoleList = Util.DataTableConvertList<RoleInfo>(dt);
+                    return RoleList;
                 }
                 catch (Exception ex)
                 {
@@ -170,15 +115,15 @@ namespace NZH.Service.BaseData
         /// <summary>
         /// 添加角色
         /// </summary>
-        /// <param name="role">角色实体</param>
+        /// <param name="Role">角色实体</param>
         /// <returns>返回添加返回数</returns>
-        public int AddRole(RoleInfo role)
+        public int AddRole(RoleInfo Role)
         {
-            if (role == null)
+            int Result = 0;
+            if (Role == null)
             {
-                return 0;
+                return Result;
             }
-            #region sql
             string sql = @"INSERT INTO T_Role
            (RoleName, RoleNode, AuthorityID,RoleUsable)
      VALUES(@RoleName, @RoleNode, @AuthorityID,@RoleUsable)";
@@ -188,28 +133,14 @@ namespace NZH.Service.BaseData
                                 new SqlParameter("@AuthorityID",SqlDbType.VarChar),
                                 new SqlParameter("@RoleUsable",SqlDbType.Int)
                                            };
-            parameter[0].Value = role.RoleName;
-            parameter[1].Value = role.RoleNode + "";
-            parameter[2].Value = role.AuthorityID;
-            parameter[3].Value = role.RoleUsable;
-            #endregion
-
+            parameter[0].Value = Role.RoleName;
+            parameter[1].Value = Role.RoleNode + "";
+            parameter[2].Value = Role.AuthorityID;
+            parameter[3].Value = Role.RoleUsable;
             try
             {
-                int result = 0;
-                using (DbConnection dbConnection = base.Context.CreateConnection())
-                {
-                    if (dbConnection == null) return result;
-                    SqlCommand sqlCommand = (SqlCommand)base.Context.CreateCommand(sql, dbConnection);
-                    sqlCommand.CommandText = sql;
-                    foreach (SqlParameter parm in parameter)
-                        sqlCommand.Parameters.Add(parm);
-                    sqlCommand.CommandTimeout = 5;
-                    result = sqlCommand.ExecuteNonQuery();
-                    sqlCommand.Dispose();
-                    dbConnection.Close();
-                    return result;
-                }
+                Result = ExecuteNonQuery(sql, parameter);
+                return Result;
             }
             catch (Exception ex)
             {
@@ -220,35 +151,39 @@ namespace NZH.Service.BaseData
         /// <summary>
         /// 修改角色
         /// </summary>
-        /// <param name="role">角色实体</param>
+        /// <param name="Role">角色实体</param>
         /// <returns>返回添加返回数</returns>
-        public int UpdateRole(RoleInfo role)
+        public int UpdateRole(RoleInfo Role)
         {
-            #region sql
+            int Result = 0;
+            if (Role == null)
+            {
+                return Result;
+            }
             string sql = " UPDATE T_Role SET ";
             StringBuilder strWhere = new StringBuilder("");
             //判断角色名是否为空
-            if (!string.IsNullOrEmpty(role.RoleName))
+            if (!string.IsNullOrEmpty(Role.RoleName))
             {
-                strWhere.Append(" RoleName='" + role.RoleName + "'  ");
+                strWhere.Append(" RoleName='" + Role.RoleName + "'  ");
             }
             //判断角色备注是否为空
-            if (!string.IsNullOrEmpty(role.RoleNode))
+            if (!string.IsNullOrEmpty(Role.RoleNode))
             {
                 strWhere.Append(string.IsNullOrEmpty(strWhere.ToString()) ? " " : ", ");
-                strWhere.Append(" RoleNode='" + role.RoleNode + "' ");
+                strWhere.Append(" RoleNode='" + Role.RoleNode + "' ");
             }
             //判断角色权限是否为空
-            if (!string.IsNullOrEmpty(role.AuthorityID))
+            if (!string.IsNullOrEmpty(Role.AuthorityID))
             {
                 strWhere.Append(string.IsNullOrEmpty(strWhere.ToString()) ? " " : ", ");
-                strWhere.Append(" AuthorityID='" + role.AuthorityID + "' ");
+                strWhere.Append(" AuthorityID='" + Role.AuthorityID + "' ");
             }
             //判断角色是否有效是否为空
-            if (role.RoleUsable > 1)
+            if (Role.RoleUsable > 1)
             {
                 strWhere.Append(string.IsNullOrEmpty(strWhere.ToString()) ? " " : ", ");
-                strWhere.Append(" RoleUsable='" + role.RoleUsable + "' ");
+                strWhere.Append(" RoleUsable='" + Role.RoleUsable + "' ");
             }
             //判断修改条件是否为空
             if (string.IsNullOrEmpty(strWhere.ToString()))
@@ -257,25 +192,13 @@ namespace NZH.Service.BaseData
             }
             else
             {
-                strWhere.Append(" Where RoleID=" + role.RoleID + " ");
+                strWhere.Append(" Where RoleID=" + Role.RoleID + " ");
             }
             sql += strWhere;
-
-            #endregion
             try
             {
-                int result = 0;
-                using (DbConnection dbConnection = base.Context.CreateConnection())
-                {
-                    if (dbConnection == null) return result;
-                    SqlCommand sqlCommand = (SqlCommand)base.Context.CreateCommand(sql, dbConnection);
-                    sqlCommand.CommandText = sql;
-                    sqlCommand.CommandTimeout = 5;
-                    result = sqlCommand.ExecuteNonQuery();
-                    sqlCommand.Dispose();
-                    dbConnection.Close();
-                    return result;
-                }
+                Result = ExecuteNonQuery(sql);
+                return Result;
             }
             catch (Exception ex)
             {
@@ -290,23 +213,12 @@ namespace NZH.Service.BaseData
         /// <returns>返回添加返回数</returns>
         public int DeleteRole(int RoleID)
         {
-            #region sql
+            int Result = 0;
             string sql = " Delete from T_Role Where RoleID=" + RoleID + " ";
-            #endregion
             try
             {
-                int result = 0;
-                using (DbConnection dbConnection = base.Context.CreateConnection())
-                {
-                    if (dbConnection == null) return result;
-                    SqlCommand sqlCommand = (SqlCommand)base.Context.CreateCommand(sql, dbConnection);
-                    sqlCommand.CommandText = sql;
-                    sqlCommand.CommandTimeout = 5;
-                    result = sqlCommand.ExecuteNonQuery();
-                    sqlCommand.Dispose();
-                    dbConnection.Close();
-                    return result;
-                }
+                Result = ExecuteNonQuery(sql);
+                return Result;
             }
             catch (Exception ex)
             {

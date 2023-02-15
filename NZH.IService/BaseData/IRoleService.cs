@@ -9,13 +9,13 @@ namespace NZH.IService.BaseData
 {
     public interface IRoleService
     {
-        List<RoleInfo> GetRoleInfo(RoleInfo role);
+        List<RoleInfo> GetRoleInfo(RoleInfo Role);
 
-        List<RoleInfo> GetRoleInfoByUser(string roleid);
+        List<RoleInfo> GetRoleInfoByUser(string RoleID);
 
-        int AddRole(RoleInfo role);
+        int AddRole(RoleInfo Role);
 
-        int UpdateRole(RoleInfo role);
+        int UpdateRole(RoleInfo Role);
 
         int DeleteRole(int RoleID);
     }

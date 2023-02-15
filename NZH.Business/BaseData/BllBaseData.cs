@@ -15,8 +15,7 @@ namespace NZH.Business.BaseData
             string message = "";
             try
             {
-                result = Context.BaseData.Login(UserName, UserPassword);
-
+                result = Context.UserService.Login(UserName, UserPassword);
             }
             catch (System.Exception ex)
             {
@@ -31,8 +30,7 @@ namespace NZH.Business.BaseData
             string message = "";
             try
             {
-                result = Context.BaseData.UpdatePassWord(UserName, UserPassword);
-
+                result = Context.UserService.UpdatePassWord(UserName, UserPassword);
             }
             catch (System.Exception ex)
             {
@@ -47,8 +45,7 @@ namespace NZH.Business.BaseData
             string message = "";
             try
             {
-                result = Context.BaseData.AddUser(User);
-
+                result = Context.UserService.AddUser(User);
             }
             catch (System.Exception ex)
             {
@@ -63,8 +60,7 @@ namespace NZH.Business.BaseData
             string message = "";
             try
             {
-                result = Context.BaseData.UpdateUser(User);
-
+                result = Context.UserService.UpdateUser(User);
             }
             catch (System.Exception ex)
             {
@@ -79,8 +75,7 @@ namespace NZH.Business.BaseData
             string message = "";
             try
             {
-                result = Context.BaseData.DeleteUser(UserID);
-
+                result = Context.UserService.DeleteUser(UserID);
             }
             catch (System.Exception ex)
             {
@@ -95,7 +90,7 @@ namespace NZH.Business.BaseData
             string message = "";
             try
             {
-                List<UserInfo> userinfo = Context.BaseData.GetUserInfo(Role);
+                List<UserInfo> userinfo = Context.UserService.GetUserInfo(Role);
                 retInfo.Users = userinfo;
             }
             catch (Exception ex)
@@ -111,7 +106,7 @@ namespace NZH.Business.BaseData
             string message = "";
             try
             {
-                List<RoleInfo> roleinfo = Context.BaseData.GetRoleInfo(Role);
+                List<RoleInfo> roleinfo = Context.RoleService.GetRoleInfo(Role);
                 retInfo.Roles = roleinfo;
             }
             catch (Exception ex)
@@ -127,7 +122,7 @@ namespace NZH.Business.BaseData
             string message = "";
             try
             {
-                List<RoleInfo> roleinfo = Context.BaseData.GetRoleInfoByUser(RoleID);
+                List<RoleInfo> roleinfo = Context.RoleService.GetRoleInfoByUser(RoleID);
                 retInfo.Roles = roleinfo;
             }
             catch (Exception ex)
@@ -143,7 +138,7 @@ namespace NZH.Business.BaseData
             string message = "";
             try
             {
-                result = Context.BaseData.AddRole(Role);
+                result = Context.RoleService.AddRole(Role);
             }
             catch (Exception ex)
             {
@@ -158,7 +153,7 @@ namespace NZH.Business.BaseData
             string message = "";
             try
             {
-                result = Context.BaseData.UpdateRole(Role);
+                result = Context.RoleService.UpdateRole(Role);
             }
             catch (Exception ex)
             {
@@ -173,7 +168,7 @@ namespace NZH.Business.BaseData
             string message = "";
             try
             {
-                result = Context.BaseData.DeleteRole(RoleID);
+                result = Context.RoleService.DeleteRole(RoleID);
             }
             catch (Exception ex)
             {
@@ -188,7 +183,7 @@ namespace NZH.Business.BaseData
             string message = "";
             try
             {
-                List<AuthorityInfo> roleinfo = Context.BaseData.GetAuthorityInfo(Authority, Type);
+                List<AuthorityInfo> roleinfo = Context.AuthorityService.GetAuthorityInfo(Authority, Type);
                 retInfo.Authoritys = roleinfo;
             }
             catch (Exception ex)
@@ -204,7 +199,7 @@ namespace NZH.Business.BaseData
             string message = "";
             try
             {
-                result = Context.BaseData.AddAuthority(Authority);
+                result = Context.AuthorityService.AddAuthority(Authority);
             }
             catch (Exception ex)
             {
@@ -219,7 +214,7 @@ namespace NZH.Business.BaseData
             string message = "";
             try
             {
-                result = Context.BaseData.UpdateAuthority(Authority);
+                result = Context.AuthorityService.UpdateAuthority(Authority);
             }
             catch (Exception ex)
             {
@@ -234,7 +229,7 @@ namespace NZH.Business.BaseData
             string message = "";
             try
             {
-                result = Context.BaseData.DeleteAuthority(FunCode);
+                result = Context.AuthorityService.DeleteAuthority(FunCode);
             }
             catch (Exception ex)
             {
@@ -249,8 +244,7 @@ namespace NZH.Business.BaseData
             string message = "";
             try
             {
-                reslut = Context.BaseData.GetMESUser(MesUser);
-
+                reslut = Context.MESUserService.GetMESUser(MesUser);
             }
             catch (Exception ex)
             {
@@ -265,8 +259,7 @@ namespace NZH.Business.BaseData
             string message = "";
             try
             {
-                reslut = Context.BaseData.GetMESRole(MesUser);
-
+                reslut = Context.MESUserService.GetMESRole(MesUser);
             }
             catch (Exception ex)
             {
@@ -281,8 +274,7 @@ namespace NZH.Business.BaseData
             string message = "";
             try
             {
-                result = Context.BaseData.AddMESUser(MesUser);
-
+                result = Context.MESUserService.AddMESUser(MesUser);
             }
             catch (System.Exception ex)
             {
@@ -297,8 +289,7 @@ namespace NZH.Business.BaseData
             string message = "";
             try
             {
-                result = Context.BaseData.CheckAddMESUser(MesUser);
-
+                result = Context.MESUserService.CheckAddMESUser(MesUser);
             }
             catch (System.Exception ex)
             {
@@ -313,8 +304,7 @@ namespace NZH.Business.BaseData
             string message = "";
             try
             {
-                result = Context.BaseData.UpdateMESUser(MesUser);
-
+                result = Context.MESUserService.UpdateMESUser(MesUser);
             }
             catch (System.Exception ex)
             {
@@ -329,8 +319,7 @@ namespace NZH.Business.BaseData
             string message = "";
             try
             {
-                result = Context.BaseData.DeleteMESUser(MesUser);
-
+                result = Context.MESUserService.DeleteMESUser(MesUser);
             }
             catch (System.Exception ex)
             {
@@ -338,6 +327,5 @@ namespace NZH.Business.BaseData
             }
             return result;
         }
-
     }
 }

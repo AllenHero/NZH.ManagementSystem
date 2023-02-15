@@ -84,8 +84,6 @@ namespace NZH.ManagementSystem
             }
         }
 
-        #region 主菜单无法显示完全时，滚动按钮
-
         private void ImageDown_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             try
@@ -172,8 +170,6 @@ namespace NZH.ManagementSystem
                 gridUpDownButton.Visibility = System.Windows.Visibility.Collapsed;
             }
         }
-
-        #endregion
 
         public void Dispose()
         {
@@ -276,8 +272,6 @@ namespace NZH.ManagementSystem
         {
             dockShowMenu.Opacity = 1;
         }
-
-        #region 生成菜单
 
         private void LoadMenu()
         {
@@ -390,7 +384,6 @@ namespace NZH.ManagementSystem
         {
             try
             {
-                #region key值包含中文时，需要转化
                 string newKey = "";
                 byte[] data = System.Text.Encoding.UTF8.GetBytes(key);
                 for (int i = 0; i < data.Length; i++)
@@ -401,7 +394,6 @@ namespace NZH.ManagementSystem
                     }
                     else newKey += (char)data[i];
                 }
-                #endregion
                 string resourceName = this.GetType().Assembly.GetName().Name + ".g";
                 System.Resources.ResourceManager mgr = new System.Resources.ResourceManager(resourceName, this.GetType().Assembly);
                 using (System.Resources.ResourceSet set = mgr.GetResourceSet(System.Globalization.CultureInfo.CurrentCulture, true, true))
@@ -416,11 +408,6 @@ namespace NZH.ManagementSystem
                 return false;
             }
         }
-
-
-        #endregion
-
-        #region 菜单的鼠标效果和点击事件
 
         private void ExpanderItem_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
@@ -530,11 +517,6 @@ namespace NZH.ManagementSystem
             }
         }
 
-
-        #endregion
-
-        #region 最大化、最小化、关闭按钮、主菜单按钮
-
         private void WindowButton_MouseEnter(object sender, MouseEventArgs e)
         {
             try
@@ -622,7 +604,5 @@ namespace NZH.ManagementSystem
                 imageMax.Source = new BitmapImage(new Uri(string.Format("/NZH.ManagementSystem;component/Image/{0}_1.png", imageMax.Tag), UriKind.Relative));
             }
         }
-
-        #endregion
     }
 }

@@ -97,10 +97,10 @@ namespace NZH.Service.BaseData
         /// <returns>执行数</returns>
         public int UpdatePassWord(string UserName, string UserPassword)
         {
-            int Result = 0;
+            int result = 0;
             if (string.IsNullOrWhiteSpace(UserName))
             {
-                return Result;
+                return result;
             }
             string sql = " Update T_User Set UserPassword=@UserPassword where UserName=@UserName ";
             SqlParameter[] parameter = {
@@ -111,12 +111,12 @@ namespace NZH.Service.BaseData
             parameter[1].Value = Util.GetMd5Str(UserPassword);
             try
             {
-                Result = ExecuteNonQuery(sql, parameter);
-                return Result;
+                result = ExecuteNonQuery(sql, parameter);
+                return result;
             }
             catch (Exception ex)
             {
-                return Result;
+                return result;
             }
         }
 
@@ -127,10 +127,10 @@ namespace NZH.Service.BaseData
         /// <returns>返回添加返回数</returns>
         public int AddUser(UserInfo User)
         {
-            int Result = 0;
+            int result = 0;
             if (User == null)
             {
-                return Result;
+                return result;
             }
             string sql = @"INSERT INTO T_User
            (UserName,TrueName, UserPassword, UserUsable, CreateDate, UserNote,RoleID)
@@ -153,12 +153,12 @@ namespace NZH.Service.BaseData
             parameter[6].Value = User.RoleID;
             try
             {
-                Result = ExecuteNonQuery(sql, parameter);
-                return Result;
+                result = ExecuteNonQuery(sql, parameter);
+                return result;
             }
             catch (Exception ex)
             {
-                return Result;
+                return result;
             }
         }
 
@@ -169,10 +169,10 @@ namespace NZH.Service.BaseData
         /// <returns>返回添加返回数</returns>
         public int UpdateUser(UserInfo User)
         {
-            int Result = 0;
+            int result = 0;
             if (User == null)
             {
-                return Result;
+                return result;
             }
             string sql = " UPDATE T_User SET ";
             StringBuilder strWhere = new StringBuilder("");
@@ -203,7 +203,7 @@ namespace NZH.Service.BaseData
             //判断用户名是否为空
             if (string.IsNullOrEmpty(strWhere.ToString()))
             {
-                return Result;
+                return result;
             }
             else
             {
@@ -212,12 +212,12 @@ namespace NZH.Service.BaseData
             sql += strWhere;
             try
             {
-                Result = ExecuteNonQuery(sql);
-                return Result;
+                result = ExecuteNonQuery(sql);
+                return result;
             }
             catch (Exception ex)
             {
-                return Result;
+                return result;
             }
         }
 
@@ -228,16 +228,16 @@ namespace NZH.Service.BaseData
         /// <returns>返回添加返回数</returns>
         public int DeleteUser(int UserID)
         {
-            int Result = 0;
+            int result = 0;
             string sql = " Delete from T_User Where UserID=" + UserID + " ";
             try
             {
-                Result = ExecuteNonQuery(sql);
-                return Result;
+                result = ExecuteNonQuery(sql);
+                return result;
             }
             catch (Exception ex)
             {
-                return Result;
+                return result;
             }
         }
 
@@ -295,6 +295,5 @@ namespace NZH.Service.BaseData
                 throw new Exception(ex.Message);
             }
         }
-
     }
 }

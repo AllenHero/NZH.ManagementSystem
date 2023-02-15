@@ -149,8 +149,6 @@ namespace NZH.ManagementSystem
             imageLogin.Source = new BitmapImage(new Uri("/NZH.ManagementSystem;component/Image/LandWindow_2.png", UriKind.Relative));
         }
 
-        #region imageClose
-
         private void imageClose_MouseEnter(object sender, MouseEventArgs e)
         {
             if (loading.Visibility == System.Windows.Visibility.Visible) return;
@@ -169,10 +167,6 @@ namespace NZH.ManagementSystem
             this.Close();
         }
 
-        #endregion
-
-        #region imageCancel
-
         private void imageCancel_MouseEnter(object sender, MouseEventArgs e)
         {
             if (loading.Visibility == System.Windows.Visibility.Visible) return;
@@ -190,8 +184,6 @@ namespace NZH.ManagementSystem
             if (loading.Visibility == System.Windows.Visibility.Visible) return;
             this.Close();
         }
-
-        #endregion
 
         private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {

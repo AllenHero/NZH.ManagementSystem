@@ -269,8 +269,6 @@ namespace NZH.ManagementSystem.Control
     /// </summary>
     public static class StringEncryptionExtension
     {
-        #region DES
-
         /// <summary> 
         /// DES 加密字符串。
         /// </summary>
@@ -319,10 +317,6 @@ namespace NZH.ManagementSystem.Control
             return DES.TripleDESDecryptString(pString, pKey, pIV);
         }
 
-        #endregion
-
-        #region MD5
-
         /// <summary>
         /// MD5 字符串散列加密，该加密不能逆转。
         /// </summary>
@@ -333,10 +327,6 @@ namespace NZH.ManagementSystem.Control
             return MD5.EncryptString(pString);
         }
 
-        #endregion
-
-        #region SHA1
-
         /// <summary>
         /// SHA1 字符串散列加密，该加密不能逆转。
         /// </summary>
@@ -346,14 +336,10 @@ namespace NZH.ManagementSystem.Control
         {
             return SHA1.EncryptString(pString);
         }
-
-        #endregion
     }
 
     internal sealed class DES
     {
-        #region Private methods
-
         /// <summary>
         /// 根据传递的加密服务加密字符串。
         /// </summary>
@@ -461,10 +447,6 @@ namespace NZH.ManagementSystem.Control
             }
         }
 
-        #endregion
-
-        #region DES Encrypt and Decrypt
-
         /// <summary> 
         /// DES 加密字符串。
         /// </summary>
@@ -513,10 +495,6 @@ namespace NZH.ManagementSystem.Control
             }
         }
 
-        #endregion
-
-        #region TripleDES Encrypt and Decrypt
-
         /// <summary> 
         /// TripleDES 加密字符串。
         /// </summary>
@@ -564,8 +542,6 @@ namespace NZH.ManagementSystem.Control
                 return e.Message;
             }
         }
-
-        #endregion
     }
 
     /// <summary>

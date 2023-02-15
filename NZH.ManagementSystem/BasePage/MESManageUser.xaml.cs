@@ -64,8 +64,6 @@ namespace NZH.ManagementSystem.BasePage
             }
         }
 
-        #region 按钮点击事件
-
         private void BtnQuery_Click(object sender, RoutedEventArgs e)
         {
             Query();
@@ -118,7 +116,5 @@ namespace NZH.ManagementSystem.BasePage
                 AllMESUser.Remove(item);
             }
         }
-
-        #endregion
     }
 }

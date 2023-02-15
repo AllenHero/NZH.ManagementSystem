@@ -68,8 +68,6 @@ namespace NZH.ManagementSystem.BasePage
             }
         }
 
-        #region 生成权限树
-
         private void LoadAuthorityTree()
         {
             List<AuthorityInfo> listAuth = listAuthority.ToList<AuthorityInfo>();
@@ -129,8 +127,6 @@ namespace NZH.ManagementSystem.BasePage
                     LoadAuthorityTree(item, listAuth);
             }
         }
-
-        #endregion
 
         private void btnOK_Click(object sender, RoutedEventArgs e)
         {
@@ -300,8 +296,6 @@ namespace NZH.ManagementSystem.BasePage
             else return null;
         }
 
-        #region （三态树）选中一个树节点后，自动勾选这个节点的子节点和父节点
-
         private void CheckTreeUp(Model.PropertyNodeItem item)
         {
             if (item.IsChecked != false)
@@ -362,8 +356,6 @@ namespace NZH.ManagementSystem.BasePage
             }
         }
 
-        #endregion
-
         public RoleInfo GetRoleInfo()
         {
             return _role;
@@ -380,8 +372,6 @@ namespace NZH.ManagementSystem.BasePage
             tvFunction.ItemsSource = null;
             tvFunction.ItemsSource = listNode;
         }
-
-        #region 选中指定树节点
 
         private void SetChecked(List<string> listID)
         {
@@ -413,10 +403,6 @@ namespace NZH.ManagementSystem.BasePage
             }
         }
 
-        #endregion
-
-        #region 获取选中树节点
-
         private List<Model.PropertyNodeItem> GetCheckedNode()
         {
             List<Model.PropertyNodeItem> list = new List<Model.PropertyNodeItem>();
@@ -440,7 +426,5 @@ namespace NZH.ManagementSystem.BasePage
                 GetCheckedNode(list, child);
             }
         }
-
-        #endregion
     }
 }

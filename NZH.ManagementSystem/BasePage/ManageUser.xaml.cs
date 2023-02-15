@@ -79,9 +79,6 @@ namespace NZH.ManagementSystem.BasePage
                 dgManageUser.SelectedIndex = 0;
         }
 
-
-        #region 按钮点击事件
-
         private void BtnQuery_Click(object sender, RoutedEventArgs e)
         {
             Query();
@@ -141,8 +138,6 @@ namespace NZH.ManagementSystem.BasePage
                 AllUserInfo.Remove(item);
             }
         }
-
-        #endregion
 
         private void CheckBox_Click(object sender, RoutedEventArgs e)
         {

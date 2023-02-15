@@ -36,8 +36,6 @@ namespace NZH.ManagementSystem.Base
             DefaultStyleKeyProperty.OverrideMetadata(typeof(BaseWindow), new FrameworkPropertyMetadata(typeof(BaseWindow)));
         }
 
-        #region Template Part Name
-
         private const string HeaderContainerName = "PART_HeaderContainer";
         private const string MinimizeButtonName = "PART_MinimizeButton";
         private const string RestoreButtonName = "PART_RestoreButton";
@@ -50,10 +48,6 @@ namespace NZH.ManagementSystem.Base
         private const string TopRightResizerName = "PART_TopRightResizer";
         private const string TopLeftResizerName = "PART_TopLeftResizer";
         private const string BottomLeftResizerName = "PART_BottomLeftResizer";
-
-        #endregion
-
-        #region Dependency Properties
 
         public static readonly DependencyProperty ShowDefaultHeaderProperty = DependencyProperty.Register("ShowDefaultHeader", typeof(bool), typeof(BaseWindow), new FrameworkPropertyMetadata(true));
         public static readonly DependencyProperty ShowResizeGripProperty = DependencyProperty.Register("ShowResizeGrip", typeof(bool), typeof(BaseWindow), new FrameworkPropertyMetadata(false));
@@ -115,10 +109,6 @@ namespace NZH.ManagementSystem.Base
             set { SetValue(IsFullScreenMaximizeProperty, value); }
         }
 
-        #endregion
-
-        #region Private Fields
-
         private FrameworkElement headerContainer;
         private Image minimizeButton;
         private Image restoreButton;
@@ -131,8 +121,6 @@ namespace NZH.ManagementSystem.Base
         private Thumb topRightResizer;
         private Thumb topLeftResizer;
         private Thumb bottomLeftResizer;
-
-        #endregion
 
         public bool? ShowDialog(Window owner)
         {
@@ -259,8 +247,6 @@ namespace NZH.ManagementSystem.Base
             return Left < SystemParameters.PrimaryScreenWidth && Top < SystemParameters.PrimaryScreenHeight;
         }
 
-        #region 最大化、最小化、关闭按钮
-
         private void WindowButton_MouseEnter(object sender, MouseEventArgs e)
         {
             try
@@ -324,10 +310,6 @@ namespace NZH.ManagementSystem.Base
             {
             }
         }
-
-        #endregion
-
-        #region Resize
 
         private void ResizeBottomLeft(object sender, DragDeltaEventArgs e)
         {
@@ -406,7 +388,5 @@ namespace NZH.ManagementSystem.Base
             Height -= e.VerticalChange;
             Top += e.VerticalChange;
         }
-
-        #endregion
     }
 }

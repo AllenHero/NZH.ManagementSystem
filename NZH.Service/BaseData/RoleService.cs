@@ -119,10 +119,10 @@ namespace NZH.Service.BaseData
         /// <returns>返回添加返回数</returns>
         public int AddRole(RoleInfo Role)
         {
-            int Result = 0;
+            int result = 0;
             if (Role == null)
             {
-                return Result;
+                return result;
             }
             string sql = @"INSERT INTO T_Role
            (RoleName, RoleNode, AuthorityID,RoleUsable)
@@ -139,8 +139,8 @@ namespace NZH.Service.BaseData
             parameter[3].Value = Role.RoleUsable;
             try
             {
-                Result = ExecuteNonQuery(sql, parameter);
-                return Result;
+                result = ExecuteNonQuery(sql, parameter);
+                return result;
             }
             catch (Exception ex)
             {
@@ -155,10 +155,10 @@ namespace NZH.Service.BaseData
         /// <returns>返回添加返回数</returns>
         public int UpdateRole(RoleInfo Role)
         {
-            int Result = 0;
+            int result = 0;
             if (Role == null)
             {
-                return Result;
+                return result;
             }
             string sql = " UPDATE T_Role SET ";
             StringBuilder strWhere = new StringBuilder("");
@@ -197,8 +197,8 @@ namespace NZH.Service.BaseData
             sql += strWhere;
             try
             {
-                Result = ExecuteNonQuery(sql);
-                return Result;
+                result = ExecuteNonQuery(sql);
+                return result;
             }
             catch (Exception ex)
             {
@@ -213,12 +213,12 @@ namespace NZH.Service.BaseData
         /// <returns>返回添加返回数</returns>
         public int DeleteRole(int RoleID)
         {
-            int Result = 0;
+            int result = 0;
             string sql = " Delete from T_Role Where RoleID=" + RoleID + " ";
             try
             {
-                Result = ExecuteNonQuery(sql);
-                return Result;
+                result = ExecuteNonQuery(sql);
+                return result;
             }
             catch (Exception ex)
             {

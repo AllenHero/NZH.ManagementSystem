@@ -95,10 +95,10 @@ namespace NZH.Service.BaseData
         /// <returns>返回添加返回数</returns>
         public int AddAuthority(AuthorityInfo Authority)
         {
-            int Result = 0;
+            int result = 0;
             if (Authority == null)
             {
-                return Result;
+                return result;
             }
             string sql = @"INSERT INTO T_Authority
            (ParentID, FunName, AuNode, Menu, FunCode,SortCode)
@@ -121,8 +121,8 @@ namespace NZH.Service.BaseData
             parameter[6].Value = Authority.Enable;
             try
             {
-                Result = ExecuteNonQuery(sql, parameter);
-                return Result;
+                result = ExecuteNonQuery(sql, parameter);
+                return result;
             }
             catch (Exception ex)
             {
@@ -137,10 +137,10 @@ namespace NZH.Service.BaseData
         /// <returns>返回添加返回数</returns>
         public int UpdateAuthority(AuthorityInfo Authority)
         {
-            int Result = 0;
+            int result = 0;
             if (Authority == null)
             {
-                return Result;
+                return result;
             }
             string sql = " UPDATE T_Authority SET ";
             StringBuilder strWhere = new StringBuilder("");
@@ -179,7 +179,7 @@ namespace NZH.Service.BaseData
             //判断修改条件是否为空
             if (string.IsNullOrEmpty(strWhere.ToString()))
             {
-                return Result;
+                return result;
             }
             else
             {
@@ -188,8 +188,8 @@ namespace NZH.Service.BaseData
             sql += strWhere;
             try
             {
-                Result = ExecuteNonQuery(sql);
-                return Result;
+                result = ExecuteNonQuery(sql);
+                return result;
             }
             catch (Exception ex)
             {
@@ -204,16 +204,16 @@ namespace NZH.Service.BaseData
         /// <returns>返回添加返回数</returns>
         public int DeleteAuthority(string FunCode)
         {
-            int Result = 0;
+            int result = 0;
             if (string.IsNullOrWhiteSpace(FunCode))
             {
-                return Result;
+                return result;
             }
             string sql = @" Delete from T_Authority Where FunCode='" + FunCode + "' or ParentID='" + FunCode + "'";
             try
             {
-                Result = ExecuteNonQuery(sql);
-                return Result;
+                result = ExecuteNonQuery(sql);
+                return result;
             }
             catch (Exception ex)
             {

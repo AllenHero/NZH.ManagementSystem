@@ -73,8 +73,6 @@ namespace NZH.ManagementSystem.BasePage
             loadTree("0");
         }
 
-        #region 绑定树结构
-
         public void loadTree(string FatherID)
         {
             //加载根节点前先清除Treeview控件项
@@ -131,10 +129,6 @@ namespace NZH.ManagementSystem.BasePage
                 }
             }
         }
-
-        #endregion
-
-        #region 树结构增删改
 
         //添加节点
         void btnNode_Click(object sender, RoutedEventArgs e)
@@ -357,8 +351,6 @@ namespace NZH.ManagementSystem.BasePage
             else
                 itemList.Remove(node);
         }
-
-        #endregion
 
         //树节点改变
         void treeview_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)

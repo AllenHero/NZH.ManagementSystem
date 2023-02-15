@@ -97,7 +97,6 @@ where USER_ID='{0}') t2 on t1.ID=t2.ROLE_ID ", MesUser.UserID);
             }
         }
 
-
         /// <summary>
         /// 添加mes用户
         /// </summary>
@@ -105,10 +104,10 @@ where USER_ID='{0}') t2 on t1.ID=t2.ROLE_ID ", MesUser.UserID);
         /// <returns></returns>
         public int AddMESUser(MESUser MesUser)
         {
-            int Result = 0;
+            int result = 0;
             if (MesUser == null)
             {
-                return Result;
+                return result;
             }
             List<string> SqlList = new List<string>();
             SqlList.Add(string.Format(@" INSERT INTO SYS_USER_PROFILE 
@@ -126,8 +125,15 @@ GETDATE(),GETDATE(),GETDATE(),GETDATE(),GETDATE(),
                 if (row.IsCheck)
                     SqlList.Add(string.Format(@" INSERT INTO SYS_USER_IN_ROLES (USER_ID, ROLE_ID) VALUES ('{0}', '{1}')", MesUser.UserID, row.RoleID));
             }
-            Result = BatchExecuteNonQuery(SqlList);
-            return Result;
+            try
+            {
+                result = BatchExecuteNonQuery(SqlList);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         /// <summary>
@@ -137,18 +143,18 @@ GETDATE(),GETDATE(),GETDATE(),GETDATE(),GETDATE(),
         /// <returns></returns>
         public int CheckAddMESUser(MESUser MesUser)
         {
-            int Result = 0;
+            int result = 0;
             if (MesUser == null)
             {
-                return Result;
+                return result;
             }
             string sql = string.Format(@"select * from SYS_USER_PROFILE where user_name='{0}' ", MesUser.UserName);
             try
             {
                 DataTable dt = GetDataTable(sql);
                 if (dt != null && dt.Rows.Count > 0)
-                    Result = 1;
-                return Result;
+                    result = 1;
+                return result;
             }
             catch (Exception ex)
             {
@@ -163,10 +169,10 @@ GETDATE(),GETDATE(),GETDATE(),GETDATE(),GETDATE(),
         /// <returns></returns>
         public int UpdateMESUser(MESUser MesUser)
         {
-            int Result = 0;
+            int result = 0;
             if (MesUser == null)
             {
-                return Result;
+                return result;
             }
             List<string> SqlList = new List<string>();
             if (MesUser.ChangePassword)
@@ -180,8 +186,15 @@ GETDATE(),GETDATE(),GETDATE(),GETDATE(),GETDATE(),
                 if (row.IsCheck)
                     SqlList.Add(string.Format(@" INSERT INTO SYS_USER_IN_ROLES (USER_ID, ROLE_ID) VALUES ('{0}', '{1}')", MesUser.UserID, row.RoleID));
             }
-            Result = BatchExecuteNonQuery(SqlList);
-            return Result;
+            try
+            {
+                result = BatchExecuteNonQuery(SqlList);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         /// <summary>
@@ -191,17 +204,24 @@ GETDATE(),GETDATE(),GETDATE(),GETDATE(),GETDATE(),
         /// <returns></returns>
         public int DeleteMESUser(MESUser MesUser)
         {
-            int Result = 0;
+            int result = 0;
             if (MesUser == null)
             {
-                return Result;
+                return result;
             }
             List<string> SqlList = new List<string>();
             SqlList.Add(" Delete from SYS_USER_PROFILE Where ID='" + MesUser.UserID + "' ");
             SqlList.Add(" Delete from SYS_PERSON Where ID='" + MesUser.PersonID + "' ");
             SqlList.Add(" Delete from SYS_USER_IN_ROLES Where USER_ID='" + MesUser.UserID + "' ");
-            Result = BatchExecuteNonQuery(SqlList);
-            return Result;
+            try
+            {
+                result = BatchExecuteNonQuery(SqlList);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
     }
 }

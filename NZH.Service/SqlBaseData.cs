@@ -24,9 +24,9 @@ namespace NZH.Service
             try
             {
                 DataTable dt = new DataTable();
-                using (DbConnection dbConnection = base.Context.CreateConnection())
+                using (DbConnection dbConnection = this.Context.CreateConnection())
                 {
-                    SqlCommand sqlCommand = (SqlCommand)base.Context.CreateCommand(sql, dbConnection);
+                    SqlCommand sqlCommand = (SqlCommand)this.Context.CreateCommand(sql, dbConnection);
                     sqlCommand.CommandText = sql;
                     SqlDataAdapter da = new SqlDataAdapter(sqlCommand);
                     da.Fill(dt);
@@ -52,9 +52,9 @@ namespace NZH.Service
             try
             {
                 DataTable dt = new DataTable();
-                using (DbConnection dbConnection = base.Context.CreateConnection())
+                using (DbConnection dbConnection = this.Context.CreateConnection())
                 {
-                    SqlCommand sqlCommand = (SqlCommand)base.Context.CreateCommand(sql, dbConnection);
+                    SqlCommand sqlCommand = (SqlCommand)this.Context.CreateCommand(sql, dbConnection);
                     sqlCommand.CommandText = sql;
                     if (pms != null)
                     {
@@ -88,9 +88,9 @@ namespace NZH.Service
         {
             try
             {
-                using (DbConnection dbConnection = base.Context.CreateConnection())
+                using (DbConnection dbConnection = this.Context.CreateConnection())
                 {
-                    SqlCommand sqlCommand = (SqlCommand)base.Context.CreateCommand(sql, dbConnection);
+                    SqlCommand sqlCommand = (SqlCommand)this.Context.CreateCommand(sql, dbConnection);
                     int i = sqlCommand.ExecuteNonQuery();
                     sqlCommand.Dispose();
                     dbConnection.Close();
@@ -113,9 +113,9 @@ namespace NZH.Service
         {
             try
             {
-                using (DbConnection dbConnection = base.Context.CreateConnection())
+                using (DbConnection dbConnection = this.Context.CreateConnection())
                 {
-                    SqlCommand sqlCommand = (SqlCommand)base.Context.CreateCommand(sql, dbConnection);
+                    SqlCommand sqlCommand = (SqlCommand)this.Context.CreateCommand(sql, dbConnection);
                     if (pms != null)
                     {
                         foreach (SqlParameter item in pms)
@@ -170,9 +170,9 @@ namespace NZH.Service
         {
             try
             {
-                using (DbConnection dbConnection = base.Context.CreateConnection())
+                using (DbConnection dbConnection = this.Context.CreateConnection())
                 {
-                    SqlCommand sqlCommand = (SqlCommand)base.Context.CreateCommand(sql, dbConnection);
+                    SqlCommand sqlCommand = (SqlCommand)this.Context.CreateCommand(sql, dbConnection);
                     object i = sqlCommand.ExecuteScalar();
                     sqlCommand.Dispose();
                     dbConnection.Close();
@@ -195,9 +195,9 @@ namespace NZH.Service
         {
             try
             {
-                using (DbConnection dbConnection = base.Context.CreateConnection())
+                using (DbConnection dbConnection = this.Context.CreateConnection())
                 {
-                    SqlCommand sqlCommand = (SqlCommand)base.Context.CreateCommand(sql, dbConnection);
+                    SqlCommand sqlCommand = (SqlCommand)this.Context.CreateCommand(sql, dbConnection);
                     if (pms != null)
                     {
                         foreach (SqlParameter item in pms)
@@ -229,9 +229,9 @@ namespace NZH.Service
         {
             try
             {
-                using (DbConnection dbConnection = base.Context.CreateConnection())
+                using (DbConnection dbConnection = this.Context.CreateConnection())
                 {
-                    SqlCommand sqlCommand = (SqlCommand)base.Context.CreateCommand(sql, dbConnection);
+                    SqlCommand sqlCommand = (SqlCommand)this.Context.CreateCommand(sql, dbConnection);
                     SqlDataReader sdr = sqlCommand.ExecuteReader(CommandBehavior.CloseConnection);
                     sdr.Close();
                     sqlCommand.Dispose();
@@ -255,9 +255,9 @@ namespace NZH.Service
         {
             try
             {
-                using (DbConnection dbConnection = base.Context.CreateConnection())
+                using (DbConnection dbConnection = this.Context.CreateConnection())
                 {
-                    SqlCommand sqlCommand = (SqlCommand)base.Context.CreateCommand(sql, dbConnection);
+                    SqlCommand sqlCommand = (SqlCommand)this.Context.CreateCommand(sql, dbConnection);
                     if (pms != null)
                     {
                         foreach (SqlParameter item in pms)

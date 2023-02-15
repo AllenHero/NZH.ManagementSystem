@@ -15,7 +15,7 @@ namespace NZH.Business.BaseData
             string message = "";
             try
             {
-                List<AuthorityInfo> roleinfo = Context.AuthorityService.GetAuthorityInfo(Authority, Type);
+                List<AuthorityInfo> roleinfo = this.Context.AuthorityService.GetAuthorityInfo(Authority, Type);
                 retInfo.Authoritys = roleinfo;
             }
             catch (Exception ex)
@@ -31,7 +31,7 @@ namespace NZH.Business.BaseData
             string message = "";
             try
             {
-                result = Context.AuthorityService.AddAuthority(Authority);
+                result = this.Context.AuthorityService.AddAuthority(Authority);
             }
             catch (Exception ex)
             {
@@ -46,7 +46,7 @@ namespace NZH.Business.BaseData
             string message = "";
             try
             {
-                result = Context.AuthorityService.UpdateAuthority(Authority);
+                result = this.Context.AuthorityService.UpdateAuthority(Authority);
             }
             catch (Exception ex)
             {
@@ -61,7 +61,7 @@ namespace NZH.Business.BaseData
             string message = "";
             try
             {
-                result = Context.AuthorityService.DeleteAuthority(FunCode);
+                result = this.Context.AuthorityService.DeleteAuthority(FunCode);
             }
             catch (Exception ex)
             {

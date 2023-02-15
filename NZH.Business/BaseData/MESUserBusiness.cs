@@ -15,7 +15,7 @@ namespace NZH.Business.BaseData
             string message = "";
             try
             {
-                reslut = Context.MESUserService.GetMESUser(MesUser);
+                reslut = this.Context.MESUserService.GetMESUser(MesUser);
             }
             catch (Exception ex)
             {
@@ -30,7 +30,7 @@ namespace NZH.Business.BaseData
             string message = "";
             try
             {
-                reslut = Context.MESUserService.GetMESRole(MesUser);
+                reslut = this.Context.MESUserService.GetMESRole(MesUser);
             }
             catch (Exception ex)
             {
@@ -45,7 +45,7 @@ namespace NZH.Business.BaseData
             string message = "";
             try
             {
-                result = Context.MESUserService.AddMESUser(MesUser);
+                result = this.Context.MESUserService.AddMESUser(MesUser);
             }
             catch (System.Exception ex)
             {
@@ -60,7 +60,7 @@ namespace NZH.Business.BaseData
             string message = "";
             try
             {
-                result = Context.MESUserService.CheckAddMESUser(MesUser);
+                result = this.Context.MESUserService.CheckAddMESUser(MesUser);
             }
             catch (System.Exception ex)
             {
@@ -75,7 +75,7 @@ namespace NZH.Business.BaseData
             string message = "";
             try
             {
-                result = Context.MESUserService.UpdateMESUser(MesUser);
+                result = this.Context.MESUserService.UpdateMESUser(MesUser);
             }
             catch (System.Exception ex)
             {
@@ -90,7 +90,7 @@ namespace NZH.Business.BaseData
             string message = "";
             try
             {
-                result = Context.MESUserService.DeleteMESUser(MesUser);
+                result = this.Context.MESUserService.DeleteMESUser(MesUser);
             }
             catch (System.Exception ex)
             {

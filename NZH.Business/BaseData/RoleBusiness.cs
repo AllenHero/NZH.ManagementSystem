@@ -15,7 +15,7 @@ namespace NZH.Business.BaseData
             string message = "";
             try
             {
-                List<RoleInfo> roleinfo = Context.RoleService.GetRoleInfo(Role);
+                List<RoleInfo> roleinfo = this.Context.RoleService.GetRoleInfo(Role);
                 retInfo.Roles = roleinfo;
             }
             catch (Exception ex)
@@ -31,7 +31,7 @@ namespace NZH.Business.BaseData
             string message = "";
             try
             {
-                List<RoleInfo> roleinfo = Context.RoleService.GetRoleInfoByUser(RoleID);
+                List<RoleInfo> roleinfo = this.Context.RoleService.GetRoleInfoByUser(RoleID);
                 retInfo.Roles = roleinfo;
             }
             catch (Exception ex)
@@ -47,7 +47,7 @@ namespace NZH.Business.BaseData
             string message = "";
             try
             {
-                result = Context.RoleService.AddRole(Role);
+                result = this.Context.RoleService.AddRole(Role);
             }
             catch (Exception ex)
             {
@@ -62,7 +62,7 @@ namespace NZH.Business.BaseData
             string message = "";
             try
             {
-                result = Context.RoleService.UpdateRole(Role);
+                result = this.Context.RoleService.UpdateRole(Role);
             }
             catch (Exception ex)
             {
@@ -77,7 +77,7 @@ namespace NZH.Business.BaseData
             string message = "";
             try
             {
-                result = Context.RoleService.DeleteRole(RoleID);
+                result = this.Context.RoleService.DeleteRole(RoleID);
             }
             catch (Exception ex)
             {

@@ -59,8 +59,8 @@ namespace NZH.Service.BaseData
                             RoleInfo role = new RoleInfo();
                             role.RoleID = Convert.ToInt32(roles[j]);
                             //List<RoleInfo> roleList = GetRoleInfo(role);
-                            List<RoleInfo> roleList = Context.RoleService.GetRoleInfo(role);
-                            role = Context.RoleService.GetOneRoleInfo(roleList);
+                            List<RoleInfo> roleList = this.Context.RoleService.GetRoleInfo(role);
+                            role = this.Context.RoleService.GetOneRoleInfo(roleList);
                             AuthorityId += "|" + role.AuthorityID;
                             //权限信息
                             if (roles[j].ToString() == "1")
@@ -72,11 +72,11 @@ namespace NZH.Service.BaseData
                         //判断是否有管理员权限
                         if (flag)
                         {
-                            Authoritys = Context.AuthorityService.GetAuthorityInfoByRole(AuthorityId);
+                            Authoritys = this.Context.AuthorityService.GetAuthorityInfoByRole(AuthorityId);
                         }
                         else
                         {
-                            Authoritys = Context.AuthorityService.GetAuthorityInfo(new AuthorityInfo(), false);
+                            Authoritys = this.Context.AuthorityService.GetAuthorityInfo(new AuthorityInfo(), false);
                         }
                         User.Roles = Roles;
                         User.Authoritys = Authoritys;
@@ -283,10 +283,10 @@ namespace NZH.Service.BaseData
                 if (UserList.Count > 0)
                 {
                     RoleInfo role = new RoleInfo();
-                    List<RoleInfo> Roles = Context.RoleService.GetRoleInfo(role);
+                    List<RoleInfo> Roles = this.Context.RoleService.GetRoleInfo(role);
                     for (int i = 0; i < UserList.Count; i++)
                     {
-                        UserList[i].Roles = Context.RoleService.GetRoleNameByRoleId(UserList[i].RoleID, Roles);
+                        UserList[i].Roles = this.Context.RoleService.GetRoleNameByRoleId(UserList[i].RoleID, Roles);
                     }
                 }
                 return UserList;

@@ -15,7 +15,7 @@ namespace NZH.Business.BaseData
             string message = "";
             try
             {
-                result = Context.UserService.Login(UserName, UserPassword);
+                result = this.Context.UserService.Login(UserName, UserPassword);
             }
             catch (System.Exception ex)
             {
@@ -30,7 +30,7 @@ namespace NZH.Business.BaseData
             string message = "";
             try
             {
-                result = Context.UserService.UpdatePassWord(UserName, UserPassword);
+                result = this.Context.UserService.UpdatePassWord(UserName, UserPassword);
             }
             catch (System.Exception ex)
             {
@@ -45,7 +45,7 @@ namespace NZH.Business.BaseData
             string message = "";
             try
             {
-                result = Context.UserService.AddUser(User);
+                result = this.Context.UserService.AddUser(User);
             }
             catch (System.Exception ex)
             {
@@ -60,7 +60,7 @@ namespace NZH.Business.BaseData
             string message = "";
             try
             {
-                result = Context.UserService.UpdateUser(User);
+                result = this.Context.UserService.UpdateUser(User);
             }
             catch (System.Exception ex)
             {
@@ -75,7 +75,7 @@ namespace NZH.Business.BaseData
             string message = "";
             try
             {
-                result = Context.UserService.DeleteUser(UserID);
+                result = this.Context.UserService.DeleteUser(UserID);
             }
             catch (System.Exception ex)
             {
@@ -90,7 +90,7 @@ namespace NZH.Business.BaseData
             string message = "";
             try
             {
-                List<UserInfo> userinfo = Context.UserService.GetUserInfo(Role);
+                List<UserInfo> userinfo = this.Context.UserService.GetUserInfo(Role);
                 retInfo.Users = userinfo;
             }
             catch (Exception ex)

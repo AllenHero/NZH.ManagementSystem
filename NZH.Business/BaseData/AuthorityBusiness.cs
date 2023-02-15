@@ -11,18 +11,18 @@ namespace NZH.Business.BaseData
     {
         public UserInfo GetAuthorityInfo(AuthorityInfo Authority, bool Type)
         {
-            UserInfo retInfo = new UserInfo();
+            UserInfo userInfo = new UserInfo();
             string message = "";
             try
             {
-                List<AuthorityInfo> roleinfo = this.Context.AuthorityService.GetAuthorityInfo(Authority, Type);
-                retInfo.Authoritys = roleinfo;
+                List<AuthorityInfo> authorityInfos = this.Context.AuthorityService.GetAuthorityInfo(Authority, Type);
+                userInfo.Authoritys = authorityInfos;
             }
             catch (Exception ex)
             {
                 base.ExceptionLog("GetAuthorityInfo", EmergencyLevel.General, ex, out message);
             }
-            return retInfo;
+            return userInfo;
         }
 
         public int AddAuthority(AuthorityInfo Authority)

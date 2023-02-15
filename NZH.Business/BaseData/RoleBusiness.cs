@@ -11,34 +11,34 @@ namespace NZH.Business.BaseData
     {
         public UserInfo GetRoleInfo(RoleInfo Role)
         {
-            UserInfo retInfo = new UserInfo();
+            UserInfo userInfo = new UserInfo();
             string message = "";
             try
             {
-                List<RoleInfo> roleinfo = this.Context.RoleService.GetRoleInfo(Role);
-                retInfo.Roles = roleinfo;
+                List<RoleInfo> roleInfos = this.Context.RoleService.GetRoleInfo(Role);
+                userInfo.Roles = roleInfos;
             }
             catch (Exception ex)
             {
                 base.ExceptionLog("GetRoleInfo", EmergencyLevel.General, ex, out message);
             }
-            return retInfo;
+            return userInfo;
         }
 
         public UserInfo GetRoleInfoByUser(string RoleID)
         {
-            UserInfo retInfo = new UserInfo();
+            UserInfo userInfo = new UserInfo();
             string message = "";
             try
             {
-                List<RoleInfo> roleinfo = this.Context.RoleService.GetRoleInfoByUser(RoleID);
-                retInfo.Roles = roleinfo;
+                List<RoleInfo> roleInfos = this.Context.RoleService.GetRoleInfoByUser(RoleID);
+                userInfo.Roles = roleInfos;
             }
             catch (Exception ex)
             {
                 base.ExceptionLog("GetRoleInfoByUser", EmergencyLevel.General, ex, out message);
             }
-            return retInfo;
+            return userInfo;
         }
 
         public int AddRole(RoleInfo Role)

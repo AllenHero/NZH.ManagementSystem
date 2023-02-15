@@ -11,17 +11,17 @@ namespace NZH.Business.BaseData
     {
         public UserInfo Login(string UserName, string UserPassword)
         {
-            UserInfo result = new UserInfo();
+            UserInfo userInfo = new UserInfo();
             string message = "";
             try
             {
-                result = this.Context.UserService.Login(UserName, UserPassword);
+                userInfo = this.Context.UserService.Login(UserName, UserPassword);
             }
             catch (System.Exception ex)
             {
                 base.ExceptionLog("Login", EmergencyLevel.General, ex, out message);
             }
-            return result;
+            return userInfo;
         }
 
         public int UpdatePassWord(string UserName, string UserPassword)
@@ -86,18 +86,18 @@ namespace NZH.Business.BaseData
 
         public UserInfo GetUserInfo(UserInfo Role)
         {
-            UserInfo retInfo = new UserInfo();
+            UserInfo userInfo = new UserInfo();
             string message = "";
             try
             {
-                List<UserInfo> userinfo = this.Context.UserService.GetUserInfo(Role);
-                retInfo.Users = userinfo;
+                List<UserInfo> userInfos = this.Context.UserService.GetUserInfo(Role);
+                userInfo.Users = userInfos;
             }
             catch (Exception ex)
             {
                 base.ExceptionLog("GetUserInfo", EmergencyLevel.General, ex, out message);
             }
-            return retInfo;
+            return userInfo;
         }
     }
 }

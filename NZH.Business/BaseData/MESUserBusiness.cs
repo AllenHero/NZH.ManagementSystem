@@ -11,32 +11,32 @@ namespace NZH.Business.BaseData
     {
         public List<MESUser> GetMESUser(MESUser MesUser)
         {
-            List<MESUser> reslut = new List<MESUser>();
+            List<MESUser> MESUsers = new List<MESUser>();
             string message = "";
             try
             {
-                reslut = this.Context.MESUserService.GetMESUser(MesUser);
+                MESUsers = this.Context.MESUserService.GetMESUser(MesUser);
             }
             catch (Exception ex)
             {
                 base.ExceptionLog("GetMESUser", EmergencyLevel.General, ex, out message);
             }
-            return reslut;
+            return MESUsers;
         }
 
         public List<MESRole> GetMESRole(MESUser MesUser)
         {
-            List<MESRole> reslut = new List<MESRole>();
+            List<MESRole> MESRoles = new List<MESRole>();
             string message = "";
             try
             {
-                reslut = this.Context.MESUserService.GetMESRole(MesUser);
+                MESRoles = this.Context.MESUserService.GetMESRole(MesUser);
             }
             catch (Exception ex)
             {
                 base.ExceptionLog("GetMESRole", EmergencyLevel.General, ex, out message);
             }
-            return reslut;
+            return MESRoles;
         }
 
         public int AddMESUser(MESUser MesUser)

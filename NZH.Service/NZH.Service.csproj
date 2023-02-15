@@ -61,7 +61,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseData\AuthorityService.cs" />
-    <Compile Include="BaseData\MesUserService.cs" />
+    <Compile Include="BaseData\MESUserService.cs" />
     <Compile Include="BaseData\RoleService.cs" />
     <Compile Include="BaseData\SqlBaseData.cs" />
     <Compile Include="BaseData\UserService.cs" />

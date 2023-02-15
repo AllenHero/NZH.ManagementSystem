@@ -229,7 +229,6 @@ namespace NZH.ManagementSystem
             }
         }
 
-
         //显示和隐藏菜单
         private void dockShowMenu_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
@@ -282,7 +281,6 @@ namespace NZH.ManagementSystem
                         AuNode = row.AuNode,
                         parentId = row.FatherID,
                         IsExpanded = true
-
                     };
                     string id = row.ID;
                     string pid = row.FatherID;

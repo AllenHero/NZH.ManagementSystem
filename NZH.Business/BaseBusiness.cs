@@ -13,12 +13,12 @@ namespace NZH.Business
         /// <summary>
         /// 数据库上下文。
         /// </summary>
-        protected BaseDatabaseContext Context { get; private set; }
+        protected BaseDataBaseContext Context { get; private set; }
 
         public BaseBusiness()
         {
             ///如存在多种数据库，则需要在这里使用策略模式。
-            Context = new SQLDatabaseContext();
+            Context = new SqlDataBaseContext();
         }
 
         public bool ExceptionLog(string methodName, string level, Exception ex, out string messageFromExceptionLog)

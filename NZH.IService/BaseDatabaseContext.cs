@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace NZH.IService
 {
-    public abstract partial class BaseDatabaseContext
+    public abstract partial class BaseDataBaseContext
     {
         public IUserService UserService { get; set; }
 

@@ -11,9 +11,9 @@ using System.Threading.Tasks;
 
 namespace NZH.Service.BaseData
 {
-    public class MESUserService : SQLBaseData, IMESUserService
+    public class MESUserService : SqlBaseData, IMESUserService
     {
-        public MESUserService(BaseDatabaseContext context) : base(context) { }
+        public MESUserService(BaseDataBaseContext context) : base(context) { }
 
         /// <summary>
         /// 获取mes用户

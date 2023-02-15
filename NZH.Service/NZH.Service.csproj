@@ -66,8 +66,8 @@
     <Compile Include="BaseData\UserService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SqlBaseData.cs" />
-    <Compile Include="SQLDatabaseContext.Base.cs" />
-    <Compile Include="SQLDatabaseContext.cs" />
+    <Compile Include="SqlDataBaseContext.Base.cs" />
+    <Compile Include="SqlDataBaseContext.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NZH.Common\NZH.Common.csproj">

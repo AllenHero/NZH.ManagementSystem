@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace NZH.Service
 {
-    public class SQLBaseData : BaseDataAdapter
+    public class SqlBaseData : BaseDataAdapter
     {
-        public SQLBaseData(BaseDatabaseContext context) : base(context) { }
+        public SqlBaseData(BaseDataBaseContext context) : base(context) { }
 
         /// <summary>
         /// 返回DataTable

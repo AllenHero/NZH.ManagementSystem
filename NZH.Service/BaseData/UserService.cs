@@ -12,9 +12,9 @@ using System.Threading.Tasks;
 
 namespace NZH.Service.BaseData
 {
-    public class UserService : SQLBaseData, IUserService
+    public class UserService : SqlBaseData, IUserService
     {
-        public UserService(BaseDatabaseContext context) : base(context) { }
+        public UserService(BaseDataBaseContext context) : base(context) { }
 
         /// <summary>
         /// 登录

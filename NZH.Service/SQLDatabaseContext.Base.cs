@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace NZH.Service
 {
-    public partial class SQLDatabaseContext : BaseDatabaseContext
+    public partial class SqlDataBaseContext : BaseDataBaseContext
     {
         /// <summary>
         /// 获取数据源连接字符串。

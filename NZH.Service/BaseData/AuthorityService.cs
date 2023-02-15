@@ -12,9 +12,9 @@ using System.Threading.Tasks;
 
 namespace NZH.Service.BaseData
 {
-    public class AuthorityService : SQLBaseData, IAuthorityService
+    public class AuthorityService : SqlBaseData, IAuthorityService
     {
-        public AuthorityService(BaseDatabaseContext context) : base(context) { }
+        public AuthorityService(BaseDataBaseContext context) : base(context) { }
 
         /// <summary>
         /// 获取权限信息

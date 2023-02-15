@@ -11,9 +11,9 @@ namespace NZH.IService
         /// <summary>
         /// 数据库上下文。
         /// </summary>
-        public BaseDatabaseContext Context { get; private set; }
+        public BaseDataBaseContext Context { get; private set; }
 
-        public BaseDataAdapter(BaseDatabaseContext context)
+        public BaseDataAdapter(BaseDataBaseContext context)
         {
             this.Context = context;
         }

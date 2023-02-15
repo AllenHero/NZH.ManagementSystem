@@ -12,9 +12,9 @@ using System.Threading.Tasks;
 
 namespace NZH.Service.BaseData
 {
-    public class RoleService : SQLBaseData, IRoleService
+    public class RoleService : SqlBaseData, IRoleService
     {
-        public RoleService(BaseDatabaseContext context) : base(context) { }
+        public RoleService(BaseDataBaseContext context) : base(context) { }
 
         /// <summary>
         /// 获取角色信息

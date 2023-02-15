@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace NZH.Service
 {
-    public partial class SQLDatabaseContext : BaseDatabaseContext
+    public partial class SqlDataBaseContext : BaseDataBaseContext
     {
-        public SQLDatabaseContext()
+        public SqlDataBaseContext()
         {
             UserService = new UserService(this);
 

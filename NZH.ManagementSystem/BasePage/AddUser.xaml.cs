@@ -33,7 +33,8 @@ namespace NZH.ManagementSystem.BasePage
         public UserInfo UserInfoByUser = new UserInfo();
         //所有用户
         public ObservableCollection<UserInfo> AllUserInfo = new ObservableCollection<UserInfo>();
-        private BllBaseData bllBaseData = new BllBaseData();
+        private RoleBusiness roleBusiness = new RoleBusiness();
+        private UserBusiness userBusiness = new UserBusiness();
 
         public AddUser()
         {
@@ -58,7 +59,7 @@ namespace NZH.ManagementSystem.BasePage
             this.Loaded -= new RoutedEventHandler(AddUser_Loaded);
             try
             {
-                UserInfo AllRoleInfo = bllBaseData.GetRoleInfo(new RoleInfo());
+                UserInfo AllRoleInfo = roleBusiness.GetRoleInfo(new RoleInfo());
                 if (AllRoleInfo.Roles != null)
                 {
                     foreach (var row in AllRoleInfo.Roles)
@@ -91,7 +92,7 @@ namespace NZH.ManagementSystem.BasePage
                 textPassword.Text = UserInfo.UserPassword;
                 try
                 {
-                    UserInfoByUser = bllBaseData.GetRoleInfoByUser(UserInfo.RoleID + "");
+                    UserInfoByUser = roleBusiness.GetRoleInfoByUser(UserInfo.RoleID + "");
                 }
                 catch
                 {
@@ -188,10 +189,10 @@ namespace NZH.ManagementSystem.BasePage
                 if (IsAdd)
                 {
                     UserInfo.UserUsable = 1;
-                    bllBaseData.AddUser(UserInfo);
+                    userBusiness.AddUser(UserInfo);
                 }
                 else
-                    bllBaseData.UpdateUser(UserInfo);
+                    userBusiness.UpdateUser(UserInfo);
             }
             catch
             {

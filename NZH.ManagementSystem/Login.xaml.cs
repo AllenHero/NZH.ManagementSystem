@@ -25,7 +25,7 @@ namespace NZH.ManagementSystem
         //用户信息及权限
         public UserInfo UserInfo = new UserInfo();
         private System.ComponentModel.BackgroundWorker LoginWorker = null;
-        private BllBaseData bllBaseData = new BllBaseData();
+        private UserBusiness userBusiness = new UserBusiness();
 
         public Login()
         {
@@ -85,7 +85,7 @@ namespace NZH.ManagementSystem
             UserInfo ui = null;
             try
             {
-                ui = bllBaseData.Login(userInfo.UserName + "", userInfo.UserPassword + "");
+                ui = userBusiness.Login(userInfo.UserName + "", userInfo.UserPassword + "");
             }
             catch
             {

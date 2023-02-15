@@ -22,7 +22,7 @@ namespace NZH.ManagementSystem
     public partial class ChangePassword : Base.BaseWindow, IDisposable
     {
         public UserInfo UserInfo;
-        private BllBaseData bllBaseData = new BllBaseData();
+        private UserBusiness userBusiness = new UserBusiness();
 
         public ChangePassword()
         {
@@ -79,7 +79,7 @@ namespace NZH.ManagementSystem
             }
             try
             {
-                int result = bllBaseData.UpdatePassWord(textPersonID.Text + "", textPassword.Password + "");
+                int result = userBusiness.UpdatePassWord(textPersonID.Text + "", textPassword.Password + "");
                 if (result == 0)
                 {
                     ReMessageBox.Show("修改密码失败");

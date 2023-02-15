@@ -25,7 +25,7 @@ namespace NZH.ManagementSystem.BasePage
     {
         MESUser MESUser = new MESUser();
         ObservableCollection<MESUser> AllMESUser = new ObservableCollection<MESUser>();
-        private BllBaseData bllBaseData = new BllBaseData();
+        private MESUserBusiness mesUserBusiness = new MESUserBusiness();
 
         public MESManageUser()
         {
@@ -54,7 +54,7 @@ namespace NZH.ManagementSystem.BasePage
             {
                 MESUser.UserName = textUserName.Text + "";
                 MESUser.PersonName = textTrueName.Text + "";
-                AllMESUser = new ObservableCollection<MESUser>(bllBaseData.GetMESUser(MESUser));
+                AllMESUser = new ObservableCollection<MESUser>(mesUserBusiness.GetMESUser(MESUser));
                 dataGrid.ItemsSource = AllMESUser;
             }
             catch
@@ -114,7 +114,7 @@ namespace NZH.ManagementSystem.BasePage
             {
                 if (item == null)
                     return;
-                bllBaseData.DeleteMESUser(item);
+                mesUserBusiness.DeleteMESUser(item);
                 AllMESUser.Remove(item);
             }
         }

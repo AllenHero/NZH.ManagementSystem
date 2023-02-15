@@ -22,7 +22,8 @@ namespace NZH.ManagementSystem.BasePage
     /// </summary>
     public partial class ManageRole : Page, IDisposable
     {
-        private BllBaseData bllBaseData = new BllBaseData();
+        private RoleBusiness roleBusiness = new RoleBusiness();
+        private AuthorityBusiness authorityBusiness = new AuthorityBusiness();
         private List<RoleInfo> listRole = null;//存放所有角色
         private AuthorityInfo[] listAuthority = null;//存放所有功能模块
 
@@ -72,7 +73,7 @@ namespace NZH.ManagementSystem.BasePage
                         //判断是否可以删除该角色 
                         try
                         {
-                            if (bllBaseData.DeleteRole(role.RoleID) > 0)
+                            if (roleBusiness.DeleteRole(role.RoleID) > 0)
                                 ReMessageBox.Show("删除完成");
                             else
                             {
@@ -102,13 +103,13 @@ namespace NZH.ManagementSystem.BasePage
             try
             {
                 this.Loaded -= new RoutedEventHandler(ManageRole_Loaded);
-                UserInfo userinfo = bllBaseData.GetAuthorityInfo(new AuthorityInfo(), true);
+                UserInfo userinfo = authorityBusiness.GetAuthorityInfo(new AuthorityInfo(), true);
                 if (userinfo != null && userinfo.Authoritys != null)
                 {
                     listAuthority = userinfo.Authoritys.ToArray();
                 }
                 userinfo = null;
-                userinfo = bllBaseData.GetRoleInfo(new RoleInfo());
+                userinfo = roleBusiness.GetRoleInfo(new RoleInfo());
                 if (userinfo != null && userinfo.Roles != null)
                 {
                     listRole = userinfo.Roles.ToList();
@@ -134,7 +135,7 @@ namespace NZH.ManagementSystem.BasePage
                 addRole.listRole = listRole;
                 if (addRole.ShowDialog() == true)
                 {
-                    UserInfo userinfo = bllBaseData.GetRoleInfo(new RoleInfo());
+                    UserInfo userinfo = roleBusiness.GetRoleInfo(new RoleInfo());
                     if (userinfo != null && userinfo.Roles != null)
                     {
                         listRole = userinfo.Roles.ToList();

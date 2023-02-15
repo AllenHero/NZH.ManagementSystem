@@ -42,7 +42,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseBusiness.cs" />
-    <Compile Include="BaseData\BllBaseData.cs" />
+    <Compile Include="BaseData\AuthorityBusiness.cs" />
+    <Compile Include="BaseData\MESUserBusiness.cs" />
+    <Compile Include="BaseData\RoleBusiness.cs" />
+    <Compile Include="BaseData\UserBusiness.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

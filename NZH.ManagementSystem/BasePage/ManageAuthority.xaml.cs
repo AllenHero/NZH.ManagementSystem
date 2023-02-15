@@ -26,7 +26,7 @@ namespace NZH.ManagementSystem.BasePage
     {
         ObservableCollection<AuthorityInfo> Info = new ObservableCollection<AuthorityInfo>();
         ObservableCollection<PropertyNodeItem> itemList = new ObservableCollection<PropertyNodeItem>();
-        private BllBaseData bllBaseData = new BllBaseData();
+        private AuthorityBusiness authorityBusiness = new AuthorityBusiness();
 
         public ManageAuthority()
         {
@@ -56,7 +56,7 @@ namespace NZH.ManagementSystem.BasePage
             Info = new ObservableCollection<AuthorityInfo>();
             try
             {
-                UserInfo ui = bllBaseData.GetAuthorityInfo(AuthorityInfo,true);
+                UserInfo ui = authorityBusiness.GetAuthorityInfo(AuthorityInfo,true);
                 if (ui.Authoritys != null)
                 {
                     foreach (var row in ui.Authoritys)
@@ -329,7 +329,7 @@ namespace NZH.ManagementSystem.BasePage
             {
                 try
                 {
-                    bllBaseData.DeleteAuthority(item.id);
+                    authorityBusiness.DeleteAuthority(item.id);
                 }
                 catch
                 {

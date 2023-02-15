@@ -32,7 +32,7 @@ namespace NZH.ManagementSystem.BasePage
         public event EventHandler AddSonAuthorityEvent = null;
         public event EventHandler UpdateAuthorityEvent = null;
         string mark;
-        private BllBaseData bllBaseData = new BllBaseData();
+        private AuthorityBusiness authorityBusiness = new AuthorityBusiness();
 
         public AddAndUpdateAuthority()
         {
@@ -123,9 +123,9 @@ namespace NZH.ManagementSystem.BasePage
             try
             {
                 if (type == "Add" || type == "AddSon")
-                    bllBaseData.AddAuthority(AuthorityInfo);
+                    authorityBusiness.AddAuthority(AuthorityInfo);
                 else
-                    bllBaseData.UpdateAuthority(AuthorityInfo);
+                    authorityBusiness.UpdateAuthority(AuthorityInfo);
             }
             catch
             {

@@ -21,7 +21,7 @@ namespace NZH.ManagementSystem.BasePage
     /// </summary>
     public partial class AddRole : NZH.ManagementSystem.Base.BaseWindow
     {
-        private BllBaseData bllBaseData = new BllBaseData();
+        private RoleBusiness roleBusiness = new RoleBusiness();
 
         public AddRole()
         {
@@ -173,7 +173,7 @@ namespace NZH.ManagementSystem.BasePage
                     tempRole.RoleID = _role.RoleID;
                     try
                     {
-                        if (bllBaseData.UpdateRole(tempRole) > 0)
+                        if (roleBusiness.UpdateRole(tempRole) > 0)
                         {
                             //修改完成后，对传进来的对象进行修改，这样的管理界面才能显示正确信息。
                             _role.AuthorityID = AuID;
@@ -228,7 +228,7 @@ namespace NZH.ManagementSystem.BasePage
                     _role.AuthorityID = AuID;
                     try
                     {
-                        if (bllBaseData.AddRole(_role) > 0)
+                        if (roleBusiness.AddRole(_role) > 0)
                             ReMessageBox.Show("添加完成");
                         else
                         {

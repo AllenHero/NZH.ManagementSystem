@@ -25,7 +25,7 @@ namespace NZH.ManagementSystem.BasePage
     {
         UserInfo UserInfo = new UserInfo();
         ObservableCollection<UserInfo> AllUserInfo = new ObservableCollection<UserInfo>();
-        private BllBaseData bllBaseData = new BllBaseData();
+        private UserBusiness userBusiness = new UserBusiness();
 
         public ManageUser()
         {
@@ -55,7 +55,7 @@ namespace NZH.ManagementSystem.BasePage
             {
                 UserInfo.TrueName = textTrueName.Text + "";
                 UserInfo.UserName = textUserName.Text + "";
-                UserInfo ui = bllBaseData.GetUserInfo(UserInfo);
+                UserInfo ui = userBusiness.GetUserInfo(UserInfo);
                 foreach (var row in ui.Users)
                 {
                     string RoleName = "";
@@ -137,7 +137,7 @@ namespace NZH.ManagementSystem.BasePage
             {
                 if (item == null)
                     return;
-                bllBaseData.DeleteUser(item.UserID);
+                userBusiness.DeleteUser(item.UserID);
                 AllUserInfo.Remove(item);
             }
         }
@@ -152,7 +152,7 @@ namespace NZH.ManagementSystem.BasePage
                 item.UserUsable = 1;
             else
                 item.UserUsable = 0;
-            bllBaseData.UpdateUser(item);
+            userBusiness.UpdateUser(item);
         }
     }
 }

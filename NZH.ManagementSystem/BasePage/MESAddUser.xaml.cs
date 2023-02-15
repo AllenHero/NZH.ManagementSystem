@@ -30,7 +30,7 @@ namespace NZH.ManagementSystem.BasePage
         public event EventHandler UpdateUserEvent = null;
         ObservableCollection<MESRole> MESRole = new ObservableCollection<MESRole>();
         public MESUser MESUserByUser = new MESUser();
-        private BllBaseData bllBaseData = new BllBaseData();
+        private MESUserBusiness mesUserBusiness = new MESUserBusiness();
 
         public MESAddUser()
         {
@@ -55,7 +55,7 @@ namespace NZH.ManagementSystem.BasePage
             this.Loaded -= new RoutedEventHandler(AddUser_Loaded);
             try
             {
-                MESRole = new ObservableCollection<MESRole>(bllBaseData.GetMESRole(MESUser));
+                MESRole = new ObservableCollection<MESRole>(mesUserBusiness.GetMESRole(MESUser));
             }
             catch
             {
@@ -142,9 +142,9 @@ namespace NZH.ManagementSystem.BasePage
             {
                 if (IsAdd)
                 {
-                    if (bllBaseData.CheckAddMESUser(MESUser) < 1)
+                    if (mesUserBusiness.CheckAddMESUser(MESUser) < 1)
                     {
-                        bllBaseData.AddMESUser(MESUser);
+                        mesUserBusiness.AddMESUser(MESUser);
                         if (AddUserEvent != null)
                             AddUserEvent(this, new EventArgs());
                     }
@@ -156,7 +156,7 @@ namespace NZH.ManagementSystem.BasePage
                 }
                 else
                 {
-                    bllBaseData.UpdateMESUser(MESUser);
+                    mesUserBusiness.UpdateMESUser(MESUser);
                     if (UpdateUserEvent != null)
                         UpdateUserEvent(this, new EventArgs());
                 }

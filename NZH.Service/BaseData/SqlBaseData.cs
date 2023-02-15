@@ -13,7 +13,7 @@ using System.Data.Common;
 
 namespace NZH.Service.BaseData
 {
-    public class SQLBaseData : BaseDataAdapter, IBaseData
+    public class SQLBaseData : BaseDataAdapter
     {
         public SQLBaseData(BaseDatabaseContext context) : base(context) { }
 

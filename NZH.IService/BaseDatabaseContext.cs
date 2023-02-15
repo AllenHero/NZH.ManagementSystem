@@ -9,8 +9,6 @@ namespace NZH.IService
 {
     public abstract partial class BaseDatabaseContext
     {
-        public IBaseData BaseData { get; set; }
-
         public IUserService UserService { get; set; }
 
         public IRoleService RoleService { get; set; }

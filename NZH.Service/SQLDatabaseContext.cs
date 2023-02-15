@@ -12,8 +12,6 @@ namespace NZH.Service
     {
         public SQLDatabaseContext()
         {
-            BaseData = new SQLBaseData(this);
-
             UserService = new UserService(this);
 
             RoleService = new RoleService(this);

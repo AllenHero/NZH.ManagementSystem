@@ -21,17 +21,16 @@ namespace NZH.ManagementSystem.BasePage
     /// </summary>
     public partial class AddRole : NZH.ManagementSystem.Base.BaseWindow
     {
+        public AuthorityInfo[] listAuthority = null;//所有功能模块信息
+        public List<RoleInfo> listRole = null;//所有角色信息，用来判断添加（修改）的角色名称是否存在
+        private bool isUpdate = false;//标志  是否为修改角色
+        private RoleInfo _role = null;//修改角色时，存放需要修改的角色信息
         private RoleBusiness roleBusiness = new RoleBusiness();
 
         public AddRole()
         {
             InitializeComponent();
         }
-
-        public AuthorityInfo[] listAuthority = null;//所有功能模块信息
-        public List<RoleInfo> listRole = null;//所有角色信息，用来判断添加（修改）的角色名称是否存在
-        private bool isUpdate = false;//标志  是否为修改角色
-        private RoleInfo _role = null;//修改角色时，存放需要修改的角色信息
 
         public AddRole(RoleInfo role)
         {

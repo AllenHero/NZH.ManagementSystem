@@ -58,7 +58,6 @@ namespace NZH.Service.BaseData
                         {
                             RoleInfo role = new RoleInfo();
                             role.RoleID = Convert.ToInt32(roles[j]);
-                            //List<RoleInfo> roleList = GetRoleInfo(role);
                             List<RoleInfo> roleList = this.Context.RoleService.GetRoleInfo(role);
                             role = this.Context.RoleService.GetOneRoleInfo(roleList);
                             AuthorityId += "|" + role.AuthorityID;

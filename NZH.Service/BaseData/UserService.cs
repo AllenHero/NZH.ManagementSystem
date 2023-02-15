@@ -60,7 +60,7 @@ namespace NZH.Service.BaseData
                             role.RoleID = Convert.ToInt32(roles[j]);
                             //List<RoleInfo> roleList = GetRoleInfo(role);
                             List<RoleInfo> roleList = Context.RoleService.GetRoleInfo(role);
-                            role = GetOneRoleInfo(roleList);
+                            role = Context.RoleService.GetOneRoleInfo(roleList);
                             AuthorityId += "|" + role.AuthorityID;
                             //权限信息
                             if (roles[j].ToString() == "1")
@@ -72,7 +72,7 @@ namespace NZH.Service.BaseData
                         //判断是否有管理员权限
                         if (flag)
                         {
-                            Authoritys = GetAuthorityInfoByRole(AuthorityId);
+                            Authoritys = Context.AuthorityService.GetAuthorityInfoByRole(AuthorityId);
                         }
                         else
                         {
@@ -286,7 +286,7 @@ namespace NZH.Service.BaseData
                     List<RoleInfo> Roles = Context.RoleService.GetRoleInfo(role);
                     for (int i = 0; i < UserList.Count; i++)
                     {
-                        UserList[i].Roles = GetRoleNameByRoleId(UserList[i].RoleID, Roles);
+                        UserList[i].Roles = Context.RoleService.GetRoleNameByRoleId(UserList[i].RoleID, Roles);
                     }
                 }
                 return UserList;

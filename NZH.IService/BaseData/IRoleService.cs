@@ -18,5 +18,9 @@ namespace NZH.IService.BaseData
         int UpdateRole(RoleInfo Role);
 
         int DeleteRole(int RoleID);
+
+        RoleInfo GetOneRoleInfo(List<RoleInfo> Roles);
+
+        List<RoleInfo> GetRoleNameByRoleId(string RoleID, List<RoleInfo> Roles);
     }
 }

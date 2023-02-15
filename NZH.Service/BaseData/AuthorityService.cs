@@ -220,5 +220,40 @@ namespace NZH.Service.BaseData
                 throw new Exception(ex.Message);
             }
         }
+
+        /// <summary>
+        /// 通过某一角色获取权限信息
+        /// </summary>
+        /// <param name="AuthorityID">权限id</param>
+        /// <returns>权限信息的集合</returns>
+        public List<AuthorityInfo> GetAuthorityInfoByRole(string AuthorityID)
+        {
+            List<AuthorityInfo> AuthorityList = new List<AuthorityInfo>();
+            if (string.IsNullOrEmpty(AuthorityID))
+            {
+                return AuthorityList;
+            }
+            string authorityId = AuthorityID;
+            if (AuthorityID.IndexOf('|', 0) == 0)
+            {
+                authorityId = AuthorityID.Substring(1, AuthorityID.Length - 1).Replace('|', ',');
+            }
+            else
+            {
+                authorityId = AuthorityID.Replace('|', ',');
+            }
+            string sql = " Select * from T_Authority Where AuthorityID in (" + authorityId + ")  order by sortcode asc ";
+            try
+            {
+                DataTable dt = GetDataTable(sql);
+                if (dt != null && dt.Rows.Count > 0)
+                    AuthorityList = Util.DataTableConvertList<AuthorityInfo>(dt);
+                return AuthorityList;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }

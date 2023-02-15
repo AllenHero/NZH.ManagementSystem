@@ -225,5 +225,55 @@ namespace NZH.Service.BaseData
                 throw new Exception(ex.Message);
             }
         }
+
+        /// <summary>
+        /// 获取某一个角色信息
+        /// </summary>
+        /// <param name="Roles">某一角色的集合DataTable</param>
+        /// <returns>角色实体</returns>
+        public RoleInfo GetOneRoleInfo(List<RoleInfo> Roles)
+        {
+            RoleInfo Role = new RoleInfo();
+            if (Roles != null && Roles.Count > 0)
+            {
+                Role.RoleName = Roles[0].RoleName;
+                Role.RoleNode = Roles[0].RoleNode;
+                Role.AuthorityID = Roles[0].AuthorityID;
+            }
+            return Role;
+        }
+
+        /// <summary>
+        /// 通过角色ID获取角色名
+        /// </summary>
+        /// <param name="RoleID"></param>
+        /// <param name="Roles"></param>
+        /// <returns></returns>
+        public List<RoleInfo> GetRoleNameByRoleId(string RoleID, List<RoleInfo> Roles)
+        {
+            List<RoleInfo> RoleList = new List<RoleInfo>();
+            if (string.IsNullOrEmpty(RoleID))
+            {
+                return RoleList;
+            }
+            if (!string.IsNullOrEmpty(RoleID))
+            {
+                string[] RoleIds = RoleID.Split('|');
+                for (int j = 0; j < RoleIds.Count(); j++)
+                {
+                    RoleInfo role = new RoleInfo();
+                    for (int k = 0; k < Roles.Count; k++)
+                    {
+                        if (Convert.ToInt32(RoleIds[j]) == Roles[k].RoleID)
+                        {
+                            role.RoleName = Roles[k].RoleName;
+                            RoleList.Add(role);
+                        }
+                    }
+                }
+                return RoleList;
+            }
+            return RoleList;
+        }
     }
 }

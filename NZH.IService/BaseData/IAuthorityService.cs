@@ -16,5 +16,7 @@ namespace NZH.IService.BaseData
         int UpdateAuthority(AuthorityInfo Authority);
 
         int DeleteAuthority(string FunCode);
+
+        List<AuthorityInfo> GetAuthorityInfoByRole(string AuthorityID);
     }
 }

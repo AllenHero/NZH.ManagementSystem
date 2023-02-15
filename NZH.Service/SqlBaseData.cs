@@ -141,10 +141,10 @@ namespace NZH.Service
         /// <summary>
         /// 执行多条SQL语句，实现数据库事务。最多1000
         /// </summary>
-        /// <param name="SQLStringList">多条SQL语句</param>        
+        /// <param name="SqlList">多条SQL语句</param>        
         public int BatchExecuteNonQuery(List<string> SqlList)
         {
-            int Result = 0;
+            int result = 0;
             string Sqls = "";
             foreach (var row in SqlList)
             {
@@ -152,12 +152,12 @@ namespace NZH.Service
             }
             try
             {
-                Result = ExecuteNonQuery(Sqls);
-                return Result;
+                result = ExecuteNonQuery(Sqls);
+                return result;
             }
             catch (Exception ex)
             {
-                return Result;
+                throw new Exception(ex.Message);
             }
         }
 

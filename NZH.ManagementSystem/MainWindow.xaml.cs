@@ -30,11 +30,7 @@ namespace NZH.ManagementSystem
         ObservableCollection<TreeModle> TreeModle = new ObservableCollection<TreeModle>();
         Dictionary<int, string> TabItemControl = new Dictionary<int, string>();
         public static UserInfo UserInfo;
-        public static string LineNO;
-        public static string PROCESS_NO;
-        public static string WeightCom;
-        public static string TemperatureCom;
-        public static string TotalPass;
+        public static string TestCode;
 
         public MainWindow()
         {
@@ -51,10 +47,7 @@ namespace NZH.ManagementSystem
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            LineNO = ConfigurationManager.AppSettings["LineNO"] + "";
-            PROCESS_NO = ConfigurationManager.AppSettings["PROCESS_NO"] + "";
-            WeightCom = ConfigurationManager.AppSettings["WeightCom"] + "";
-            TemperatureCom = ConfigurationManager.AppSettings["TemperatureCom"] + "";
+            TestCode = ConfigurationManager.AppSettings["TestCode"] + "";//读取配置信息
             TabItemControl.Add(0, "首页");
             TreeModle = new ObservableCollection<TreeModle>();
             if (UserInfo != null && UserInfo.Authoritys != null)
